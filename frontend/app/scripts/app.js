@@ -24,6 +24,11 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
+      .when('/musicPlayer', {
+        templateUrl: 'views/musicPlayer.html',
+        controller: 'MusicPlayerCtrl',
+        controllerAs: 'musicPlayer'
+      })
       .otherwise({
         redirectTo: '/'
       });
