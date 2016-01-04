@@ -1,0 +1,10 @@
+{
+  "name": "MT5_skeleton",
+  "version": "0.0.0",
+  "description": "Example of multitrack player",
+  "main": "server.js",
+  "repository": "",
+  "dependencies": {
+    "express": "~3.2.4"
+  }
+}
