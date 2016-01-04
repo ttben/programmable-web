@@ -37,6 +37,6 @@ angular.module('audioPlayer-directive', [])
         setInterval(function(){ $scope.$apply(); }, 500);
       },
 
-      templateUrl: '/scripts/components/audioPlayer/views/component.html'
+      templateUrl: '/scripts/components/audioplayer.html'
     };
   });

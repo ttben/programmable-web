@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'audioPlayer-directive'
   ])
   .config(function ($routeProvider) {
     $routeProvider
