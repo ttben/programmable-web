@@ -27,24 +27,6 @@ angular.module('programmableWebApp')
       $rootScope.$broadcast('audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].folder+"/", $scope.data[$scope.currentTrack], $scope.currentTrack, $scope.data.length);
     };
 
-    $rootScope.$on('audio.next', function(){
-      $scope.currentTrack++;
-      if ($scope.currentTrack < $scope.data.length){
-        updateTrack();
-      }else{
-        $scope.currentTrack=$scope.data.length-1;
-      }
-    });
-
-    $rootScope.$on('audio.prev', function(){
-      $scope.currentTrack--;
-      if ($scope.currentTrack >= 0){
-        updateTrack();
-      }else{
-        $scope.currentTrack = 0;
-      }
-    });
-
     $http.get('assets/music.json')
       .success(function(response){
         $scope.data = response;

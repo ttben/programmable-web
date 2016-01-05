@@ -34,19 +34,22 @@ angular.module('audioPlayer-directive', [])
             });
           }
 
-          // tell audio element to play/pause, you can also use $scope.audio.play() or $scope.audio.pause();
+          // tell audio elements to play/pause, you can also use $scope.audio.play() or $scope.audio.pause();
           $scope.playpause = function () {
             for (var i = 0; i < $scope.tracks.length; i++) {
               var a = $scope.tracks[i].audio.paused ? $scope.tracks[i].audio.play() : $scope.tracks[i].audio.pause();
             }
           };
 
+          // tell audio elements the volume has changed
+          // TODO : change the volume of one single element instead of all elements in some cases
           $scope.volumeChanged = function () {
             for (var i = 0; i < $scope.tracks.length; i++) {
               $scope.tracks[i].audio.volume = $scope.tracks[i].volume*$scope.globalVolume;
             }
           };
 
+          // tell audio elements the time has changed
           $scope.timeChanged = function () {
             for (var i = 0; i < $scope.tracks.length; i++) {
               $scope.tracks[i].audio.currentTime = $scope.tracks[0].audio.currentTime;
