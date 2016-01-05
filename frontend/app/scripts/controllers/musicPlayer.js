@@ -24,7 +24,7 @@ angular.module('programmableWebApp')
     $scope.data=[];
 
     var updateTrack = function(){
-      $rootScope.$broadcast('audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].file, $scope.data[$scope.currentTrack], $scope.currentTrack, $scope.data.length);
+      $rootScope.$broadcast('audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].folder+"/", $scope.data[$scope.currentTrack], $scope.currentTrack, $scope.data.length);
     };
 
     $rootScope.$on('audio.next', function(){

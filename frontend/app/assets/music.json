@@ -1,8 +1,9 @@
 [
   {
-    "title": "tnt",
-    "artist": {"name": "acdc"},
-      "image": "tntCover.jpg",
-      "file": "applause.mp3"
-    }
+    "title": "We are the champions",
+    "artist": {"name": "Queen"},
+    "image": "todo.jpg",
+    "folder": "queen_champions",
+	"tracks": ["basse","batterie","guitare","guitare2","piano","voix"]
+  }
 ]
