@@ -1,8 +1,4 @@
 <div class="form-group">
-  <label>volume: <input min="0" max="1" step="0.01" type="range" ng-model="globalVolume" ng-change="volumeChanged()"/></label>
-</div>
-
-<div class="form-group">
   <button class="btn btn-default playpause" ng-click="playpause()" ng-class="{paused:tracks[0].audio.paused}">
     <span class="play-text"><i class="glyphicon glyphicon-play"></i> play</span>
     <span class="pause-text"><i class="glyphicon glyphicon-pause"></i> pause</span>
@@ -10,21 +6,22 @@
 </div>
 
 <div class="form-group time">
-  <label>time: <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
+  <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="globalVolume" ng-change="volumeChanged()"/></label>
+  <label>temps : <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
 </div>
 
 <div class="form-group now-playing">
-  <p>Now Playing: <!--<img width="30" height="30" src="assets/music/{{info.image}}" /> --></p>
+  <label>En écoute : <!--<img width="30" height="30" src="assets/music/{{info.image}}" /> --></label>
 
   <p>{{info.artist.name}} - {{info.title}}</p>
 </div>
 
 <div ng-repeat="track in tracks" class="panel panel-default">
   <div class="panel-heading">
-    track : {{track.name}}
+    Piste : {{track.name}}
   </div>
   <div class="panel-body">
-    <label>volume: <input min="0" max="1" step="0.01" type="range" ng-model="track.volume" ng-change="volumeChanged()"/></label>
-    <label>time: <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
+    <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="track.volume" ng-change="volumeChanged()"/></label>
+    <label>temps : <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
   </div>
 </div>
