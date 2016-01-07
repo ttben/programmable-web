@@ -1,9 +1,10 @@
 <div class="jumbotron">
   <h1>COUCOU Accueil !</h1>
   <p class="lead">
-    C'est toujours cool une page d'accueil qui ne contient rien d'intéressant ! :D
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Wow ! Un bouton !<span class="glyphicon glyphicon-ok"></span></a></p>
+Choisis ta chanson !  </p>
+  <div ng-repeat="song in songs">
+    {{song}}
+  </div>
 </div>
 
 <div class="row marketing">
