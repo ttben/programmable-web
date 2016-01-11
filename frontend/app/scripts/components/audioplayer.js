@@ -2,35 +2,30 @@
  * Created by Garance on 04/01/2016.
  */
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', function ($rootScope) {
+  .directive('audioPlayer', function ($rootScope, $http) {
     return {
       restrict: 'E',
       scope: {},
       controller: function ($scope, $element) {
         $scope.globalVolume = 1;
-
         // set track & play it
         $rootScope.$on('audio.set', function (r, folder, info) {
           $scope.info = info;
           $scope.tracks = [];
           for (var i = 0; i < info.tracks.length; i++) {
-            var track = {"audio": new Audio(), "name": info.tracks[i], "volume":1};
+            var track = {"audio": new AudioContext(), "name": info.tracks[i], "volume":1};
             $scope.tracks.push(track);
-            $scope.tracks[i].audio.src = folder + info.tracks[i] + ".mp3";
+            $http({
+              method: 'GET',
+              url: folder + track.name + ".mp3"
+            }).success(function (data, status, headers, config) {
+              console.log("mdr", data);
 
-            // listen for audio-element events, and broadcast stuff
-            $scope.tracks[i].audio.addEventListener('play', function () {
-              $rootScope.$broadcast('audio.play', this);
-            });
-            $scope.tracks[i].audio.addEventListener('pause', function () {
-              $rootScope.$broadcast('audio.pause', this);
-            });
-            $scope.tracks[i].audio.addEventListener('timeupdate', function () {
-              $rootScope.$broadcast('audio.time', this);
-            });
-            $scope.tracks[i].audio.addEventListener('ended', function () {
-              $rootScope.$broadcast('audio.ended', this);
-              console.log("ended");
+              /*track.audio.decodeAudioData( request.response, function(buffer) {
+                track.buffer = buffer;
+              } );*/
+            }).error(function(err){
+              console.log("lol", err);
             });
           }
 
