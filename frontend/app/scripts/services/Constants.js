@@ -12,6 +12,6 @@
  */
 angular.module('programmableWebApp')
   .constant('CONSTANTS', {
-    backendUrl: 'http://localhost:8081/',
+    backendUrl: 'http://localhost:3001/',
     music:'songs'
   });

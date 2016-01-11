@@ -8,16 +8,17 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('MainCtrl',['$scope', 'Music', function ($scope, Music) {
-    $scope.songs=[];
-    $scope.inError=false;
-    Music.all(function(result) {
-      console.log('got all songs !');
-      $scope.songs=result;
-    },
-    function() {
-      console.log('in error...');
-      $scope.inError=true;
-    });
+  .controller('MainCtrl',['$scope', '$rootScope', 'User', function ($scope, $rootScope, User) {
+    $scope.user={"email":"", "pwd":""};
+    $scope.SignIn = function() {
+      User.authenticate($scope.user.email, $scope.user.pwd, function(token) {
+        console.log('token is : ', token);
+        $rootScope.token = token;
+      },
+      function(error) {
+        console.log('error... :(');
+      })
+    }
+
 
   }]);
