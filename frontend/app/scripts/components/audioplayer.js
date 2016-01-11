@@ -6,41 +6,60 @@ angular.module('audioPlayer-directive', [])
     return {
       restrict: 'E',
       scope: {},
-      controller: function ($scope, $element) {
+      controller: function ($scope) {
         $scope.globalVolume = 1;
+        $scope.audioContext = new AudioContext();
+
         // set track & play it
         $rootScope.$on('audio.set', function (r, folder, info) {
           $scope.info = info;
           $scope.tracks = [];
           for (var i = 0; i < info.tracks.length; i++) {
-            var track = {"audio": new AudioContext(), "name": info.tracks[i], "volume":1};
-            $scope.tracks.push(track);
             $http({
               method: 'GET',
-              url: folder + track.name + ".mp3"
-            }).success(function (data, status, headers, config) {
-              console.log("mdr", data);
+              url: folder + info.tracks[i] + ".mp3",
+              responseType: "arraybuffer"
+            }).success((function (i) {
+              return function (data) {
+                $scope.audioContext.decodeAudioData(data, function (buffer) {
+                  var track = {"name": $scope.info.tracks[i], "volume": 1};
+                  track.source = $scope.audioContext.createBufferSource();
+                  track.source.buffer = buffer;
+                  var gainNode = $scope.audioContext.createGain();
+                  track.gain = gainNode.gain;
+                  track.source.connect(gainNode);
+                  gainNode.connect($scope.audioContext.destination);
+                  $scope.tracks.push(track);
+                  $scope.start();
+                });
+              }
+            })(i));
+          }
 
-              /*track.audio.decodeAudioData( request.response, function(buffer) {
-                track.buffer = buffer;
-              } );*/
-            }).error(function(err){
-              console.log("lol", err);
-            });
+          $scope.start = function () {
+            if ($scope.tracks.length == $scope.info.tracks.length) {
+              $scope.tracksLoaded = true;
+
+              for (var i = 0; i < $scope.tracks.length; i++) {
+                $scope.tracks[i].source.start();
+              }
+              $scope.playing = true;
+            }
           }
 
           // tell audio elements to play/pause, you can also use $scope.audio.play() or $scope.audio.pause();
           $scope.playpause = function () {
             for (var i = 0; i < $scope.tracks.length; i++) {
-              var a = $scope.tracks[i].audio.paused ? $scope.tracks[i].audio.play() : $scope.tracks[i].audio.pause();
+              $scope.playing ? $scope.audioContext.suspend() : $scope.audioContext.resume();
             }
+            $scope.playing = !$scope.playing;
           };
 
           // tell audio elements the volume has changed
           // TODO : change the volume of one single element instead of all elements in some cases
           $scope.volumeChanged = function () {
             for (var i = 0; i < $scope.tracks.length; i++) {
-              $scope.tracks[i].audio.volume = $scope.tracks[i].volume*$scope.globalVolume;
+              $scope.tracks[i].gain.value = $scope.tracks[i].volume * $scope.globalVolume;
             }
           };
 
