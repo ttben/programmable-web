@@ -1,22 +1,21 @@
 <div class="jumbotron">
   <h1>COUCOU Accueil !</h1>
-  <p class="lead">
-    C'est toujours cool une page d'accueil qui ne contient rien d'intéressant ! :D
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Wow ! Un bouton !<span class="glyphicon glyphicon-ok"></span></a></p>
+  <form class="form-signin">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" id="inputEmail" class="form-control" ng-model="user.email" placeholder="Email address" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" ng-model="user.pwd" class="form-control" placeholder="Password" required>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" ng-click="SignIn()" type="submit">Sign in</button>
+  </form>
+
+  <div ng-repeat="song in songs">
+    {{song}}
+  </div>
 </div>
 
-<div class="row marketing">
-  <h4>Much information</h4>
-  <p>
-    Aujourd'hui j'me suis réveillé à 10h pile ! Et maintenant j'ai faim parce que je n'ai pas pris de petit-déjeuner :(
-  </p>
-
-  <h4>Such wow</h4>
-  <p>
-    Ne me dites pas que vous lisez vraiment tout ça ?
-  </p>
-
-  <h4>Very angular</h4>
-  <p>Angular c'est la vie.</p>
-</div>
