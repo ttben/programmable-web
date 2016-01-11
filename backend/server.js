@@ -76,7 +76,7 @@ db.once('open', function() {
 	console.log("Flushing user collection ...");
 	User.find().remove().exec();
 
-	var user = new User({email: "pw@pw.com", password: "yes"});
+	var user = new User({email: "pw@pw.com", password: "yes", role:"admin"});
 	user.save(function(err, userRes) {
 		if(err) {
 			console.log("Impossible to store stub user");
@@ -101,6 +101,13 @@ app.get('/songs/', function(req,res) {
 			res.status(404).send("Can not found the user with specified token " + token);
 		},
 		function(user) {
+
+			console.log("THE USER HAS ROLE", user.role);
+			if(user.role == "public") {
+				res.status(401).send("sorry, public can not get the songs bitch");
+				return;
+			}
+
 			//	Find all songs, delete '__v' attribute,
 			//	make the result a plain JS object and exec given function
 			Song.find({}, {'__v':0, tracks:0, mixes:0}).lean().exec(function (err, songs) {
@@ -118,6 +125,10 @@ app.get('/songs/', function(req,res) {
 	);
 });
 
+app.get('/', function(req,res) {
+
+	res.status(200).send("lol mabite");
+});
 
 app.post('/authenticate', function(req, res) {
 	User.findOne({email: req.body.email, password: req.body.password}, function(err, user) {
@@ -128,6 +139,7 @@ app.post('/authenticate', function(req, res) {
 			});
 		} else {
 			if (user) {
+
 				res.json({
 					email:user.email,
 					token: user._id
@@ -142,7 +154,7 @@ app.post('/authenticate', function(req, res) {
 	});
 });
 
-app.post('/signin', function(req, res) {
+app.post('/signup', function(req, res) {
 	User.findOne({email: req.body.email, password: req.body.password}, function(err, user) {
 		if (err) {
 			res.json({
@@ -159,6 +171,15 @@ app.post('/signin', function(req, res) {
 				var userModel = new User();
 				userModel.email = req.body.email;
 				userModel.password = req.body.password;
+				userModel.role = req.body.role;
+
+				console.log("ROLE", userModel.role);
+
+				if(userModel.role != "admin" && userModel.role != "user" && userModel.role != "public") {
+					res.status(400).send("Specified role " + userModel.role + " unrecognized");
+					return;
+				}
+
 				userModel.save(function(err, user) {
 					res.status(201).send({token:user._id});
 				})
