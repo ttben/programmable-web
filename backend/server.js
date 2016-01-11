@@ -7,6 +7,11 @@ var bodyParser = require("body-parser");
 var jwt        = require("jsonwebtoken");
 var mongoose   = require("mongoose");
 
+var usersLog = require("./our_modules/loggers").get('usersLog');
+usersLog.info('logging from your IoC container-based logger');
+usersLog.info('qs  qsfqfqs  ggdsddsd lolololololololol er');
+
+
 // Init globals variables for each module required
 var app = express();
 
@@ -139,6 +144,8 @@ app.post('/authenticate', function(req, res) {
 			});
 		} else {
 			if (user) {
+
+				usersLog.info('User connexion : ' + user.email, { email: user.email, token: user._id.toString()});
 
 				res.json({
 					email:user.email,
