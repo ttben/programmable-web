@@ -14,6 +14,7 @@ angular.module('programmableWebApp')
       User.authenticate($scope.user.email, $scope.user.pwd, function(token) {
         console.log('token is : ', token);
         $rootScope.token = token;
+
       },
       function(error) {
         console.log('error... :(');
