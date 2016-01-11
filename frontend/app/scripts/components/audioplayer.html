@@ -1,13 +1,13 @@
 <div class="form-group">
-  <button class="btn btn-default playpause" ng-click="playpause()" ng-class="{paused:tracks[0].audio.paused}">
-    <span class="play-text"><i class="glyphicon glyphicon-play"></i> play</span>
-    <span class="pause-text"><i class="glyphicon glyphicon-pause"></i> pause</span>
+  <button ng-disabled="!tracksLoaded" class="btn btn-default btn-circle btn-xl playpause" ng-click="playpause()" ng-class="{paused:!playing}">
+    <span class="play-text"><i class="glyphicon glyphicon-play"></i></span>
+    <span class="pause-text"><i class="glyphicon glyphicon-pause"></i></span>
   </button>
 </div>
 
 <div class="form-group time">
   <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="globalVolume" ng-change="volumeChanged()"/></label>
-  <label>temps : <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
+  <label>temps : <input disabled min="0" max="{{tracks[0].source.buffer.duration}}" step="0.01" type="range" ng-model="audioContext.currentTime" ng-change="timeChanged()"/></label>
 </div>
 
 <div class="form-group now-playing">
@@ -18,10 +18,11 @@
 
 <div ng-repeat="track in tracks" class="panel panel-default">
   <div class="panel-heading">
-    Piste : {{track.name}}
+    <h3 style="margin:0">{{track.name}}</h3>
   </div>
   <div class="panel-body">
     <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="track.volume" ng-change="volumeChanged()"/></label>
-    <label>temps : <input min="0" max="{{tracks[0].audio.duration}}" step="0.01" type="range" ng-model="tracks[0].audio.currentTime" ng-change="timeChanged()"/></label>
+    <label>temps : <input disabled min="0" max="{{tracks[0].source.buffer.duration}}" step="0.01" type="range" ng-model="audioContext.currentTime" ng-change="timeChanged()"/></label>
   </div>
 </div>
+<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement...</p>

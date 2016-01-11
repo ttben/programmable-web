@@ -30,7 +30,13 @@ angular
         controller: 'MusicPlayerCtrl',
         controllerAs: 'musicPlayer'
       })
+      .when('/newUser', {
+        templateUrl: 'views/newUser.html',
+        controller: 'SignUpCtrl',
+        controllerAs: 'signUp'
+      })
       .otherwise({
         redirectTo: '/'
       });
   });
+
