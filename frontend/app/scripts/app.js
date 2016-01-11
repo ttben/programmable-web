@@ -33,4 +33,10 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .run(['$rootScope', '$location', '$cookies', '$http', 'CONSTANTS', function($rootScope, $location, $cookies, $http, CONSTANTS) {
+
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      $rootScope.header = "default";
+    });
+  }]);
