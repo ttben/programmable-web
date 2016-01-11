@@ -5,26 +5,20 @@ angular.module('programmableWebApp')
   .factory('User', ["CONSTANTS", '$http', function(CONSTANTS, $http) {
     var obj = {
       authenticate: function(userEmail, userPassword, successCB, failCB) {
-        var jsonObject = {"email": userEmail, "password": userPassword};
+        var jsonObject = {};
+        jsonObject.email=userEmail;
+        jsonObject.password = userPassword;
         $http({
           method: 'POST',
           url: CONSTANTS.backendUrl + 'authenticate',
-          data: jsonObject,
-          headers: {'Content-Type': 'application/json'}
+          data: {"email":"yo", "password":"uo"},
+          headers: { 'Content-Type': 'text/plain; charset=UTF-8'}
         }).then(function (data) {
             successCB(data);
           }
           , function (data) {
             failCB(data)
-          })
-      ;
-        /*$http.post(CONSTANTS.backendUrl + "authenticate", jsonObject)
-          .success(function (result) {
-            console.log('authentication success !');
-            console.log(result);
-            successCB(result);
-          })
-          .error(failCB);*/
+          });
       },
       signUp: function(userEmail, userPassword, successCB, failCB) {
         var jsonObject = {"email":userEmail, "password":userPassword};

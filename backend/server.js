@@ -34,7 +34,7 @@ app.use(function(req, res, next) {
 	res.setHeader('Access-Control-Max-Age', 86400);
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization, Accept, Origin, Access-Control-Allow-Origin,X-Custom-Header');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-type, Authorization, Accept, Origin, Access-Control-Allow-Origin,X-Custom-Header');
 	next();
 });
 
