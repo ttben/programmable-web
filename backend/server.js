@@ -103,7 +103,7 @@ app.get('/songs/', function(req,res) {
 		function(user) {
 			//	Find all songs, delete '__v' attribute,
 			//	make the result a plain JS object and exec given function
-			Song.find().select('-__v').lean().exec(function (err, songs) {
+			Song.find({}, {'__v':0, tracks:0, mixes:0}).lean().exec(function (err, songs) {
 				if (err) {
 					console.error(err);
 					res.status().send(err);
