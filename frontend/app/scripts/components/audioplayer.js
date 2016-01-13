@@ -8,7 +8,7 @@ angular.module('audioPlayer-directive', [])
       scope: {},
       controller: function ($scope) {
         $scope.globalVolume = 1;
-        $scope.audioContext = new AudioContext();
+        $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         // set track & play it
         $rootScope.$on('audio.set', function (r, folder, info) {
@@ -31,6 +31,7 @@ angular.module('audioPlayer-directive', [])
                   gainNode.connect($scope.audioContext.destination);
                   $scope.tracks.push(track);
                   $scope.start();
+                  //$scope.displayBuffer(buffer);
                 });
               }
             })(i));
