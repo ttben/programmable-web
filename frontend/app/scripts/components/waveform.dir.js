@@ -1,6 +1,3 @@
-/**
- * Created by Hugo on 13/01/2016.
- */
 angular.module('waveform-directive', [])
   .directive("waveform", function () {
     return {
@@ -9,6 +6,7 @@ angular.module('waveform-directive', [])
         buffer: '='
       },
       link: function (scope, element) {
+        // draw the waveform (only once)
         var context = element[0].getContext('2d');
         var width = element[0].width;
         var height = element[0].height;

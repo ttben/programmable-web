@@ -11,13 +11,6 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .filter('startFrom', function() {
-    return function(input, start) {
-      start = +start; //parse to int
-      return input.slice(start);
-    };
-  })
-
   .controller('MusicPlayerCtrl',["$scope", "$http", "$rootScope", function ($scope, $http, $rootScope) {
     $scope.currentTrack = 0;
     $scope.pageSize = 5;

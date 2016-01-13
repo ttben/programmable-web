@@ -7,7 +7,6 @@
 
 <div class="form-group time">
   <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="globalVolume" ng-change="volumeChanged()"/></label>
-  <label>temps : <input disabled min="0" max="{{tracks[0].source.buffer.duration}}" step="0.01" type="range" ng-model="audioContext.currentTime" ng-change="timeChanged()"/></label>
 </div>
 
 <div class="form-group now-playing">
@@ -23,10 +22,10 @@
   <div class="panel-body">
     <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="track.volume" ng-change="volumeChanged()"/></label>
 
-    <div style="position:relative; width:100%; height:75px">
-      <canvas class="pointer-hover" waveform buffer="track.source.buffer" style="position: absolute; top: 0; left: 0; width:100%; height:75px"></canvas>
-      <canvas class="pointer-hover" time-indicator current-time="audioContext.currentTime" total-time="track.source.buffer.duration" style="position: absolute; top: 0; left: 0; width:100%; height:75px"></canvas>
+    <div style="position:relative; width:500px; height:100px">
+      <canvas height=100 width=500 waveform buffer="track.source.buffer" style="position: absolute; top: 0; left: 0"></canvas>
+      <canvas class="pointer-hover" ng-show="tracksLoaded" height=100 width=500 time-changed="timeChanged(timeSelected)" time-indicator current-time="currentTime" total-time="track.source.buffer.duration" style="position: absolute; top: 0; left: 0"></canvas>
     </div>
   </div>
 </div>
-<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement ({{tracks.length}}/{{info.tracks.length}})...</p>
+<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement... ({{tracks.length}}/{{info.tracks.length}})</p>
