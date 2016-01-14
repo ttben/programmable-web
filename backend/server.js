@@ -20,6 +20,8 @@ app.configure(function () {
 var port = process.env.PORT || 3001;
 var User = require('./models/User');
 var Song = require('./models/Song');
+var Comment = require('./models/Comment');
+
 var utility = require('./Utility');
 
 var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
@@ -91,6 +93,21 @@ db.once('open', function () {
         }
         else {
             console.log("Stub user stored !");
+        }
+    });
+
+    var comment = new Comment({
+      "mix_id": "1",
+      "authorName": "jean poele",
+      "text": "TROP COOL",
+      "date": "12334567"
+    });
+    comment.save(function (err, commentRes) {
+        if (err) {
+            console.log("Impossible to store comment");
+        }
+        else {
+            console.log("comment stored !");
         }
     });
 });
@@ -257,3 +274,52 @@ function getFiles(dirName, callback) {
     });
 }
 
+
+
+
+
+/*
+ * comments
+ */
+
+
+
+
+
+app.get('/comments', function (req, res) {
+    var mixID = req.query.mixID;
+
+    // Comment.find({mix_id: req.query.mixID}, function (err, comments) {
+    Comment.find({mix_id: req.query.mixID}, {'__v': 0}).lean().exec(function (err, comments) {
+        if (err) {
+            res.json({
+                type: false,
+                data: "Error occured: " + err
+            });
+        } else {
+            res.json({
+                comments: comments || []
+            });
+        }
+    });
+});
+
+app.post('/comments', function (req, res) {
+    var mixID = req.query.mixID;
+
+    var comment = new Comment({
+      "mix_id": res.mix_id,
+      "authorName": res.authorName,
+      "text": res.text,
+      "date": res.date
+    });
+    comment.save(function (err, commentRes) {
+        if (err) {
+            res.status(500).send("Internal error buddy. Sorry." + err);
+        }
+        else {
+            res.status(200).send(commentRes);
+        }
+    });
+
+});
