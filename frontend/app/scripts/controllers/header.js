@@ -27,6 +27,15 @@ angular.module('programmableWebApp')
         })
     };
 
+    $scope.signUp = function(user) {
+      User.signUp(user.usernameOrEmail, user.password, function(token) {
+         $location.path('/musics');
+        },
+        function(error) {
+          console.log('error... :(');
+        })
+    };
+
     $scope.logout = function() {
 
       $rootScope.header = "home";

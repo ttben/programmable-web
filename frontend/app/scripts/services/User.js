@@ -2,7 +2,7 @@
  * Created by Garance on 11/01/2016.
  */
 angular.module('programmableWebApp')
-  .factory('User', ['$http', "CONSTANTS", '$cookies', function($http, CONSTANTS, $cookies) {
+  .factory('User', ['$http', 'CONSTANTS', '$cookies', function($http, CONSTANTS, $cookies) {
     var obj = {
       authenticate: function (userEmail, userPassword, successCB, failCB) {
         $cookies.remove('token');
