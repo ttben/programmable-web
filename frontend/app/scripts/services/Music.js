@@ -18,10 +18,8 @@ angular.module('programmableWebApp')
           method: 'GET',
           url: CONSTANTS.backendUrl + CONSTANTS.music+'?token='+token,
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
-          //params: {token:$cookies.get('token')}
         }).then(function (data) {
-            console.log('got the musics : ', data);
-            successCB(data);
+            successCB(data.data.data);
           }, function(error) {
             console.log(error);
             failCB()
