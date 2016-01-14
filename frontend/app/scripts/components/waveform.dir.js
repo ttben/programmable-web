@@ -7,14 +7,15 @@ angular.module('waveform-directive', [])
       },
       link: function (scope, element) {
         var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
+        var width = element[0].width = element.parent().width();
+        var height = element[0].height = element.parent().height();
 
         /**
          * draw the waveform (only once)
          */
         var draw = function () {
           var context = element[0].getContext('2d');
-          var width = element[0].width = element.parent().width();
-          var height = element[0].height;
+          width = element[0].width = element.parent().width();
           var data = scope.buffer.getChannelData(0);
           var step = Math.floor(data.length / width);
           var amp = height / 2;

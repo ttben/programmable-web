@@ -10,7 +10,7 @@ angular.module('time-indicator-directive', [])
       link: function (scope, element) {
         var context = element[0].getContext('2d');
         var width = element[0].width = element.parent().width();
-        var height = element[0].height;
+        var height = element[0].height = element.parent().height();
         var isMouseDown = false;
 
         /**
