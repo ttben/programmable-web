@@ -22,7 +22,6 @@ var User = require('./models/User');
 var Song = require('./models/Song');
 var Comment = require('./models/Comment');
 
-var utility = require('./Utility');
 
 var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
 
@@ -115,7 +114,7 @@ db.once('open', function () {
 app.get('/songs', function (req, res) {
     var token = req.query.token;
 
-    utility.getListOfSongsForUserByToken(
+    Song.getListOfSongsForUserByToken(
         token,
         function(songsList) {
             res.status(200).send(songsList);
@@ -142,7 +141,7 @@ app.post('/authenticate', function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    utility.authenticate(
+    User.authenticate(
         email,
         password,
         function(user) {
@@ -168,7 +167,8 @@ app.post('/authenticate', function (req, res) {
 
 app.post('/signup', function (req, res) {
 
-    utility.signUp(req.body.email, req.body.password, req.body.role,
+
+    User.signUp(req.body.email, req.body.password, req.body.role,
         function(user) {
             res.status(201).send({token: user._id});
         },
