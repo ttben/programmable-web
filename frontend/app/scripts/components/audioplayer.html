@@ -1,4 +1,4 @@
-<img ng-src={{info.thumbnail}} height="200" width="200">
+<img ng-src={{info.thumbnail}} height="200" width="200" style="border-radius: 5px">
 <h2>{{info.artist}} - {{info.title}}</h2>
 <div class="form-group">
   <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
@@ -16,10 +16,10 @@
   </div>
 </form>
 
-<div ng-repeat="track in tracks" class="panel panel-default">
+<div ng-repeat="track in tracks" class="panel panel-default" ng-class="{'track-disabled':track.muted}">
   <div class="panel-heading" style="position:relative">
     <h3 style="margin:0">{{track.name}}
-      <form class="form-inline" style="position:absolute; top:8px; right:15px">
+      <form class="form-inline" style="position:absolute; top:8px; left:15px">
 
         <button type="button" class="btn btn-default btn-circle btn-sm" ng-click="silenceAskedFrom(track)">S</button>
         <button type="button" ng-class="{'active':track.muted}" class="btn btn-default btn-circle btn-sm"
@@ -36,10 +36,10 @@
     </h3>
   </div>
   <div class="panel-body">
-    <div style="position:relative; width:500px; height:100px; border-radius:4px; background-color:#ddd">
-      <canvas height=100 width=500 waveform buffer="track.source.buffer"
-              style="position: absolute; top: 0; left: 0"></canvas>
-      <canvas class="pointer-hover" ng-show="tracksLoaded" height=100 width=500 time-changed="timeChanged(timeSelected)"
+    <div id="canvas-container" style="position:relative; width:100%; height:100px; border-radius:4px">
+      <canvas waveform buffer="track.source.buffer"
+              style="position: absolute; top: 0; left: 0; background-color: #ddd"></canvas>
+      <canvas class="pointer-hover" ng-show="tracksLoaded" time-changed="timeChanged(timeSelected)"
               time-indicator current-time="currentTime" total-time="track.source.buffer.duration"
               style="position: absolute; top: 0; left: 0"></canvas>
     </div>

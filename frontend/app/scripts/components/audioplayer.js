@@ -102,7 +102,7 @@ angular.module('audioPlayer-directive', [])
           }
 
           /**
-           * called when a
+           * called when the user wants to listen one single track
            * @param track
            */
           $scope.silenceAskedFrom = function (track) {

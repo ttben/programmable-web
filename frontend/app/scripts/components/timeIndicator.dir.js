@@ -9,23 +9,26 @@ angular.module('time-indicator-directive', [])
       },
       link: function (scope, element) {
         var context = element[0].getContext('2d');
-        var width = element[0].width;
-        var height = element[0].height;
+        var width = element[0].width = element.parent().width();
+        var height = element[0].height = element.parent().height();
         var isMouseDown = false;
 
         /**
-         * redraws the rectangle when the timer is updated
+         * redraws the rectangle when the timer or the size is updated
          */
+        var draw = function () {
+          width = element[0].width = element.parent().width();
+          context.clearRect(0, 0, width, height);
+          var boxWidth = width * scope.currentTime / scope.totalTime;
+          context.fillStyle = "rgba(255,255,255,0.50)";
+          context.fillRect(0, 0, boxWidth, height);
+        }
         scope.$watch(function () {
-            return scope.currentTime;
-          },
-          function (newValue) {
-            context.clearRect(0, 0, width, height);
-            var boxWidth = width * newValue / scope.totalTime;
-            context.fillStyle = "rgba(255,255,255,0.50)";
-            context.fillRect(0, 0, boxWidth, height);
-          }, true
-        );
+          return scope.currentTime;
+        }, function(){draw()}, true);
+        scope.$watch(function () {
+          return element.parent().width();
+        }, function(){draw()}, true);
 
         /**
          * listens to the mouse down event

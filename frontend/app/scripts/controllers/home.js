@@ -8,7 +8,10 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('MusicListCtrl',['$scope', 'Music', function ($scope, Music) {
+  .controller('HomeCtrl',['$scope', 'Music', '$cookies', function ($scope, Music, $cookies) {
+    if (typeof($cookies.token) !=='undefined') {
+      $location.path('/');
+    }
     $scope.songs=[];
     $scope.inError=false;
     Music.all(function(result) {

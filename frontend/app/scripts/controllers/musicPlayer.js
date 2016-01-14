@@ -23,6 +23,7 @@ angular.module('programmableWebApp')
     $http.get('assets/music.json')
       .success(function(response){
         $scope.data = response;
+        console.log($scope.data);
         updateTrack();
       });
   }]);
