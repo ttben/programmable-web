@@ -64,14 +64,25 @@ angular.module('audioPlayer-directive', [])
 
           /**
            * called when the global volume or one of the tracks volumes is changed
-           * not a great idea to browse all the tracks but... it works !
-           * TODO : change the volume of only one track
            */
-          $scope.volumeChanged = function () {
+          $scope.volumeChanged = function (track) {
+            if(track && !track.muted){
+              track.gainNode.gain.value = track.volume * $scope.globalVolume
+              return;
+            }
             for (var i = 0; i < $scope.tracks.length; i++) {
-              $scope.tracks[i].gainNode.gain.value = $scope.tracks[i].volume * $scope.globalVolume;
+              if ($scope.tracks[i].muted) {
+                $scope.tracks[i].gainNode.gain.value = 0;
+              } else {
+                $scope.tracks[i].gainNode.gain.value = $scope.tracks[i].volume * $scope.globalVolume;
+              }
             }
           };
+
+          $scope.mute = function(track){
+            track.muted = !track.muted;
+            $scope.volumeChanged();
+          }
 
           /**
            * called when the user "travels through time"
@@ -88,6 +99,26 @@ angular.module('audioPlayer-directive', [])
               $scope.currentTime = timeSelected;
               $scope.offset = $scope.audioContext.currentTime - $scope.currentTime;
             }
+          }
+
+          /**
+           * called when a
+           * @param track
+           */
+          $scope.silenceAskedFrom = function (track) {
+            track.muted = false;
+            var silence = false;
+            for (var i = 0; i < $scope.tracks.length; i++) {
+              if ($scope.tracks[i] != track && !$scope.tracks[i].muted){
+                silence = true;
+                break;
+              }
+            }
+            for (var i = 0; i < $scope.tracks.length; i++) {
+              if ($scope.tracks[i] === track)continue;
+              $scope.tracks[i].muted = silence;
+            }
+            $scope.volumeChanged();
           }
 
           /**

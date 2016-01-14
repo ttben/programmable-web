@@ -1,30 +1,47 @@
+<img ng-src={{info.thumbnail}} height="200" width="200">
+<h2>{{info.artist}} - {{info.title}}</h2>
 <div class="form-group">
-  <button ng-disabled="!tracksLoaded" class="btn btn-default btn-circle btn-xl playpause" ng-click="playpause()" ng-class="{paused:!playing}">
-    <span class="play-text"><i class="glyphicon glyphicon-play"></i></span>
-    <span class="pause-text"><i class="glyphicon glyphicon-pause"></i></span>
+  <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
+          ng-click="playpause()">
+    <i class="glyphicon" ng-class="{'glyphicon-play':!playing,'glyphicon-pause':playing}"></i>
   </button>
 </div>
+<form class="form-group form-inline">
+  <i class="glyphicon glyphicon-volume-up" style="font-size: 18px"></i>
 
-<div class="form-group time">
-  <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="globalVolume" ng-change="volumeChanged()"/></label>
-</div>
-
-<div class="form-group now-playing">
-  <label>En écoute : <!--<img width="30" height="30" src="assets/music/{{info.image}}" /> --></label>
-
-  <p>{{info.artist.name}} - {{info.title}}</p>
-</div>
+  <div class="form-group">
+    <input min="0" max="1" step="0.01" type="range"
+           ng-model="globalVolume"
+           ng-change="volumeChanged()"/>
+  </div>
+</form>
 
 <div ng-repeat="track in tracks" class="panel panel-default">
-  <div class="panel-heading">
-    <h3 style="margin:0">{{track.name}}</h3>
+  <div class="panel-heading" style="position:relative">
+    <h3 style="margin:0">{{track.name}}
+      <form class="form-inline" style="position:absolute; top:8px; right:15px">
+
+        <button type="button" class="btn btn-default btn-circle btn-sm" ng-click="silenceAskedFrom(track)">S</button>
+        <button type="button" ng-class="{'active':track.muted}" class="btn btn-default btn-circle btn-sm"
+                ng-click="mute(track)">
+          <i class="glyphicon"
+             ng-class="{'glyphicon-volume-off':track.muted||track.volume==0, 'glyphicon-volume-down':!track.muted&&track.volume>0, 'glyphicon-volume-up':!track.muted&&track.volume==1}"></i>
+        </button>
+        <div class="form-group">
+          <input min="0" max="1" step="0.01" type="range" ng-model="track.volume"
+                 ng-change="volumeChanged(track)"/>
+        </div>
+        <!-- rest of form -->
+      </form>
+    </h3>
   </div>
   <div class="panel-body">
-    <label>volume : <input min="0" max="1" step="0.01" type="range" ng-model="track.volume" ng-change="volumeChanged()"/></label>
-
-    <div style="position:relative; width:500px; height:100px">
-      <canvas height=100 width=500 waveform buffer="track.source.buffer" style="position: absolute; top: 0; left: 0"></canvas>
-      <canvas class="pointer-hover" ng-show="tracksLoaded" height=100 width=500 time-changed="timeChanged(timeSelected)" time-indicator current-time="currentTime" total-time="track.source.buffer.duration" style="position: absolute; top: 0; left: 0"></canvas>
+    <div style="position:relative; width:500px; height:100px; border-radius:4px; background-color:#ddd">
+      <canvas height=100 width=500 waveform buffer="track.source.buffer"
+              style="position: absolute; top: 0; left: 0"></canvas>
+      <canvas class="pointer-hover" ng-show="tracksLoaded" height=100 width=500 time-changed="timeChanged(timeSelected)"
+              time-indicator current-time="currentTime" total-time="track.source.buffer.duration"
+              style="position: absolute; top: 0; left: 0"></canvas>
     </div>
   </div>
 </div>
