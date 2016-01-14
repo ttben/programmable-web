@@ -9,20 +9,22 @@ var mongoose = require("mongoose");
 
 var usersLog = require("./our_modules/loggers").get('usersLog');
 
+//routes
+var root = require('./routes/root');
+var comments = require('./routes/comments');
+var songs = require('./routes/songs');
+
 // Init globals variables for each module required
 var app = express();
 
 // Indicate where static files are located
-app.configure(function () {
-    app.use(express.static(__dirname + '/'));
-});
+app.use(express.static(__dirname + '/'));
 
 var port = process.env.PORT || 3001;
 var User = require('./models/User');
 var Song = require('./models/Song');
 var Comment = require('./models/Comment');
 
-var utility = require('./Utility');
 
 var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
 
@@ -46,6 +48,22 @@ app.use(function (req, res, next) {
 });
 app.use(morgan("dev"));
 
+/****************************
+ * ROUTES
+ ****************************/
+
+app.use('/', root);
+app.use('/comments', comments);
+app.use('/songs', songs);
+
+// Start Server
+app.listen(port, function () {
+    console.log("Express server listening on port " + port);
+});
+
+/****************************
+ * DB
+ ****************************/
 
 var db = mongoose.connection;
 
@@ -112,90 +130,11 @@ db.once('open', function () {
     });
 });
 
-app.get('/songs', function (req, res) {
-    var token = req.query.token;
 
-    utility.getListOfSongsForUserByToken(
-        token,
-        function(songsList) {
-            res.status(200).send(songsList);
-        },
-        function(err) {
-            res.status(500).send(err);
-        },
-        function(user, errDesc) {
-            res.status(401).send(errDesc);
-        },
-        function() {
-            res.status(404).send("User with token " + token + " can not be found");
-        }
-    );
-});
 
-app.get('/', function (req, res) {
-
-    res.status(200).send("lol mabite");
-});
-
-app.post('/authenticate', function (req, res) {
-
-    var email = req.body.email;
-    var password = req.body.password;
-
-    utility.authenticate(
-        email,
-        password,
-        function(user) {
-            res.status(200).send({
-                email: user.email,
-                token: user._id
-            });
-        },
-        function(err) {
-            res.status(500).send({
-                type: false,
-                data: "Error occured: " + err
-            });
-        },
-        function(err) {
-            res.status(400).send({
-                type: false,
-                data: err
-            });
-        }
-    );
-});
-
-app.post('/signup', function (req, res) {
-
-    utility.signUp(req.body.email, req.body.password, req.body.role,
-        function(user) {
-            res.status(201).send({token: user._id});
-        },
-        function(err) {
-            res.status(500).send({
-                type: false,
-                data: "Error occured: " + err
-            });
-        },
-        function(err) {
-                // bad request
-                res.status(400).send(err);
-        },
-        function() {
-            // already exists
-            res.status(403).send({
-                type: false,
-                data: "User already exists!"
-            });
-        }
-    );
-});
-
-// Start Server
-app.listen(port, function () {
-    console.log("Express server listening on port " + port);
-});
+/****************************
+ * LE TRUC DU PROF
+ ****************************/
 
 /*
  // Config
@@ -274,52 +213,3 @@ function getFiles(dirName, callback) {
     });
 }
 
-
-
-
-
-/*
- * comments
- */
-
-
-
-
-
-app.get('/comments', function (req, res) {
-    var mixID = req.query.mixID;
-
-    // Comment.find({mix_id: req.query.mixID}, function (err, comments) {
-    Comment.find({mix_id: req.query.mixID}, {'__v': 0}).lean().exec(function (err, comments) {
-        if (err) {
-            res.json({
-                type: false,
-                data: "Error occured: " + err
-            });
-        } else {
-            res.json({
-                comments: comments || []
-            });
-        }
-    });
-});
-
-app.post('/comments', function (req, res) {
-    var mixID = req.query.mixID;
-
-    var comment = new Comment({
-      "mix_id": res.mix_id,
-      "authorName": res.authorName,
-      "text": res.text,
-      "date": res.date
-    });
-    comment.save(function (err, commentRes) {
-        if (err) {
-            res.status(500).send("Internal error buddy. Sorry." + err);
-        }
-        else {
-            res.status(200).send(commentRes);
-        }
-    });
-
-});

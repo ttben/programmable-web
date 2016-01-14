@@ -6,7 +6,7 @@
   "repository": "",
   "dependencies": {
     "body-parser": "~1.0.0",
-    "express": "~3.2.4",
+    "express": "^4.13.3",
     "jsonwebtoken": "~5.0.0",
     "mongoose": "^4.3.4",
     "morgan": "latest",
