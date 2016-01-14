@@ -24,10 +24,10 @@ angular
   .config(function ($routeProvider) {
 
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl',
+        controllerAs: 'login'
       })
       .when('/musicPlayer', {
         templateUrl: 'views/musicPlayer.html',
@@ -39,13 +39,13 @@ angular
         controller: 'SignUpCtrl',
         controllerAs: 'signUp'
       })
-      .when('/musics', {
-        templateUrl: 'views/musics.html',
-        controller: 'MusicListCtrl',
-        controllerAs: 'musicList'
+      .when('/home', {
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl',
+        controllerAs: 'home'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/login'
       });
   });
 
