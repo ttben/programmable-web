@@ -20,7 +20,9 @@ angular
     'waveform-directive',
     'time-indicator-directive'
   ])
+
   .config(function ($routeProvider) {
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -36,6 +38,11 @@ angular
         templateUrl: 'views/newUser.html',
         controller: 'SignUpCtrl',
         controllerAs: 'signUp'
+      })
+      .when('/musics', {
+        templateUrl: 'views/musics.html',
+        controller: 'MusicListCtrl',
+        controllerAs: 'musicList'
       })
       .otherwise({
         redirectTo: '/'
