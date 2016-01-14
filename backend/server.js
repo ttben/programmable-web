@@ -20,6 +20,7 @@ app.configure(function () {
 var port = process.env.PORT || 3001;
 var User = require('./models/User');
 var Song = require('./models/Song');
+var utility = require('./Utility');
 
 var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
 
@@ -32,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Methods", "POST, GET, xPUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     if ('OPTIONS' == req.method) {
         res.send(200);
@@ -94,40 +95,22 @@ db.once('open', function () {
     });
 });
 
-app.get('/songs/', function (req, res) {
-
-    var utility = require('./Utility');
-
+app.get('/songs', function (req, res) {
     var token = req.query.token;
 
-    utility.authenticate(token,
-        function (err) {
-            res.status(500).send("Internal error buddy. Sorry." + err);
+    utility.getListOfSongsForUserByToken(
+        token,
+        function(songsList) {
+            res.status(200).send(songsList);
         },
-        function () {
-            res.status(404).send("Can not found the user with specified token " + token);
+        function(err) {
+            res.status(500).send(err);
         },
-        function (user) {
-
-            console.log("THE USER HAS ROLE", user.role);
-            if (user.role == "public") {
-                res.status(401).send("sorry, public can not get the songs bitch");
-                return;
-            }
-
-            //	Find all songs, delete '__v' attribute,
-            //	make the result a plain JS object and exec given function
-            Song.find({}, {'__v': 0, tracks: 0, mixes: 0}).lean().exec(function (err, songs) {
-                if (err) {
-                    console.error(err);
-                    res.status().send(err);
-                } else {
-                    var result = {};
-                    result.data = songs;
-                    result.token = token;
-                    res.send(JSON.stringify(result));
-                }
-            })
+        function(user, errDesc) {
+            res.status(401).send(errDesc);
+        },
+        function() {
+            res.status(404).send("User with token " + token + " can not be found");
         }
     );
 });
@@ -138,61 +121,58 @@ app.get('/', function (req, res) {
 });
 
 app.post('/authenticate', function (req, res) {
-    User.findOne({email: req.body.email, password: req.body.password}, function (err, user) {
-        if (err) {
-            res.json({
+
+    var email = req.body.email;
+    var password = req.body.password;
+
+    utility.authenticate(
+        email,
+        password,
+        function(user) {
+            res.status(200).send({
+                email: user.email,
+                token: user._id
+            });
+        },
+        function(err) {
+            res.status(500).send({
                 type: false,
                 data: "Error occured: " + err
             });
-        } else {
-            if (user) {
-                usersLog.info('User connexion : ' + user.email, { email: user.email, token: user._id.toString()});
-                res.json({
-                    email: user.email,
-                    token: user._id
-                });
-            } else {
-                res.json({
-                    type: false,
-                    data: "Incorrect email/password"
-                });
-            }
+        },
+        function(err) {
+            res.status(400).send({
+                type: false,
+                data: err
+            });
         }
-    });
+    );
 });
 
 app.post('/signup', function (req, res) {
-    User.findOne({email: req.body.email, password: req.body.password}, function (err, user) {
-        if (err) {
-            res.json({
+
+    utility.signUp(req.body.email, req.body.password, req.body.role,
+        function(user) {
+            res.status(201).send({token: user._id});
+        },
+        function(err) {
+            res.status(500).send({
                 type: false,
                 data: "Error occured: " + err
             });
-        } else {
-            if (user) {
-                res.json({
-                    type: false,
-                    data: "User already exists!"
-                });
-            } else {
-                var userModel = new User();
-                userModel.email = req.body.email;
-                userModel.password = req.body.password;
-                userModel.role = req.body.role;
-
-                console.log("ROLE", userModel.role);
-
-                if (userModel.role != "admin" && userModel.role != "user" && userModel.role != "public") {
-                    res.status(400).send("Specified role " + userModel.role + " unrecognized");
-                    return;
-                }
-
-                userModel.save(function (err, user) {
-                    res.status(201).send({token: user._id});
-                })
-            }
+        },
+        function(err) {
+                // bad request
+                res.status(400).send(err);
+        },
+        function() {
+            // already exists
+            res.status(403).send({
+                type: false,
+                data: "User already exists!"
+            });
         }
-    });
+    );
 });
 
 // Start Server
