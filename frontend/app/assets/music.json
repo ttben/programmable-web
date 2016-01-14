@@ -1,9 +1,10 @@
 [
   {
     "title": "We are the champions",
-    "artist": {"name": "Queen"},
+    "artist": "Queen",
+    "thumbnail": "http://ecx.images-amazon.com/images/I/51-x8aqPCOL._SY300_.jpg",
     "image": "todo.jpg",
     "folder": "queen_champions",
-	"tracks": ["basse","batterie","guitare","guitare2","piano","voix"]
+	  "tracks": ["basse","batterie","guitare","guitare2","piano","voix"]
   }
 ]
