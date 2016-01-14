@@ -16,8 +16,9 @@ angular.module('programmableWebApp')
         var token = $cookies.get('token');
         $http({
           method: 'GET',
-          url: CONSTANTS.backendUrl + CONSTANTS.music+'/?token='+token,
-          headers: {'Content-Type': 'application/json; charset=UTF-8'}          //params: {token:$cookies.get('token')}
+          url: CONSTANTS.backendUrl + CONSTANTS.music+'?token='+token,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'}
+          //params: {token:$cookies.get('token')}
         }).then(function (data) {
             console.log('got the musics : ', data);
             successCB(data);
