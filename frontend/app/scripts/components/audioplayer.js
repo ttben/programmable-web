@@ -106,14 +106,18 @@ angular.module('audioPlayer-directive', [])
            * @param track
            */
           $scope.silenceAskedFrom = function (track) {
-            track.muted = false;
             var silence = false;
-            for (var i = 0; i < $scope.tracks.length; i++) {
-              if ($scope.tracks[i] != track && !$scope.tracks[i].muted){
-                silence = true;
-                break;
+            if(!track.muted) {
+              for (var i = 0; i < $scope.tracks.length; i++) {
+                if ($scope.tracks[i] != track && !$scope.tracks[i].muted) {
+                  silence = true;
+                  break;
+                }
               }
+            }else{
+              silence = true;
             }
+            track.muted = false;
             for (var i = 0; i < $scope.tracks.length; i++) {
               if ($scope.tracks[i] === track)continue;
               $scope.tracks[i].muted = silence;
