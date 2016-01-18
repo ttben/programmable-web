@@ -11,7 +11,9 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('DisconnectedCtrl',['$scope', '$location', function ($scope, $location) {
-
+  .controller('DisconnectedCtrl',['$scope', '$location', '$cookies', function ($scope, $location, $cookies) {
+    if ($cookies.token) {
+      $location.path('/home');
+    }
 
   }]);
