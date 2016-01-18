@@ -22,6 +22,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
+    console.log("erogreugeuiguierugeryguieryguierygierguyeruigy");
     // we're connected!
     console.log("Connected to DB");
 
@@ -30,7 +31,7 @@ db.once('open', function () {
 
     var song = new Song(
         {
-            url: 'http://localhost:3001/songs/1/',
+            image: 'http://localhost:3001/songs/1/',
             title: "Lolipop in your life",
             artist: "Moi",
             tracks: [

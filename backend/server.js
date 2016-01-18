@@ -15,7 +15,7 @@ var dbConfiguration = require('./db_configuration');
 
 var app = express();
 
-app.use(express.static(__dirname + '/'));
+// app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(setUpHeaders);
@@ -29,6 +29,10 @@ app.use('/', root);
 app.use('/comments', comments);
 app.use('/songs', songs);
 app.use('/mixes', mixes);
+
+//public acces
+app.use('/music', express.static(__dirname + '/public/assets/music'));
+app.use('/image', express.static(__dirname + '/public/image'));
 
 // Start Server
 app.listen(port, function () {
@@ -68,6 +72,7 @@ function setUpHeaders(req, res, next) {
  res.sendfile(__dirname + '/index.html');
  });
  */
+/*
 
 // routing
 app.get('/track', function (req, res) {
@@ -131,4 +136,4 @@ function getFiles(dirName, callback) {
         callback(directoryObject);
     });
 }
-
+*/

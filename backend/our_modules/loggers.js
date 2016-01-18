@@ -7,7 +7,7 @@ winston.loggers.add('usersLog', {
       label: 'Users Log'
     },
     file: {
-      filename: 'logs/users/users.log'
+      filename: __dirname+'/../logs/users/users.log'
     }
   });
 
