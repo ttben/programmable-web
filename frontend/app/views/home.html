@@ -3,7 +3,7 @@
   <div class="row">
     <div ng-repeat-start="song in songs" class="col-xs-3">
       <div class="well">
-        <a href="" ng-click="getSpecificSong(song.title)"> 
+        <a href="" ng-click="getSpecificSong(song._id)">
           <img src="{{song.url}}" class="img-responsive">
         <h3 id="songTitle">{{song.title}}</h3>
         </a>

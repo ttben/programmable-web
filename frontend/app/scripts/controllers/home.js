@@ -8,10 +8,10 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('HomeCtrl',['$scope', 'Music', '$cookies', '$http', function ($scope, Music, $cookies, $http) {
-    if (typeof($cookies.token) !=='undefined') {
+  .controller('HomeCtrl',['$scope', 'Music', '$cookies', '$http', '$location', function ($scope, Music, $cookies, $location) {
+    /*if (typeof($cookies.token) == 'undefined') {
       $location.path('/');
-    }
+    }*/
     $scope.songs=[];
     $scope.inError=false;
     Music.all(function(result) {
@@ -27,19 +27,14 @@ angular.module('programmableWebApp')
     });
 
   $scope.getSpecificSong = function(songName) {
-    console.log('you want to listen to', songName);
+    console.log('you want to listen to song with id ', songName);
+    Music.get(songName, function(successAnswer) {
+      console.log('got all the song\'s details !');
+      console.log(successAnswer);
+    }, function(error) {
+      console.log('in error :((');
+    });
   };
-
-
-    /*$scope.showUserModal = function(idx){
-      var user = $scope.users[idx].user;
-      $scope.currUser = user;
-      $('#myModalLabel').text(user.name.first
-        + ' ' + user.name.last);
-      $('#myModal').modal('show');
-    };
-    */
-
     // default view is cards
     $scope.mode = 2;
 
