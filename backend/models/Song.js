@@ -16,7 +16,6 @@ SongSchema.methods.addMix = function(mixDocument) {
 var Song = mongoose.model('Song', SongSchema);
 
 var User = require('./User');
-console.log("User = ", User);
 
 var getListOfSongsForUserByToken = function(token, successFunction, failFunction, unauthorizedUserFunction, notFoundUserFunction) {
 

@@ -1,30 +1,28 @@
 var fs = require("fs");
-// We need to use the express framework: have a real web server that knows how to send mime types etc.
 var express = require('express');
-
 var morgan = require("morgan");
 var bodyParser = require("body-parser");
-var jwt = require("jsonwebtoken");
 var mongoose = require("mongoose");
 
 var usersLog = require("./our_modules/loggers").get('usersLog');
 
-//routes
+//  Routes
 var root = require('./routes/root');
 var comments = require('./routes/comments');
 var songs = require('./routes/songs');
+
+//  Models
+var Song = require('./models/Song');
+var Comment = require('./models/Comment');
+var User = require('./models/User');
+
+var port = process.env.PORT || 3001;
 
 // Init globals variables for each module required
 var app = express();
 
 // Indicate where static files are located
 app.use(express.static(__dirname + '/'));
-
-var port = process.env.PORT || 3001;
-var User = require('./models/User');
-var Song = require('./models/Song');
-var Comment = require('./models/Comment');
-
 
 var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
 
@@ -35,17 +33,7 @@ mongoose.connect(db_url);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST, GET, xPUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    if ('OPTIONS' == req.method) {
-        res.send(200);
-    }
-    else {
-        next();
-    }
-});
+app.use(setUpHeaders);
 app.use(morgan("dev"));
 
 /****************************
@@ -60,6 +48,19 @@ app.use('/songs', songs);
 app.listen(port, function () {
     console.log("Express server listening on port " + port);
 });
+
+function setUpHeaders(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "POST, GET, xPUT, DELETE, OPTIONS");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        if ('OPTIONS' == req.method) {
+            res.send(200);
+        }
+        else {
+            next();
+
+    }
+}
 
 /****************************
  * DB

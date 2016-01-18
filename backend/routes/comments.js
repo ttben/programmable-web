@@ -43,10 +43,10 @@ router.post('/', function (req, res) {
     var mixID = req.query.mixID;
 
     var comment = new Comment({
-      "mix_id": res.mix_id,
-      "authorName": res.authorName,
-      "text": res.text,
-      "date": res.date
+      "mix_id": req.body.mix_id,
+      "authorName": req.body.authorName,
+      "text": req.body.text,
+      "date": req.body.date
     });
     comment.save(function (err, commentRes) {
         if (err) {
