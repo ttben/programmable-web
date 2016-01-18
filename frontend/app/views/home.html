@@ -1,4 +1,16 @@
-<ul ng-repeat="song in songs">
-  <li> <a href="#/musicPlayer">{{song.title}} by {{song.artist}}</a></li>
-</ul>
+<div style="min-height: 75px"></div>
+<div class="container" id="musicList">
+  <div class="row">
+    <div ng-repeat-start="song in songs" class="col-xs-3">
+      <div class="well">
+        <a href="" ng-click="getSpecificSong(song.title)"> 
+          <img src="{{song.url}}" class="img-responsive">
+        <h3 id="songTitle">{{song.title}}</h3>
+        </a>
+      </div>
+    </div>
+    <div ng-repeat-end=""></div>
 
+  </div><!--/row-->
+  <hr>
+</div><!--/container-->

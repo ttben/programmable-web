@@ -29,7 +29,8 @@ angular.module('programmableWebApp')
 
     $scope.signUp = function(user) {
       User.signUp(user.usernameOrEmail, user.password, function(token) {
-         $location.path('/musics');
+          $rootScope.header = "default";
+          $location.path('/home');
         },
         function(error) {
           console.log('error... :(');
