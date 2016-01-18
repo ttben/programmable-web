@@ -25,7 +25,9 @@ suite('Song tests', function () {
 
         test('Should returns list of song if user is admin', function (done) {
             user.signUp(email, pwd, role, function (res) {
-                song.getListOfSongsForUser(res, function(data) {
+                song.getListOfSongsForUser(res, function (data) {
+                    assert.equal(0, data.data.length);
+                    assert.equal(data.token, res._id);
                     done();
                 });
             });
@@ -35,7 +37,8 @@ suite('Song tests', function () {
             role = "public";
 
             user.signUp(email, pwd, role, function (res) {
-                song.getListOfSongsForUser(res,null, null, function(res, err) {
+                song.getListOfSongsForUser(res, null, null, function (result, err) {
+                    assert.equal(res,result);
                     done();
                 });
             });
