@@ -2,10 +2,7 @@
 var express = require('express');
 var router = express.Router();
 
-// var utility = require('../Utility');
-
 var User = require('../models/User');
-
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
