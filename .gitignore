@@ -10,3 +10,4 @@ npm-debug.log
 backend/logs/**
 **/logs/
 backend/logs/users/users.log
+./backend/logs/users/users.log
