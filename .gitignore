@@ -8,4 +8,4 @@ bower_components
 npm-debug.log
 *.log
 backend/logs/**
-
+**/logs/
