@@ -4,6 +4,9 @@ angular.module('audioPlayer-directive', [])
       restrict: 'E',
       scope: {},
       controller: function ($scope) {
+        $scope.saveMyMix = function() {
+          console.log('yepeeeeeeeeeeeeeeeee');
+        };
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
         $scope.audioContext.suspend(); // immediately suspend the context (or the currentTime will start incrementing)
@@ -51,7 +54,7 @@ angular.module('audioPlayer-directive', [])
                 $scope.tracks[i].source.start();
               }
             }
-          }
+          };
 
           /**
            * tells audio elements to play/pause
@@ -68,7 +71,7 @@ angular.module('audioPlayer-directive', [])
            */
           $scope.volumeChanged = function (track) {
             if(track && !track.muted){
-              track.gainNode.gain.value = track.volume * $scope.globalVolume
+              track.gainNode.gain.value = track.volume * $scope.globalVolume;
               return;
             }
             for (var i = 0; i < $scope.tracks.length; i++) {
@@ -83,7 +86,7 @@ angular.module('audioPlayer-directive', [])
           $scope.mute = function(track){
             track.muted = !track.muted;
             $scope.volumeChanged();
-          }
+          };
 
           /**
            * called when the user "travels through time"
@@ -100,7 +103,7 @@ angular.module('audioPlayer-directive', [])
               $scope.currentTime = timeSelected;
               $scope.offset = $scope.audioContext.currentTime - $scope.currentTime;
             }
-          }
+          };
 
           /**
            * called when the user wants to listen one single track

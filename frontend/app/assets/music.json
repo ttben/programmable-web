@@ -4,6 +4,16 @@
     "artist": "Queen",
     "thumbnail": "http://ecx.images-amazon.com/images/I/51-x8aqPCOL._SY300_.jpg",
     "folder": "queen_champions",
-	  "tracks": ["basse","batterie","guitare","guitare2","piano","voix"]
+	  "tracks": ["basse","batterie","guitare","guitare2","piano","voix"],
+    "mixes":[{
+      "_id": 1,
+      "author": "Hugo",
+      "name": "Mon super mix"
+    },
+      {
+        "_id": 3,
+        "author": "Hugo",
+        "name": "Mon autre mix"
+      }]
   }
 ]
