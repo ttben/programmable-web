@@ -1,51 +1,24 @@
 var fs = require("fs");
-// We need to use the express framework: have a real web server that knows how to send mime types etc.
 var express = require('express');
-
 var morgan = require("morgan");
 var bodyParser = require("body-parser");
-var jwt = require("jsonwebtoken");
-var mongoose = require("mongoose");
-
 var usersLog = require("./our_modules/loggers").get('usersLog');
 
-//routes
+//  Routes
 var root = require('./routes/root');
 var comments = require('./routes/comments');
 var songs = require('./routes/songs');
-
-// Init globals variables for each module required
-var app = express();
-
-// Indicate where static files are located
-app.use(express.static(__dirname + '/'));
+var mixes = require('./routes/mixes');
 
 var port = process.env.PORT || 3001;
-var User = require('./models/User');
-var Song = require('./models/Song');
-var Comment = require('./models/Comment');
+var dbConfiguration = require('./db_configuration');
 
+var app = express();
 
-var db_url = process.env.MONGO_URL || "mongodb://localhost/test";
-
-console.log("ENV MONGO_URL", process.env.MONGO_URL);
-console.log("Connecting to db with", db_url);
-
-mongoose.connect(db_url);
-
+app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST, GET, xPUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    if ('OPTIONS' == req.method) {
-        res.send(200);
-    }
-    else {
-        next();
-    }
-});
+app.use(setUpHeaders);
 app.use(morgan("dev"));
 
 /****************************
@@ -55,80 +28,26 @@ app.use(morgan("dev"));
 app.use('/', root);
 app.use('/comments', comments);
 app.use('/songs', songs);
+app.use('/mixes', mixes);
 
 // Start Server
 app.listen(port, function () {
     console.log("Express server listening on port " + port);
 });
 
-/****************************
- * DB
- ****************************/
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    // we're connected!
-    console.log("Connected to DB");
-
-    console.log("Flushing songs collection ...");
-    Song.find().remove().exec();
-
-    var song = new Song(
-        {
-            url: 'http://localhost:3001/songs/1/',
-            title: "Lolipop in your life",
-            artist: "Moi",
-            tracks: [
-                {
-                    name: "moi", uri: "moi.mp3"
-                },
-                {
-                    name: "toujours moi", uri: "toujoursMoi.mp3"
-                }
-            ],
-            mixes: []
-        });
-    song.addMix({mix: "oui", settings: "toujours oui"});
-    song.save(function (err, songRes) {
-        if (err) {
-            console.log("Impossible to store stub song");
+function setUpHeaders(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "POST, GET, xPUT, DELETE, OPTIONS");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        if ('OPTIONS' == req.method) {
+            res.send(200);
         }
         else {
-            console.log("Stub song stored !");
-        }
-    });
+            next();
 
+    }
+}
 
-    console.log("Flushing user collection ...");
-    User.find().remove().exec();
-
-    var user = new User({email: "pw@pw.com", password: "yes", role: "admin"});
-    user.save(function (err, userRes) {
-        if (err) {
-            console.log("Impossible to store stub user");
-        }
-        else {
-            console.log("Stub user stored !");
-        }
-    });
-
-    var comment = new Comment({
-      "mix_id": "1",
-      "authorName": "jean poele",
-      "text": "TROP COOL",
-      "date": "12334567"
-    });
-    comment.save(function (err, commentRes) {
-        if (err) {
-            console.log("Impossible to store comment");
-        }
-        else {
-            console.log("comment stored !");
-        }
-    });
-});
 
 
 
