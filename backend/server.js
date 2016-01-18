@@ -10,6 +10,7 @@ var usersLog = require("./our_modules/loggers").get('usersLog');
 var root = require('./routes/root');
 var comments = require('./routes/comments');
 var songs = require('./routes/songs');
+var mixes = require('./routes/mixes');
 
 //  Models
 var Song = require('./models/Song');
@@ -43,6 +44,7 @@ app.use(morgan("dev"));
 app.use('/', root);
 app.use('/comments', comments);
 app.use('/songs', songs);
+app.use('/mixes', mixes);
 
 // Start Server
 app.listen(port, function () {

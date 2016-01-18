@@ -6,6 +6,7 @@ var MixSchema   = new Schema({
     originalTitle:String,
     originalArtist:String,
     date:[],
+    tracks:[],
     comments:[],
     rating:Number
 });
@@ -16,3 +17,4 @@ MixSchema.methods.addComment = function(commentDocument) {
 
 var Mix = mongoose.model('Mix', MixSchema);
 
+module.exports =  Mix;
