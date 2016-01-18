@@ -30,7 +30,7 @@ db.once('open', function () {
 
     var song = new Song(
         {
-            url: 'http://localhost:3001/songs/1/',
+            image: 'http://localhost:3001/songs/1/',
             title: "Lolipop in your life",
             artist: "Moi",
             tracks: [
