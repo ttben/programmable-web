@@ -16,6 +16,7 @@ var mixes = require('./routes/mixes');
 var Song = require('./models/Song');
 var Comment = require('./models/Comment');
 var User = require('./models/User');
+var Mix = require('./models/Mix');
 
 var port = process.env.PORT || 3001;
 
@@ -117,6 +118,8 @@ db.once('open', function () {
         }
     });
 
+
+    Comment.find().remove().exec();
     var comment = new Comment({
       "mix_id": "1",
       "authorName": "jean poele",
@@ -131,6 +134,8 @@ db.once('open', function () {
             console.log("comment stored !");
         }
     });
+
+    Mix.find().remove().exec();
 });
 
 

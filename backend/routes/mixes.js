@@ -42,6 +42,37 @@ router.post('/', function(req,res) {
 
 });
 
+router.get('/:mixID', function(req, res) {
+    Mix.find({_id: req.params.mixID}, {'__v': 0}).lean().exec(function (err, mix) {
+        if (err) {
+            res.json({
+                type: false,
+                data: "Error occured: " + err
+            });
+        } else {
+            res.send(mix[0]||{});
+        }
+    });
+});
+
+router.get('/', function(req, res) {
+
+    var filter = {};
+    if(req.query.userID != undefined && req.query.userID !=  null) {
+        filter.authorID=req.query.userID;
+    }
+
+    Mix.find(filter, {'__v': 0}).lean().exec(function (err, mixes) {
+        if (err) {
+            res.json({
+                type: false,
+                data: "Error occured: " + err
+            });
+        } else {
+            res.send(mixes || []);
+        }
+    });
+});
 
 /*
 router.get('/', function (req, res) {
