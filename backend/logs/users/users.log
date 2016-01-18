@@ -20,3 +20,5 @@
 {"email":"ddddd","token":"569ce2d1a2b9b3dc180788be","level":"info","message":"User connexion : ddddd","timestamp":"2016-01-18T13:05:02.375Z"}
 {"email":"ggg","token":"569cf589b81d903019efc4b8","level":"info","message":"User connexion : ggg","timestamp":"2016-01-18T14:30:31.359Z"}
 {"email":"ddddd","token":"569cfb55b81d903019efc4b9","level":"info","message":"User connexion : ddddd","timestamp":"2016-01-18T14:50:07.583Z"}
+{"token":"569d184c0e4953b811f52b36","level":"info","message":"Authenticate user with token","timestamp":"2016-01-18T16:52:28.265Z"}
+{"token":"569d184c0e4953b811f52b36","level":"info","message":"Authenticate user with token","timestamp":"2016-01-18T16:52:36.668Z"}
