@@ -21,8 +21,8 @@ var getListOfSongsForUserByToken = function(token, successFunction, failFunction
 
     User.checkUserExistsByToken(
         token,
-        function (songsList) {
-            getListOfSongsForUser(songsList, successFunction, failFunction, unauthorizedUserFunction);
+        function (user) {
+            getListOfSongsForUser(user, successFunction, failFunction, unauthorizedUserFunction);
         },
         failFunction,
         notFoundUserFunction
@@ -30,7 +30,7 @@ var getListOfSongsForUserByToken = function(token, successFunction, failFunction
 };
 
 var getListOfSongsForUser = function(user, successFunction, failFunction, unauthorizedUserFunction) {
-    console.log("THE USER HAS ROLE", user.role);
+
     if (user.role == "public") {
         unauthorizedUserFunction(user,"sorry, public can not get the songs bitch");
         return;
@@ -56,8 +56,8 @@ var getSongByIdForUserByToken = function(token, songId, successFunction, failFun
 
     User.checkUserExistsByToken(
         token,
-        function (song) {
-            getSongForUserById(song, songId, successFunction, failFunction, unauthorizedUserFunction);
+        function (user) {
+            getSongForUserById(user, songId, successFunction, failFunction, unauthorizedUserFunction);
         },
         failFunction,
         notFoundUserFunction
