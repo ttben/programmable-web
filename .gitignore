@@ -6,4 +6,6 @@ bower_components
 .idea
 
 npm-debug.log
-logs/
+*.log
+backend/logs/**
+
