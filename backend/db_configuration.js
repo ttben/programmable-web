@@ -54,6 +54,59 @@ db.once('open', function () {
         }
     });
 
+    var song2 = new Song(
+        {
+            uri: "music/queen_champions",
+            image: 'image/queen_champions.jpg',
+            title: "We are the Champions",
+            artist: "Queen",
+            tracks: [
+                {
+                  "name": "basse",
+                  "uri": "basse.mp3"
+                },
+                {
+                  "name": "batterie",
+                  "uri": "batterie.mp3"
+                },
+                {
+                  "name": "guitare",
+                  "uri": "guitare.mp3"
+                },
+                {
+                  "name": "guirate 2",
+                  "uri": "guitare2.mp3"
+                },
+                {
+                  "name": "voix",
+                  "uri": "voix.mp3"
+                },
+                {
+                  "name": "piano",
+                  "uri": "piano.mp3"
+                }
+            ],
+            mixes: []
+        });
+    song2.addMix({
+          "_id": 1,
+          "author": "Hugo",
+          "name": "Mon super mix"
+        });
+    song2.addMix({
+          "_id": 3,
+          "author": "Hugo",
+          "name": "Mon autre mix"
+        });
+    song2.save(function (err, songRes) {
+        if (err) {
+            console.log("Impossible to store stub song");
+        }
+        else {
+            console.log("Stub song stored !");
+        }
+    });
+
 
     console.log("Flushing user collection ...");
     User.find().remove().exec();
