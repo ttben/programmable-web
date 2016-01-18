@@ -1,0 +1,23 @@
+{
+  "token": "a token",
+  "data": [
+    {
+      "_id": "568e40d0c78c2b41600bb50b",
+      "title": "Lolipop in your anus",
+      "artist": "Moi",
+      "image": "http://lol.fr/image.png"
+    },
+    {
+      "_id": "34567YTR",
+      "title": "We are the champions",
+      "artist": "Queen",
+      "image": "http://localhost:3001/music/queen.jpg"
+    },
+    {
+      "_id": "HGFBD546734",
+      "title": "Our awesome song",
+      "artist": "Our awesome band",
+      "image": "http://lol.fr/image.png"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Created by Garance on 11/01/2016.
  */
