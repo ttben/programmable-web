@@ -23,6 +23,31 @@ router.post('/', function(req,res) {
     var date = req.body.date;
     var tracks = req.body.tracks;
 
+    if(authorID == null || authorID == undefined) {
+        res.status(400).send("Please check that you are sending authorID field. I didn't find it. Thanks!");
+        return;
+    }
+
+    if(originalTitle == null || originalTitle == undefined) {
+        res.status(400).send("Please check that you are sending originalTitle field. I didn't find it. Thanks!");
+        return;
+    }
+
+    if(originalArtist == null || originalArtist == undefined) {
+        res.status(400).send("Please check that you are sending originalArtist field. I didn't find it. Thanks!");
+        return;
+    }
+
+    if(date == null || date == undefined) {
+        res.status(400).send("Please check that you are sending date field. I didn't find it. Thanks!");
+        return;
+    }
+
+    if(tracks == null || tracks == undefined) {
+        res.status(400).send("Please check that you are sending tracks field. I didn't find it. Thanks!");
+        return;
+    }
+
     var mix = new Mix({
         authorID:authorID,
         originalTitle:originalTitle,
@@ -33,7 +58,7 @@ router.post('/', function(req,res) {
 
     mix.save(function (err, mixResult) {
         if (err) {
-            res.status(500).send("Internal error buddy. Sorry." + err);
+            res.status(500).send("Internal error buddy. Sorry. " + err);
         }
         else {
             res.status(200).send(mixResult);
@@ -73,27 +98,5 @@ router.get('/', function(req, res) {
         }
     });
 });
-
-/*
-router.get('/', function (req, res) {
-    var token = req.query.token;
-
-    Song.getListOfSongsForUserByToken(
-        token,
-        function(songsList) {
-            res.status(200).send(songsList);
-        },
-        function(err) {
-            res.status(500).send(err);
-        },
-        function(user, errDesc) {
-            res.status(401).send(errDesc);
-        },
-        function() {
-            res.status(404).send("User with token " + token + " can not be found");
-        }
-    );
-});
-*/
 
 module.exports = router;

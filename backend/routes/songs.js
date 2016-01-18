@@ -40,4 +40,28 @@ router.get('/', function (req, res) {
 });
 
 
+router.get('/:songId', function (req, res) {
+    var token = req.query.token;
+    var songId = req.params.songId;
+
+    Song.getSongByIdForUserByToken(
+        token,
+        songId,
+        function(song) {
+            res.status(200).send(song);
+        },
+        function(err) {
+            res.status(500).send(err);
+        },
+        function(user, errDesc) {
+            res.status(401).send(errDesc);
+        },
+        function() {
+            res.status(404).send("User with token " + token + " can not be found");
+        }
+    );
+});
+
+
+
 module.exports = router;
