@@ -1,8 +1,9 @@
+'use strict';
 /**
  * Created by Garance on 04/01/2016.
  */
 angular.module('programmableWebApp')
-  .factory('Music', ["CONSTANTS", '$http', '$cookies', function(CONSTANTS, $http, $cookies) {
+  .factory('Music', ['CONSTANTS', '$http', '$cookies', function(CONSTANTS, $http, $cookies) {
     var obj = {
       add: function(recipe, successCB, failCB) {
         $http.post(CONSTANTS.backendUrl + CONSTANTS.recipesPath, recipe)

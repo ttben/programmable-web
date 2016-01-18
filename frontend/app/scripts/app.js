@@ -24,11 +24,6 @@ angular
   .config(function ($routeProvider) {
 
     $routeProvider
-      .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl',
-        controllerAs: 'login'
-      })
       .when('/musicPlayer', {
         templateUrl: 'views/musicPlayer.html',
         controller: 'MusicPlayerCtrl',
@@ -44,8 +39,23 @@ angular
         controller: 'HomeCtrl',
         controllerAs: 'home'
       })
+      .when('/disconnected', {
+        templateUrl: 'views/disconnected.html',
+        controller: 'DisconnectedCtrl',
+        controllerAs: 'disconnected'
+      })
       .otherwise({
-        redirectTo: '/login'
+        redirectTo: '/disconnected'
       });
-  });
-
+  })
+  .run(['$rootScope', '$location', '$cookies', function($rootScope, $location, $cookies) {
+   // console.log('the token : ' + $cookies.get('token'));
+    if ($cookies.get('token') == 'undefined') {
+      console.log('not connected');
+      $rootScope.header = "home";
+    }
+    else {
+     // console.log('connected');
+      $rootScope.header = "default";
+    }
+  }]);
