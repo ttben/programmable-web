@@ -18,12 +18,10 @@ var Song = mongoose.model('Song', SongSchema);
 var User = require('./User');
 
 var getListOfSongsForUserByToken = function(token, successFunction, failFunction, unauthorizedUserFunction, notFoundUserFunction) {
-
-
     User.checkUserExistsByToken(
         token,
-        function (songsList) {
-            getListOfSongsForUser(songsList, successFunction, failFunction, unauthorizedUserFunction);
+        function (user) {
+            getListOfSongsForUser(user, successFunction, failFunction, unauthorizedUserFunction);
         },
         failFunction,
         notFoundUserFunction
@@ -31,7 +29,7 @@ var getListOfSongsForUserByToken = function(token, successFunction, failFunction
 };
 
 var getListOfSongsForUser = function(user, successFunction, failFunction, unauthorizedUserFunction) {
-    console.log("THE USER HAS ROLE", user.role);
+
     if (user.role == "public") {
         unauthorizedUserFunction(user,"sorry, public can not get the songs bitch");
         return;

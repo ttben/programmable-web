@@ -3,10 +3,15 @@ var assert = require('assert');
 var user = require('../models/User');
 var mongoose = require("mongoose");
 
-var db_url = "mongodb://localhost/testLOL";
-mongoose.connect(db_url);
+
 
 suite('User tests', function () {
+
+    suiteSetup(function() {
+        var db_url = "mongodb://localhost/testUser";
+        mongoose.connect(db_url);
+    });
+
     setup(function () {
         user.remove({}, function (err) {
             console.log('collection removed\n');
