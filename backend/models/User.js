@@ -15,12 +15,16 @@ var User = mongoose.model('User', UserSchema);
 
 
 var signUp = function(email, password, role, successFunction, failFunction, badRequestFunction, alreadyExistsFunction) {
+
     User.findOne({email: email, password: password}, function (err, user) {
+
         if (err) {
             failFunction(err);
+            return;
         } else {
             if (user) {
                 alreadyExistsFunction();
+                return;
             } else {
                 var userModel = new User();
                 userModel.email = email;
@@ -29,13 +33,16 @@ var signUp = function(email, password, role, successFunction, failFunction, badR
 
                 if (userModel.role != "admin" && userModel.role != "user" && userModel.role != "public") {
                     badRequestFunction("Specified role " + userModel.role + " unrecognized");
+                    return;
                 }
 
                 userModel.save(function (err, user) {
                     if(err) {
                         failFunction(err);
+                        return;
                     } else {
                         successFunction(user);
+                        return;
                     }
                 });
             }
@@ -60,7 +67,7 @@ var authenticateUser = function(email, password, successFunction, failFunction, 
 };
 
 var checkUserExistsByToken =  function(token, successFunction, failFunction, notFoundFunction) {
-    console.log("Authenticate user with token", token);
+   usersLog.info("Authenticate user with token", {token:token.toString()});
 
     User.findOne({_id: token}, function (err, user) {
         if (err) {
