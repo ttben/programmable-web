@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'audioPlayer-directive',
     'waveform-directive',
-    'time-indicator-directive'
+    'time-indicator-directive',
+    'ui.bootstrap'
   ])
 
   .config(function ($routeProvider) {
