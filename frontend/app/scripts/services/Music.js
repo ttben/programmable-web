@@ -27,7 +27,7 @@ angular.module('programmableWebApp')
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }).then(function (data) {
             console.log('got the music named ', musicName, ' : ', data);
-            successCB(data);
+            successCB(data.data);
           }, function(error) {
           failCB();
         });

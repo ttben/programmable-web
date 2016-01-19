@@ -9,13 +9,9 @@
  */
 angular.module('programmableWebApp')
   .controller('HeaderCtrl', ['$scope', '$cookies', 'User', '$location', '$rootScope', function ($scope, $cookies, User, $location, $rootScope) {
-
       if (typeof($cookies.get('token')) !== 'undefined') {
         $location.path('/home');
       }
-
-
-  //  $scope.user = {"email": "", "pwd": ""};
 
     $scope.login = function (user) {
       User.authenticate(user.usernameOrEmail, user.password, function (token) {
