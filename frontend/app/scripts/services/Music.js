@@ -31,6 +31,24 @@ angular.module('programmableWebApp')
           }, function(error) {
           failCB();
         });
+      },
+      createMix: function(userId, userName, musicId, mixName, tracks, successCB, failCB) {
+        $http({
+          method: 'POST',
+          url: CONSTANTS.backendUrl + CONSTANTS.mix+'/?token='+$cookies.get('token'),
+          headers: {'Content-Type': 'application/json; charset=UTF-8'},
+          data: { "authorId": userId,
+            "author": userName,
+            "musicId": musicId,
+            "mixName": mixName,
+            "tracks": tracks
+          }
+        }).then(function (data) {
+          console.log('bloup bloup');
+          successCB(data);
+        }, function(error) {
+          failCB();
+        });
       }
     };
     return obj;

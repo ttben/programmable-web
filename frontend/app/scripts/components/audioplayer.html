@@ -26,7 +26,8 @@
       </form>
     </div>
     <div class="col-xs-5">
-      <h3><a ng-click="saveMyMix()" class="pointer-hover"> Sauvegarder mon mix actuel</a></h3>
+      <h3><a ng-click="saveMyMix()" class="pointer-hover"> <span class="glyphicon glyphicon-floppy-disk"></span>
+        Sauvegarder mon mix actuel</a></h3>
         <h2> Charger un mix existant : </h2>
       <ul ng-repeat="mix in info.mixes">
         <li>{{mix.name}}, par {{mix.author}}</li>

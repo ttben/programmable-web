@@ -1,11 +1,16 @@
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', function ($rootScope, $http, $cookies) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', function ($rootScope, $http, $cookies, Music) {
     return {
       restrict: 'E',
       scope: {},
       controller: function ($scope) {
         $scope.saveMyMix = function() {
           console.log('yepeeeeeeeeeeeeeeeee');
+          Music.createMix($cookies.token, 'hugo', $scope.info._id, 'mon super mix', $scope.tracks, function(successAnswer) {
+            console.log('yepeeeeeeeeeeeeeeeee');
+          }, function(error) {
+            console.log(error);
+          });
         };
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
