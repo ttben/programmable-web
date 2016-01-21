@@ -1,5 +1,5 @@
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', function ($rootScope, $http) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', function ($rootScope, $http, $cookies) {
     return {
       restrict: 'E',
       scope: {},
@@ -13,24 +13,14 @@ angular.module('audioPlayer-directive', [])
         $scope.currentTime = 0; // TRUE currentTime (the audioContext currentTime is not settable so... we need our own timer)
         $scope.offset = 0; // = audioContext.currentTime - currentTime
 
-        /**
-         * called when a multi-track is set
-         * 'audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].folder+"/",
-         $scope.data[$scope.currentTrack],
-         $scope.currentTrack, $scope.data.length);
-         */
-        console.log( $cookies.music);
         console.log('in the directive yo');
-        $rootScope.$on('audio.set', function (r, info) {
 
-          console.log('audio set being called');
-          console.log(info);
-          $scope.info = info;
+          $scope.info = $cookies.music;
           $scope.tracks = [];
-          for (var i = 0; i < info.tracks.length; i++) {
+          for (var i = 0; i <  $scope.info.tracks.length; i++) {
             $http({
               method: 'GET',
-              url: info.tracks[i].uri,
+              url:  $scope.info.tracks[i].uri,
               responseType: "arraybuffer"
             }).success((function (i) {
               return function (data) {
@@ -144,7 +134,7 @@ angular.module('audioPlayer-directive', [])
               $scope.tracks[i].muted = silence;
             }
             $scope.volumeChanged();
-          }
+          };
 
           /**
            * update our currentTime when the audioContext.currentTime is updated
@@ -153,8 +143,7 @@ angular.module('audioPlayer-directive', [])
             return $scope.audioContext.currentTime;
           }, function () {
             $scope.currentTime = $scope.audioContext.currentTime - $scope.offset;
-          })
-        });
+          });
 
         // update display of things - makes time-scrub work
         setInterval(function () {
@@ -164,4 +153,4 @@ angular.module('audioPlayer-directive', [])
 
       templateUrl: '/scripts/components/audioplayer.html'
     };
-  });
+  }]);

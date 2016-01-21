@@ -33,6 +33,7 @@ angular.module('programmableWebApp')
       console.log('got all the song\'s details !');
       $cookies.music = successAnswer.data;
       //$window.location.href = pathIWant;
+      $cookies.music.image = 'http://localhost:3001/' + $cookies.music.image;
       $location.url('/musicPlayer');
       console.log(successAnswer);
     }, function(error) {
