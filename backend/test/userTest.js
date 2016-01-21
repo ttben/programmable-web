@@ -12,9 +12,10 @@ suite('User tests', function () {
         mongoose.connect(db_url);
     });
 
-    setup(function () {
+    setup(function (done) {
         user.remove({}, function (err) {
             console.log('collection removed\n');
+            done();
         });
     });
 
