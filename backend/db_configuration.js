@@ -108,6 +108,76 @@ db.once('open', function () {
     });
 
 
+    var song3 = new Song(
+        {
+            uri: "music/zwiepack_summertime",
+            image: 'image/zwiepack_summertime.jpg',
+            title: "Zwiepack Summertime",
+            artist: "Zwiepack",
+            tracks: [
+                {
+                  "name": "Main Pair",
+                  "uri": "01_MainPair.wav"
+                },
+                {
+                  "name": "Kick",
+                  "uri": "02_Kick.wav"
+                },
+                {
+                  "name": "Snare",
+                  "uri": "03_Snare.wav"
+                },
+                {
+                  "name": "Overhead",
+                  "uri": "04_Overhead.wav"
+                },
+                {
+                  "name": "Bass Mic 1",
+                  "uri": "05_BassMic1.wav"
+                },
+                {
+                  "name": "Bass Mic 2",
+                  "uri": "06_BassMic2.wav"
+                },
+                {
+                  "name": "Bass DI",
+                  "uri": "07_BassDI.wav"
+                },
+                {
+                  "name": "Sax Mic 1",
+                  "uri": "08_SaxMic1.wav"
+                },
+                {
+                  "name": "Sax Mic 2",
+                  "uri": "09_SaxMic2.wav"
+                },
+                {
+                  "name": "Room",
+                  "uri": "10_Room.wav"
+                }
+            ],
+            mixes: []
+        });
+    song3.addMix({
+          "_id": 1,
+          "author": "Jean-Hugo",
+          "name": "Wesh je mix"
+        });
+    song3.addMix({
+          "_id": 3,
+          "author": "Hugo-xavier",
+          "name": "Mon autre mix"
+        });
+    song3.save(function (err, songRes) {
+        if (err) {
+            console.log("Impossible to store stub song");
+        }
+        else {
+            console.log("Stub song stored !");
+        }
+    });
+
+
     console.log("Flushing user collection ...");
     User.find().remove().exec();
 
