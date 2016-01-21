@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'audioPlayer-directive',
     'waveform-directive',
-    'time-indicator-directive'
+    'time-indicator-directive',
+    'ui.bootstrap'
   ])
 
   .config(function ($routeProvider) {
@@ -50,12 +51,13 @@ angular
   })
   .run(['$rootScope', '$location', '$cookies', function($rootScope, $location, $cookies) {
    // console.log('the token : ' + $cookies.get('token'));
-    if ($cookies.get('token') == 'undefined') {
+    if ($cookies.get('token') !== 'undefined') {
+      console.log('thecookie is ********* ', $cookies.get('token'));
       console.log('not connected');
-      $rootScope.header = "home";
+      $rootScope.header = "default";
     }
     else {
      // console.log('connected');
-      $rootScope.header = "default";
+      $rootScope.header = "home";
     }
   }]);

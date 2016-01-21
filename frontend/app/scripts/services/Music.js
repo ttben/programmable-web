@@ -20,6 +20,7 @@ angular.module('programmableWebApp')
           url: CONSTANTS.backendUrl + CONSTANTS.music+'?token='+token,
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }).then(function (data) {
+          console.log(data);
             successCB(data.data.data);
           }, function(error) {
             console.log(error);

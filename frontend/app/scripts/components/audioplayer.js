@@ -28,10 +28,11 @@ angular.module('audioPlayer-directive', [])
                   var track = {"name": $scope.info.tracks[i], "volume": 1};
                   track.source = $scope.audioContext.createBufferSource();
                   track.source.buffer = buffer;
-                  var gainNode = $scope.audioContext.createGain();
-                  track.gainNode = gainNode;
-                  track.source.connect(gainNode);
-                  gainNode.connect($scope.audioContext.destination);
+                  track.gainNode = $scope.audioContext.createGain();
+                  track.panNode = $scope.audioContext.createStereoPanner();
+                  track.source.connect(track.gainNode);
+                  track.gainNode.connect(track.panNode);
+                  track.panNode.connect($scope.audioContext.destination);
                   $scope.tracks.push(track);
                   $scope.start();
                 });
