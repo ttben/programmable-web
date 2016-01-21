@@ -83,6 +83,17 @@
             <input min="-1" max="1" step="0.20" type="range"
                    ng-model="track.panNode.pan.value"/>
           </div>
+          <div class="col-xs-12 col-sm-6 col-md-4">
+            <label>Treble</label>
+            <input min="-40" max="40" step="1" type="range" ng-model="track.trebleFilter.gain.value"/>
+            <label>Bass</label>
+            <input min="-40" max="40" step="1" type="range"
+                   ng-model="track.bassFilter.gain.value"/>
+            <rzslider rz-slider-model="track.bassFilter.gain.value" rz-slider-options="{floor: -40,
+    ceil: 40,
+    hideLimitLabels: true,
+    vertical: true}"></rzslider>
+          </div>
         </div>
       </div>
     </div>

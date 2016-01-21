@@ -41,9 +41,17 @@ angular.module('audioPlayer-directive', [])
                   track.source = $scope.audioContext.createBufferSource();
                   track.source.buffer = buffer;
                   track.gainNode = $scope.audioContext.createGain();
+                  track.trebleFilter = $scope.audioContext.createBiquadFilter();
+                  track.trebleFilter.type = "highshelf";
+                  track.trebleFilter.frequency.value = 2000;
+                  track.bassFilter = $scope.audioContext.createBiquadFilter();
+                  track.bassFilter.type = "lowshelf";
+                  track.bassFilter.frequency.value = 200;
                   track.panNode = $scope.audioContext.createStereoPanner();
                   track.source.connect(track.gainNode);
-                  track.gainNode.connect(track.panNode);
+                  track.gainNode.connect(track.trebleFilter);
+                  track.trebleFilter.connect(track.bassFilter);
+                  track.bassFilter.connect(track.panNode);
                   track.panNode.connect($scope.audioContext.destination);
                   $scope.tracks.push(track);
                   $scope.start();
