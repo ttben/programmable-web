@@ -15,20 +15,29 @@ angular.module('audioPlayer-directive', [])
 
         /**
          * called when a multi-track is set
+         * 'audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].folder+"/",
+         $scope.data[$scope.currentTrack],
+         $scope.currentTrack, $scope.data.length);
          */
-        $rootScope.$on('audio.set', function (r, folder, info) {
+        console.log( $cookies.music);
+        console.log('in the directive yo');
+        $rootScope.$on('audio.set', function (r, info) {
+
+          console.log('audio set being called');
+          console.log(info);
           $scope.info = info;
           $scope.tracks = [];
           for (var i = 0; i < info.tracks.length; i++) {
             $http({
               method: 'GET',
-              url: folder + info.tracks[i] + ".mp3",
+              url: info.tracks[i].uri,
               responseType: "arraybuffer"
             }).success((function (i) {
               return function (data) {
+                console.log('get a track success');
                 // on success : get the track buffer and keep the nodes in memory
                 $scope.audioContext.decodeAudioData(data, function (buffer) {
-                  var track = {"name": $scope.info.tracks[i], "volume": 1};
+                  var track = {"name": $scope.info.tracks[i].name, "volume": 1};
                   track.source = $scope.audioContext.createBufferSource();
                   track.source.buffer = buffer;
                   track.gainNode = $scope.audioContext.createGain();

@@ -11,19 +11,25 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('MusicPlayerCtrl',["$scope", "$http", "$rootScope", '$cookies', function ($scope, $http, $rootScope, $cookies) {
+  .controller('MusicPlayerCtrl', ["$scope", "$http", "$rootScope", '$cookies', function ($scope, $http, $rootScope, $cookies) {
     $scope.currentTrack = 0;
     $scope.pageSize = 5;
-    $scope.data=[];
-    console.log($cookies.song);
-    var updateTrack = function(){
-      $rootScope.$broadcast('audio.set', 'assets/music/' + $scope.data[$scope.currentTrack].folder+"/", $scope.data[$scope.currentTrack], $scope.currentTrack, $scope.data.length);
-    };
+    $scope.data = [];
+    console.log($cookies.music);
 
-    $http.get('assets/music.json')
-      .success(function(response){
-        $scope.data = response;
-        console.log($scope.data);
-        updateTrack();
-      });
+
+    $cookies.music.tracks.forEach(function (track) {
+      track.uri = 'http://localhost:3001/' + $cookies.music.uri + '/' + track.uri;
+    });
+
+
+
+    $rootScope.$broadcast('audio.set', $cookies.music, 0, 1);
+    //$rootScope.audioSet($cookies.music);
+    /*   $http.get('assets/music.json')
+     .success(function(response){
+     console.log(response);
+     $scope.data = response;
+     updateTrack();
+     });*/
   }]);
