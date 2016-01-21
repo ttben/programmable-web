@@ -15,10 +15,10 @@
     <div class="collapse navbar-collapse" id="js-navbar-collapse">
       <form class="navbar-form navbar-right">
         <div class="form-group">
-          <input class="form-control" type="text" placeholder="Email address" ng-model="user.usernameOrEmail">
+          <input class="form-control" type="text" placeholder="Adresse email" ng-model="user.usernameOrEmail">
         </div>
         <div class="form-group">
-          <input class="form-control" type="password" placeholder="Password" ng-model="user.password">
+          <input class="form-control" type="password" placeholder="Mot de passe" ng-model="user.password">
         </div>
     <!-- This is node currently used, because the token can never expire...
     <div class="checkbox">
@@ -26,8 +26,8 @@
             <input type="checkbox" ng-model="user.remember"> Remember me
           </label>
         </div> -->
-        <button type="submit" class=" btn btn-success" ng-click="login(user)">Login !</button>
-        <button type="submit" class="btn btn-success" ng-click="signUp(user)">Create my account !</button>
+        <button type="submit" class=" btn btn-success" ng-click="login(user)">Connexion !</button>
+        <button type="submit" class="btn btn-success" ng-click="signUp(user)">Créer mon compte !</button>
 
       </form>
     </div><!--/.nav-collapse -->

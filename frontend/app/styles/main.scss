@@ -128,8 +128,13 @@ body {
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
+  background:white;
+  opacity:1;
 }
 
 .pointer-hover{
   cursor: pointer;
+}
+#songTitle {
+  color:#333333;
 }

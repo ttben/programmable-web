@@ -3,9 +3,9 @@
   <div class="row">
     <div ng-repeat-start="song in songs" class="col-xs-3">
       <div class="well">
-        <a href="" ng-click="getSpecificSong(song.title)"> 
-          <img src="{{song.url}}" class="img-responsive">
-        <h3 id="songTitle">{{song.title}}</h3>
+        <a href="" ng-click="getSpecificSong(song._id, '/musicPlayer')">
+          <img ng-src="{{song.image}}" class="img-responsive">
+        <h4 id="songTitle">{{song.title}}</h4>
         </a>
       </div>
     </div>
