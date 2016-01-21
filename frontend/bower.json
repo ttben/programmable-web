@@ -10,8 +10,7 @@
     "angular-route": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
-    "angular-bootstrap": "~1.0.3",
-    "angularjs-slider": "~2.4.1"
+    "angular-bootstrap": "~1.0.3"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
