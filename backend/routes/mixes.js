@@ -17,29 +17,32 @@ router.use(function (req, res, next) {
 });
 
 router.post('/', function(req,res) {
-    var authorID = req.body.authorID;
-    var originalTitle = req.body.originalTitle;
-    var originalArtist = req.body.originalArtist;
-    var date = req.body.date;
+    var authorId = req.body.authorId;
+    var author = req.body.author;
+    var musicId = req.body.musicId;
+    var mixName = req.body.mixName;
     var tracks = req.body.tracks;
+    // var comments = req.body.comments;
+    // var rating = req.body.rating;
 
-    if(authorID == null || authorID == undefined) {
-        res.status(400).send("Please check that you are sending authorID field. I didn't find it. Thanks!");
+
+    if(authorId == null || authorId == undefined) {
+        res.status(400).send("Please check that you are sending authorId field. I didn't find it. Thanks!");
         return;
     }
 
-    if(originalTitle == null || originalTitle == undefined) {
-        res.status(400).send("Please check that you are sending originalTitle field. I didn't find it. Thanks!");
+    if(author == null || author == undefined) {
+        res.status(400).send("Please check that you are sending author field. I didn't find it. Thanks!");
         return;
     }
 
-    if(originalArtist == null || originalArtist == undefined) {
-        res.status(400).send("Please check that you are sending originalArtist field. I didn't find it. Thanks!");
+    if(musicId == null || musicId == undefined) {
+        res.status(400).send("Please check that you are sending musicId field. I didn't find it. Thanks!");
         return;
     }
 
-    if(date == null || date == undefined) {
-        res.status(400).send("Please check that you are sending date field. I didn't find it. Thanks!");
+    if(mixName == null || mixName == undefined) {
+        res.status(400).send("Please check that you are sending mixName field. I didn't find it. Thanks!");
         return;
     }
 
@@ -49,10 +52,10 @@ router.post('/', function(req,res) {
     }
 
     var mix = new Mix({
-        authorID:authorID,
-        originalTitle:originalTitle,
-        originalArtist:originalArtist,
-        date:date,
+        authorId:authorId,
+        author:author,
+        musicId:musicId,
+        mixName:mixName,
         tracks:tracks
     });
 
