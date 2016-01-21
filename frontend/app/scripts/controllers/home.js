@@ -31,8 +31,9 @@ angular.module('programmableWebApp')
     console.log('you want to listen to song with id ', songName);
     Music.get(songName, function(successAnswer) {
       console.log('got all the song\'s details !');
-      $cookies.music = successAnswer;
+      $cookies.music = successAnswer.data;
       //$window.location.href = pathIWant;
+      $cookies.music.image = 'http://localhost:3001/' + $cookies.music.image;
       $location.url('/musicPlayer');
       console.log(successAnswer);
     }, function(error) {

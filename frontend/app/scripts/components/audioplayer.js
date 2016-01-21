@@ -1,5 +1,5 @@
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', function ($rootScope, $http) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', function ($rootScope, $http, $cookies) {
     return {
       restrict: 'E',
       scope: {},
@@ -13,22 +13,21 @@ angular.module('audioPlayer-directive', [])
         $scope.currentTime = 0; // TRUE currentTime (the audioContext currentTime is not settable so... we need our own timer)
         $scope.offset = 0; // = audioContext.currentTime - currentTime
 
-        /**
-         * called when a multi-track is set
-         */
-        $rootScope.$on('audio.set', function (r, folder, info) {
-          $scope.info = info;
+        console.log('in the directive yo');
+
+          $scope.info = $cookies.music;
           $scope.tracks = [];
-          for (var i = 0; i < info.tracks.length; i++) {
+          for (var i = 0; i <  $scope.info.tracks.length; i++) {
             $http({
               method: 'GET',
-              url: folder + info.tracks[i] + ".mp3",
+              url:  $scope.info.tracks[i].uri,
               responseType: "arraybuffer"
             }).success((function (i) {
               return function (data) {
+                console.log('get a track success');
                 // on success : get the track buffer and keep the nodes in memory
                 $scope.audioContext.decodeAudioData(data, function (buffer) {
-                  var track = {"name": $scope.info.tracks[i], "volume": 1};
+                  var track = {"name": $scope.info.tracks[i].name, "volume": 1};
                   track.source = $scope.audioContext.createBufferSource();
                   track.source.buffer = buffer;
                   track.gainNode = $scope.audioContext.createGain();
@@ -135,7 +134,7 @@ angular.module('audioPlayer-directive', [])
               $scope.tracks[i].muted = silence;
             }
             $scope.volumeChanged();
-          }
+          };
 
           /**
            * update our currentTime when the audioContext.currentTime is updated
@@ -144,8 +143,7 @@ angular.module('audioPlayer-directive', [])
             return $scope.audioContext.currentTime;
           }, function () {
             $scope.currentTime = $scope.audioContext.currentTime - $scope.offset;
-          })
-        });
+          });
 
         // update display of things - makes time-scrub work
         setInterval(function () {
@@ -155,4 +153,4 @@ angular.module('audioPlayer-directive', [])
 
       templateUrl: '/scripts/components/audioplayer.html'
     };
-  });
+  }]);
