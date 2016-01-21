@@ -19,8 +19,7 @@ angular
     'audioPlayer-directive',
     'waveform-directive',
     'time-indicator-directive',
-    'ui.bootstrap',
-    'rzModule'
+    'ui.bootstrap'
   ])
 
   .config(function ($routeProvider) {
