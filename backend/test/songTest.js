@@ -8,13 +8,21 @@ var db_url = "mongodb://localhost/testSong";
 mongoose.connect(db_url);
 
 suite('Song tests', function () {
-    setup(function () {
+    setup(function (done) {
+        var callsNeeded = 2;
+
         song.remove({}, function (err) {
-            console.log('collection removed\n');
+            console.log('song collection removed\n');
+            if(--callsNeeded == 0) {
+                done();
+            }
         });
 
         user.remove({}, function (err) {
-            console.log('collection removed\n');
+            console.log('user collection removed\n');
+            if(--callsNeeded== 0) {
+                done();
+            }
         });
     });
 
