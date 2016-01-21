@@ -115,45 +115,49 @@ db.once('open', function () {
             title: "Zwiepack Summertime",
             artist: "Zwiepack",
             tracks: [
+                // {
+                //   "name": "Main Pair",
+                //   "uri": "01_MainPair.wav"
+                // },
+                // {
+                //   "name": "Kick",
+                //   "uri": "02_Kick.wav"
+                // },
+                // {
+                //   "name": "Snare",
+                //   "uri": "03_Snare.wav"
+                // },
+                // {
+                //   "name": "Overhead",
+                //   "uri": "04_Overhead.wav"
+                // },
+                // {
+                //   "name": "Bass Mic 1",
+                //   "uri": "05_BassMic1.wav"
+                // },
+                // {
+                //   "name": "Bass Mic 2",
+                //   "uri": "06_BassMic2.wav"
+                // },
+                // {
+                //   "name": "Bass DI",
+                //   "uri": "07_BassDI.wav"
+                // },
+                // {
+                //   "name": "Sax Mic 1",
+                //   "uri": "08_SaxMic1.wav"
+                // },
+                // {
+                //   "name": "Sax Mic 2",
+                //   "uri": "09_SaxMic2.wav"
+                // },
+                // {
+                //   "name": "Room",
+                //   "uri": "10_Room.wav"
+                // }
                 {
-                  "name": "Main Pair",
-                  "uri": "01_MainPair.wav"
-                },
-                {
-                  "name": "Kick",
-                  "uri": "02_Kick.wav"
-                },
-                {
-                  "name": "Snare",
-                  "uri": "03_Snare.wav"
-                },
-                {
-                  "name": "Overhead",
-                  "uri": "04_Overhead.wav"
-                },
-                {
-                  "name": "Bass Mic 1",
-                  "uri": "05_BassMic1.wav"
-                },
-                {
-                  "name": "Bass Mic 2",
-                  "uri": "06_BassMic2.wav"
-                },
-                {
-                  "name": "Bass DI",
-                  "uri": "07_BassDI.wav"
-                },
-                {
-                  "name": "Sax Mic 1",
-                  "uri": "08_SaxMic1.wav"
-                },
-                {
-                  "name": "Sax Mic 2",
-                  "uri": "09_SaxMic2.wav"
-                },
-                {
-                  "name": "Room",
-                  "uri": "10_Room.wav"
+                  "name": "Voix",
+                  "uri": "voix.mp3"
                 }
             ],
             mixes: []
