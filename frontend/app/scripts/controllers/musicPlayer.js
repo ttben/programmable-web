@@ -11,14 +11,14 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('MusicPlayerCtrl', ["$scope", "$http", "$rootScope", '$cookies', function ($scope, $http, $rootScope, $cookies) {
+  .controller('MusicPlayerCtrl', ["$scope", '$cookies', 'CONSTANTS', function ($scope, $cookies, CONSTANTS) {
     $scope.currentTrack = 0;
     $scope.pageSize = 5;
     $scope.data = [];
 
     //For each track, we set the uri where we can retrieve it
     $cookies.music.tracks.forEach(function (track) {
-      track.uri = 'http://localhost:3001/' + $cookies.music.uri + '/' + track.uri;
+      track.uri = CONSTANTS.backendUrl + $cookies.music.uri + '/' + track.uri;
     });
 
 

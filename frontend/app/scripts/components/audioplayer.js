@@ -1,6 +1,6 @@
 'use strict';
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', function ($rootScope, $http, $cookies, Music) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', 'Comment', function ($rootScope, $http, $cookies, Music, Comment) {
     return {
       restrict: 'E',
       scope: {},
@@ -23,9 +23,22 @@ angular.module('audioPlayer-directive', [])
             console.log(error);
           });
         };
+        $scope.commentToAdd='';
+        $scope.addComment = function() {
+          console.log('You want to add a comment to the mix ', $scope.loadedMix._id);
+        //  commentToAdd
+          Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function() {
+            console.log('managed to add the comment');
+            $scope.commentToAdd='';
+          }, function(error) {
+            console.log(error);
+          })
+        };
 
         //Function to load an existing mix instead of the current settings
         $scope.loadAMix = function(theMix) {
+          $scope.aMixIsLoaded = true;
+          $scope.loadedMix = theMix;
           $scope.tracks.forEach(function(track) {
             theMix.tracks.forEach(function(mixTrack) {
               if (track.name === mixTrack.name) {
@@ -37,6 +50,7 @@ angular.module('audioPlayer-directive', [])
               }
             });
           });
+
         };
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)

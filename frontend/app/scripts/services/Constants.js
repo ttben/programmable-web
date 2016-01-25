@@ -15,5 +15,6 @@ angular.module('programmableWebApp')
     backendUrl: 'http://localhost:3001/',
     music:'songs',
     auth:'authenticate',
-    mix:'mixes'
+    mix:'mixes',
+    com:'comments'
   });
