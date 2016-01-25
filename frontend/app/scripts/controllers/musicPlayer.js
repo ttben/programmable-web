@@ -16,7 +16,7 @@ angular.module('programmableWebApp')
     $scope.pageSize = 5;
     $scope.data = [];
 
-
+    //For each track, we set the uri where we can retrieve it
     $cookies.music.tracks.forEach(function (track) {
       track.uri = 'http://localhost:3001/' + $cookies.music.uri + '/' + track.uri;
     });

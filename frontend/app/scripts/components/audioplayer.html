@@ -30,7 +30,7 @@
         Sauvegarder mon mix actuel</a></h3>
         <h2> Charger un mix existant : </h2>
       <ul ng-repeat="mix in info.mixes">
-        <li>{{mix.name}}, par {{mix.author}}</li>
+        <li ng-click="loadAMix(mix)">{{mix.name}}, par {{mix.author}}</li>
       </ul>
     </div>
   </div>

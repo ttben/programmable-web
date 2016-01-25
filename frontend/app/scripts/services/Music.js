@@ -17,7 +17,7 @@ angular.module('programmableWebApp')
             successCB(data.data.data);
           }, function(error) {
             console.log(error);
-            failCB();
+            failCB(error);
           });
       },
       get: function(musicName, successCB, failCB) {
@@ -29,7 +29,9 @@ angular.module('programmableWebApp')
             console.log('got the music named ', musicName, ' : ', data);
             successCB(data.data);
           }, function(error) {
-          failCB();
+          console.log(error);
+
+          failCB(error);
         });
       },
       createMix: function(userId, userName, musicId, mixName, tracks, successCB, failCB) {
@@ -47,7 +49,8 @@ angular.module('programmableWebApp')
           console.log('bloup bloup');
           successCB(data);
         }, function(error) {
-          failCB();
+          console.log(error.data);
+          failCB(error);
         });
       }
     };
