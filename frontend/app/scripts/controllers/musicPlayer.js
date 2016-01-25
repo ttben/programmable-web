@@ -11,7 +11,7 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('MusicPlayerCtrl', ["$scope", "$http", "$rootScope", '$cookies', '$timeout', function ($scope, $http, $rootScope, $cookies, $timeout) {
+  .controller('MusicPlayerCtrl', ["$scope", "$http", "$rootScope", '$cookies', function ($scope, $http, $rootScope, $cookies) {
     $scope.currentTrack = 0;
     $scope.pageSize = 5;
     $scope.data = [];
@@ -22,15 +22,4 @@ angular.module('programmableWebApp')
     });
 
 
-
-    /*$timeout(function() {
-      $rootScope.$broadcast('audio.set', $cookies.music, 0, 1);
-    });*/
-    //$rootScope.audioSet($cookies.music);
-    /*   $http.get('assets/music.json')
-     .success(function(response){
-     console.log(response);
-     $scope.data = response;
-     updateTrack();
-     });*/
   }]);

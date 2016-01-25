@@ -15,7 +15,7 @@ angular.module('programmableWebApp')
           url: 'http://localhost:3001/authenticate',
           data: jsonObject
         }).then(function (data) {
-            if (data.status == 200) {
+            if (data.status === 200) {
               console.log($cookies);
               $cookies.put('token', data.data.token);
               $cookies.put('userName', userEmail);
@@ -25,8 +25,7 @@ angular.module('programmableWebApp')
           else {
               failCB(data);
             }
-        }
-          , function (data) {
+        }, function (data) {
             failCB(data)
           });
       },
@@ -41,7 +40,7 @@ angular.module('programmableWebApp')
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }).then(function (data) {
           console.log(data);
-          if (data.status == 201) {
+          if (data.status === 201) {
             successCB(data.data);
             $cookies.put('token', data.data.token);
             $cookies.put('userName', userEmail);
@@ -49,8 +48,7 @@ angular.module('programmableWebApp')
           else {
             failCB(data);
           }
-          }
-          , function (data) {
+          }, function (data) {
             failCB(data)
           });
       }

@@ -27,7 +27,7 @@ angular.module('programmableWebApp')
       $scope.inError=true;
     });
 
-  $scope.getSpecificSong = function(songName, pathIWant) {
+  $scope.getSpecificSong = function(songName) {
     console.log('you want to listen to song with id ', songName);
     Music.get(songName, function(successAnswer) {
       console.log('got all the song\'s details !');
@@ -36,7 +36,7 @@ angular.module('programmableWebApp')
       $cookies.music.image = 'http://localhost:3001/' + $cookies.music.image;
       $location.url('/musicPlayer');
       console.log(successAnswer);
-    }, function(error) {
+    }, function() {
       console.log('in error :((');
     });
   };

@@ -1,3 +1,4 @@
+'use strict';
 angular.module('audioPlayer-directive', [])
   .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', function ($rootScope, $http, $cookies, Music) {
     return {
@@ -7,8 +8,9 @@ angular.module('audioPlayer-directive', [])
 
         //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function() {
-          Music.createMix($cookies.token, 'hugo', $scope.info._id, 'mon super mix', $scope.tracks, function(successAnswer) {
+          Music.createMix('hugo', $scope.info._id, 'mon premier vrai mix', $scope.tracks, function(successAnswer) {
             console.log('yepeeeeeeeeeeeeeeeee');
+         //   updateMixList();
           }, function(error) {
             console.log(error);
           });
@@ -16,7 +18,10 @@ angular.module('audioPlayer-directive', [])
 
         //Function to load an existing mix instead of the current settings
         $scope.loadAMix = function(theMix) {
-          Music.loadMix($cookies.token, theMix.id, function(tracks) {
+          console.log(theMix);
+          Music.loadMix(theMix.id, function(tracks) {
+            $scope.tracks = tracks;
+            $scope.start();
             console.log('loaded a mix !');
             //TODO: clear $scope.tracks and replace it by new one. Enough ?
           }, function(error) {

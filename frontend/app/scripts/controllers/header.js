@@ -14,28 +14,28 @@ angular.module('programmableWebApp')
       }
 
     $scope.login = function (user) {
-      User.authenticate(user.usernameOrEmail, user.password, function (token) {
+      User.authenticate(user.usernameOrEmail, user.password, function () {
           $rootScope.header = "default";
           $location.path('/home');
         },
-        function (error) {
+        function () {
           console.log('error... :(');
-        })
+        });
     };
 
     $scope.signUp = function(user) {
-      User.signUp(user.usernameOrEmail, user.password, function(token) {
+      User.signUp(user.usernameOrEmail, user.password, function() {
           $rootScope.header = "default";
           $location.path('/home');
         },
-        function(error) {
+        function() {
           console.log('error... :(');
-        })
+        });
     };
 
     $scope.logout = function() {
 
       $rootScope.header = "home";
       $location.path('/');
-    }
+    };
   }]);
