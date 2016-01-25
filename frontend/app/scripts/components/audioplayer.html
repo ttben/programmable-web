@@ -1,22 +1,24 @@
 <!-- Header -->
 <div class="panel panel-default" style="margin-top: 20px; background-color:#f5f5f5;">
   <div class="panel-body">
-    <div class="col-xs-12 col-md-2">
-      <img class="img-responsive" ng-src={{info.image}} height="200" width="200" style="border-radius: 5px">
-    </div>
-    <div class="col-xs-12 col-md-5">
-      <h1>{{info.artist}}</h1>
-
-      <h2>{{info.title}}</h2>
-
-      <div class="form-group">
-        <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
-                ng-click="playpause()">
-          <i class="glyphicon" ng-class="{'glyphicon-play':!playing,'glyphicon-pause':playing}"></i>
-        </button>
+    <div class="row">
+      <div class="col-xs-12 col-md-2">
+        <img class="img-responsive" ng-src={{info.image}} height="200" width="200"
+             style="border-radius: 5px;margin:0 auto;">
       </div>
-      <form class="form-group form-inline">
-        <i class="glyphicon glyphicon-volume-up" style="font-size: 18px"></i>
+      <div class="col-xs-12 col-md-5">
+        <h1>{{info.artist}}</h1>
+
+        <h2>{{info.title}}</h2>
+
+        <div class="form-group">
+          <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
+                  ng-click="playpause()">
+            <i class="glyphicon" ng-class="{'glyphicon-play':!playing,'glyphicon-pause':playing}"></i>
+          </button>
+        </div>
+        <form class="form-group form-inline">
+          <i class="glyphicon glyphicon-volume-up" style="font-size: 18px"></i>
 
         <div class="form-group">
           <input min="0" max="1" step="0.01" type="range"
@@ -25,13 +27,15 @@
         </div>
       </form>
     </div>
-    <div ng-show="tracksLoaded" class="col-xs-5 col-xs-12">
+    <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
       <h3><a ng-click="saveMyMix()" class="pointer-hover"> <span class="glyphicon glyphicon-floppy-disk"></span>
         Sauvegarder mon mix actuel</a></h3>
         <h2> Charger un mix existant : </h2>
-      <ul ng-repeat="mix in info.mixes">
-      <a  ng-click="loadAMix(mix)">  <li>{{mix.mixName}}, par {{mix.author}}</li></a>
-      </ul>
+
+        <div ng-repeat="mix in info.mixes" ng-click="loadAMix(mix)">
+          {{mix.mixName}}, par {{mix.author}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -71,7 +75,8 @@
   <div class="panel-footer">
     <div class="row">
       <div class="col-xs-12">
-        <div class="pointer-hover" ng-click="track.footerOpened = !track.footerOpened" style="text-align: right">Effets
+        <div class="pointer-hover" ng-click="track.footerOpened = !track.footerOpened" style="text-align: right">
+          Effets
           <button type="button" class="btn btn-default btn-circle btn-sm">
             <i class="glyphicon"
                ng-class="{'glyphicon-chevron-down': track.footerOpened, 'glyphicon-chevron-right': !track.footerOpened}"></i>
@@ -90,7 +95,8 @@
           <div class="row">
             <div class="col-xs-6 col-sm-2 col-md-1">
               <label>Treble</label>
-              <input orient="vertical" min="-40" max="40" step="1" type="range" ng-model="track.trebleFilter.gain.value"
+              <input orient="vertical" min="-40" max="40" step="1" type="range"
+                     ng-model="track.trebleFilter.gain.value"
                      style="margin:0 auto"/>
             </div>
             <div class="col-xs-6 col-sm-2 col-md-1">
@@ -105,4 +111,5 @@
   </div>
 </div>
 <!-- loading label -->
-<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement... ({{tracks.length}}/{{info.tracks.length}})</p>
+<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement...
+  ({{tracks.length}}/{{info.tracks.length}})</p>
