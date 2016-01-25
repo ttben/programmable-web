@@ -22,7 +22,7 @@ angular.module('time-indicator-directive', [])
           var boxWidth = width * scope.currentTime / scope.totalTime;
           context.fillStyle = "rgba(255,255,255,0.50)";
           context.fillRect(0, 0, boxWidth, height);
-        }
+        };
         scope.$watch(function () {
           return scope.currentTime;
         }, function(){draw()}, true);

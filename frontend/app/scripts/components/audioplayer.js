@@ -1,19 +1,33 @@
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', function ($rootScope, $http, $cookies) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', function ($rootScope, $http, $cookies, Music) {
     return {
       restrict: 'E',
       scope: {},
       controller: function ($scope) {
+
+        //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function() {
-          console.log('yepeeeeeeeeeeeeeeeee');
+          Music.createMix($cookies.token, 'hugo', $scope.info._id, 'mon super mix', $scope.tracks, function(successAnswer) {
+            console.log('yepeeeeeeeeeeeeeeeee');
+          }, function(error) {
+            console.log(error);
+          });
+        };
+
+        //Function to load an existing mix instead of the current settings
+        $scope.loadAMix = function(theMix) {
+          Music.loadMix($cookies.token, theMix.id, function(tracks) {
+            console.log('loaded a mix !');
+            //TODO: clear $scope.tracks and replace it by new one. Enough ?
+          }, function(error) {
+            console.log(error);
+          })
         };
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
         $scope.audioContext.suspend(); // immediately suspend the context (or the currentTime will start incrementing)
         $scope.currentTime = 0; // TRUE currentTime (the audioContext currentTime is not settable so... we need our own timer)
         $scope.offset = 0; // = audioContext.currentTime - currentTime
-
-        console.log('in the directive yo');
 
           $scope.info = $cookies.music;
           $scope.tracks = [];
@@ -24,7 +38,6 @@ angular.module('audioPlayer-directive', [])
               responseType: "arraybuffer"
             }).success((function (i) {
               return function (data) {
-                console.log('get a track success');
                 // on success : get the track buffer and keep the nodes in memory
                 $scope.audioContext.decodeAudioData(data, function (buffer) {
                   var track = {"name": $scope.info.tracks[i].name, "volume": 1};
