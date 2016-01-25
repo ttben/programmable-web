@@ -29,31 +29,6 @@ db.once('open', function () {
     console.log("Flushing songs collection ...");
     Song.find().remove().exec();
 
-    var song = new Song(
-        {
-            image: 'http://localhost:3001/songs/1/',
-            title: "Lolipop in your life",
-            artist: "Moi",
-            tracks: [
-                {
-                    name: "moi", uri: "moi.mp3"
-                },
-                {
-                    name: "toujours moi", uri: "toujoursMoi.mp3"
-                }
-            ],
-            mixes: []
-        });
-    song.addMix({mix: "oui", settings: "toujours oui"});
-    song.save(function (err, songRes) {
-        if (err) {
-            console.log("Impossible to store stub song");
-        }
-        else {
-            console.log("Stub song stored !");
-        }
-    });
-
     var song2 = new Song(
         {
             uri: "music/queen_champions",
