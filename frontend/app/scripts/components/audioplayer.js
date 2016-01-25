@@ -20,6 +20,11 @@ angular.module('audioPlayer-directive', [])
           Music.createMix($scope.info._id, $scope.mixName, newMix, function(successAnswer) {
             console.log('managed to create the mix !');
             $scope.saveDrawerOpened = false;
+            Music.get($scope.info._id, function(musicReloaded) {
+              $scope.info.mixes = musicReloaded.data.mixes;
+            }, function() {
+              console.log('error :(');
+            });
           }, function(error) {
             console.log(error);
           });
@@ -104,7 +109,7 @@ angular.module('audioPlayer-directive', [])
               $scope.tracks[i].source.start();
             }
           }
-        }
+        };
 
         /**
          * checks if all the tracks are loaded : start the tracks if so
