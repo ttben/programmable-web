@@ -25,12 +25,12 @@
         </div>
       </form>
     </div>
-    <div class="col-xs-5 col-xs-12">
+    <div ng-show="tracksLoaded" class="col-xs-5 col-xs-12">
       <h3><a ng-click="saveMyMix()" class="pointer-hover"> <span class="glyphicon glyphicon-floppy-disk"></span>
         Sauvegarder mon mix actuel</a></h3>
         <h2> Charger un mix existant : </h2>
       <ul ng-repeat="mix in info.mixes">
-      <a  ng-click="loadAMix(mix)">  <li>{{mix.name}}, par {{mix.author}}</li></a>
+      <a  ng-click="loadAMix(mix)">  <li>{{mix.mixName}}, par {{mix.author}}</li></a>
       </ul>
     </div>
   </div>

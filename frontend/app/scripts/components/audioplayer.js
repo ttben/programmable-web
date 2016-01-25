@@ -8,9 +8,17 @@ angular.module('audioPlayer-directive', [])
 
         //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function() {
-          Music.createMix('hugo', $scope.info._id, 'mon premier vrai mix', $scope.tracks, function(successAnswer) {
-            console.log('yepeeeeeeeeeeeeeeeee');
-         //   updateMixList();
+          var newMix = [];
+          $scope.tracks.forEach(function(track) {
+            newMix.push({panValue:track.panNode.pan.value,
+              trebleValue: track.trebleFilter.gain.value,
+              bassValue: track.bassFilter.gain.value,
+            muted:track.muted,
+            volume: track.volume,
+            name: track.name});
+          });
+          Music.createMix($scope.info._id, 'Un mix qui marche', newMix, function(successAnswer) {
+            console.log('managed to create the mix !');
           }, function(error) {
             console.log(error);
           });
@@ -18,16 +26,19 @@ angular.module('audioPlayer-directive', [])
 
         //Function to load an existing mix instead of the current settings
         $scope.loadAMix = function(theMix) {
-          console.log(theMix);
-          Music.loadMix(theMix.id, function(tracks) {
-            $scope.tracks = tracks;
-            $scope.start();
-            console.log('loaded a mix !');
-            //TODO: clear $scope.tracks and replace it by new one. Enough ?
-          }, function(error) {
-            console.log(error);
-          })
+          $scope.tracks.forEach(function(track) {
+            theMix.tracks.forEach(function(mixTrack) {
+              if (track.name === mixTrack.name) {
+                track.panNode.pan.value = mixTrack.panValue;
+                track.trebleFilter.gain.value = mixTrack.trebleValue;
+                track.bassFilter.gain.value = mixTrack.bassValue;
+                track.muted = mixTrack.muted;
+                track.volume = mixTrack.volume ;
+              }
+            });
+          });
         };
+
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
         $scope.audioContext.suspend(); // immediately suspend the context (or the currentTime will start incrementing)

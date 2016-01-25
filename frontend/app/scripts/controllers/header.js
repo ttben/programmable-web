@@ -11,6 +11,8 @@ angular.module('programmableWebApp')
   .controller('HeaderCtrl', ['$scope', '$cookies', 'User', '$location', '$rootScope', function ($scope, $cookies, User, $location, $rootScope) {
       if (typeof($cookies.get('token')) !== 'undefined') {
         $location.path('/home');
+      } else {
+        $location.path('/disconnected');
       }
 
     $scope.login = function (user) {
@@ -19,6 +21,7 @@ angular.module('programmableWebApp')
           $location.path('/home');
         },
         function () {
+          $location.path('/disconnected');
           console.log('error... :(');
         });
     };
@@ -29,13 +32,14 @@ angular.module('programmableWebApp')
           $location.path('/home');
         },
         function() {
+          $location.path('/disconnected');
           console.log('error... :(');
         });
     };
 
     $scope.logout = function() {
-
+      $cookies.put('token', '');
       $rootScope.header = "home";
-      $location.path('/');
+      $location.path('/disconnected');
     };
   }]);

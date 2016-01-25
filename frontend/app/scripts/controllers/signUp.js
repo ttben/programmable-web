@@ -16,7 +16,7 @@ angular.module('programmableWebApp')
         },
         function() {
           console.log('error... :(');
-        })
+        });
     };
 
 

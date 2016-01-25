@@ -34,20 +34,19 @@ angular.module('programmableWebApp')
           failCB(error);
         });
       },
-      createMix: function(userName, musicId, mixName, tracks, successCB, failCB) {
+      createMix: function(musicId, mixName, tracks, successCB, failCB) {
 
         $http({
           method: 'POST',
           url: CONSTANTS.backendUrl + CONSTANTS.mix+'/?token='+$cookies.get('token'),
           headers: {'Content-Type': 'application/json; charset=UTF-8'},
           data: { "authorId": $cookies.get('token'),
-            "author": userName,
+            "author": $cookies.get('userName'),
             "musicId": musicId,
             "mixName": mixName,
             "tracks": tracks
           }
         }).then(function (data) {
-          console.log('bloup bloup');
           successCB(data);
         }, function(error) {
           console.log(error.data);
@@ -61,7 +60,6 @@ angular.module('programmableWebApp')
           url: CONSTANTS.backendUrl + CONSTANTS.mix+'/?token='+$cookies.get('token')+'&mixID='+mixId,
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }).then(function (data) {
-          console.log('bloup bloup');
           successCB(data);
         }, function(error) {
           console.log(error.data);

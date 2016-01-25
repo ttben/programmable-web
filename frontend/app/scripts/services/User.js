@@ -26,7 +26,7 @@ angular.module('programmableWebApp')
               failCB(data);
             }
         }, function (data) {
-            failCB(data)
+            failCB(data);
           });
       },
       signUp: function (userEmail, userPassword, successCB, failCB) {
@@ -49,7 +49,7 @@ angular.module('programmableWebApp')
             failCB(data);
           }
           }, function (data) {
-            failCB(data)
+            failCB(data);
           });
       }
   };
