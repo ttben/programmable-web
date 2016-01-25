@@ -22,10 +22,10 @@ router.use(function (req, res, next) {
  */
 
 router.get('/', function (req, res) {
-    var mixID = req.query.mixID;
+    var mixId = req.query.mixId;
 
-    // Comment.find({mix_id: req.query.mixID}, function (err, comments) {
-    Comment.find({mix_id: req.query.mixID}, {'__v': 0}).lean().exec(function (err, comments) {
+    // Comment.find({mixId: req.query.mixId}, function (err, comments) {
+    Comment.find({mixId: req.query.mixId}, {'__v': 0}).lean().exec(function (err, comments) {
         if (err) {
             res.json({
                 type: false,
@@ -40,10 +40,10 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var mixID = req.query.mixID;
+    var mixId = req.query.mixId;
 
     var comment = new Comment({
-      "mix_id": req.body.mix_id,
+      "mixId": req.body.mixId,
       "authorName": req.body.authorName,
       "text": req.body.text,
       "date": req.body.date

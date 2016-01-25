@@ -71,7 +71,7 @@ router.post('/', function (req, res) {
             if (err) {
                 console.error(err);
 
-                res.status(404).send("Can not find specified song with given ID : " + musicId);
+                res.status(404).send("Can not find specified song with given Id : " + musicId);
                 return;
 
             }
@@ -94,8 +94,8 @@ router.post('/', function (req, res) {
 
 });
 
-router.get('/:mixID', function (req, res) {
-    Mix.find({_id: req.params.mixID}, {'__v': 0}).lean().exec(function (err, mix) {
+router.get('/:mixId', function (req, res) {
+    Mix.find({_id: req.params.mixId}, {'__v': 0}).lean().exec(function (err, mix) {
         if (err) {
             res.json({
                 type: false,
@@ -110,8 +110,8 @@ router.get('/:mixID', function (req, res) {
 router.get('/', function (req, res) {
 
     var filter = {};
-    if (req.query.userID != undefined && req.query.userID != null) {
-        filter.authorID = req.query.userID;
+    if (req.query.userId != undefined && req.query.userId != null) {
+        filter.authorId = req.query.userId;
     }
 
     Mix.find(filter, {'__v': 0}).lean().exec(function (err, mixes) {
