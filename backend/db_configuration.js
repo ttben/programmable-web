@@ -66,12 +66,12 @@ db.once('open', function () {
     song2.addMix({
           "_id": 1,
           "author": "Hugo",
-          "name": "Mon super mix"
+          "mixName": "Mon super mix"
         });
     song2.addMix({
           "_id": 3,
           "author": "Hugo",
-          "name": "Mon autre mix"
+          "mixName": "Mon autre mix"
         });
     song2.save(function (err, songRes) {
         if (err) {
@@ -140,12 +140,12 @@ db.once('open', function () {
     song3.addMix({
           "_id": 1,
           "author": "Jean-Hugo",
-          "name": "Wesh je mix"
+          "mixName": "Wesh je mix"
         });
     song3.addMix({
           "_id": 3,
           "author": "Hugo-xavier",
-          "name": "Mon autre mix"
+          "mixName": "Mon autre mix"
         });
     song3.save(function (err, songRes) {
         if (err) {
@@ -173,7 +173,7 @@ db.once('open', function () {
 
     Comment.find().remove().exec();
     var comment = new Comment({
-        "mix_id": "1",
+        "mixId": "1",
         "authorName": "jean poele",
         "text": "TROP COOL",
         "date": "12334567"
