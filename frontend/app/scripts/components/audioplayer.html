@@ -20,16 +20,28 @@
         <form class="form-group form-inline">
           <i class="glyphicon glyphicon-volume-up" style="font-size: 18px"></i>
 
-        <div class="form-group">
-          <input min="0" max="1" step="0.01" type="range"
-                 ng-model="globalVolume"
-                 ng-change="volumeChanged()"/>
-        </div>
-      </form>
-    </div>
-    <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
-      <h3><a ng-click="saveMyMix()" class="pointer-hover"> <span class="glyphicon glyphicon-floppy-disk"></span>
-        Sauvegarder mon mix actuel</a></h3>
+          <div class="form-group">
+            <input min="0" max="1" step="0.01" type="range"
+                   ng-model="globalVolume"
+                   ng-change="volumeChanged()"/>
+          </div>
+        </form>
+      </div>
+      <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
+        <h3><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
+          class="glyphicon glyphicon-floppy-disk"></span>
+          Sauvegarder mon mix actuel</a></h3>
+
+        <form class="form-inline" uib-collapse="!saveDrawerOpened">
+          <div class="form-group input-group">
+            <input class="form-control" placeholder="Nom du mix" ng-model="mixName">
+          <span class="input-group-btn">
+              <button ng-click="saveMyMix()" class="btn btn-secondary" style="padding:6px 12px; font-size:14px" type="button"><i
+                class="glyphicon glyphicon-floppy-disk"></i>
+              </button>
+          </span>
+          </div>
+        </form>
         <h2> Charger un mix existant : </h2>
 
         <div ng-repeat="mix in info.mixes" ng-click="loadAMix(mix)">

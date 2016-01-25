@@ -17,8 +17,9 @@ angular.module('audioPlayer-directive', [])
             volume: track.volume,
             name: track.name});
           });
-          Music.createMix($scope.info._id, 'Un mix qui marche', newMix, function(successAnswer) {
+          Music.createMix($scope.info._id, $scope.mixName, newMix, function(successAnswer) {
             console.log('managed to create the mix !');
+            $scope.saveDrawerOpened = false;
           }, function(error) {
             console.log(error);
           });
