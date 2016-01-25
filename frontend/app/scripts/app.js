@@ -30,11 +30,6 @@ angular
         controller: 'MusicPlayerCtrl',
         controllerAs: 'musicPlayer'
       })
-      .when('/newUser', {
-        templateUrl: 'views/newUser.html',
-        controller: 'SignUpCtrl',
-        controllerAs: 'signUp'
-      })
       .when('/home', {
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
@@ -54,16 +49,16 @@ angular
       method: 'GET',
       url: 'http://localhost:3001/songs?token='+$cookies.get('token'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'}
-    }).then(function (data) {
+    }).then(function () {
       console.log('connected');
       $rootScope.header = "default";
       $location.path('/home');
 
     }, function(error) {
+      $cookies.remove('token');
       console.log(error.data);
       $rootScope.header = "home";
       $location.path('/disconnected');
-
     });
 
   }]);

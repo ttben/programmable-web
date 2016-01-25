@@ -3,13 +3,13 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12 col-md-2">
-        <img class="img-responsive" ng-src={{info.image}} height="200" width="200"
+        <img class="img-responsive" ng-src={{info.image}} ng-cloak height="200" width="200"
              style="border-radius: 5px;margin:0 auto;">
       </div>
       <div class="col-xs-12 col-md-5">
-        <h1>{{info.artist}}</h1>
+        <h1 ng-cloak>{{info.artist}}</h1>
 
-        <h2>{{info.title}}</h2>
+        <h2 ng-cloak>{{info.title}}</h2>
 
         <div class="form-group">
           <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
@@ -45,7 +45,7 @@
         <h2> Charger un mix existant : </h2>
 
         <div ng-repeat="mix in info.mixes" >
-       <a ng-click="loadAMix(mix)"  class="pointer-hover"> {{mix.mixName}}, par {{mix.author}}</a>
+       <a ng-click="loadAMix(mix)"  class="pointer-hover" ng-cloak> {{mix.mixName}}, par {{mix.author}}</a>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
 <!-- track -->
 <div ng-repeat="track in tracks" class="panel panel-default" ng-class="{'track-disabled':track.muted}">
   <div class="panel-heading" style="position:relative">
-    <h3 style="margin:0">{{track.name}}
+    <h3 style="margin:0" ng-cloak>{{track.name}}
       <form class="form-inline" style="position:absolute; top:8px; left:15px">
 
         <button type="button" class="btn btn-default btn-circle btn-sm" ng-click="silenceAskedFrom(track)">S</button>
@@ -123,7 +123,7 @@
   </div>
 </div>
 <!-- loading label -->
-<p ng-show="!tracksLoaded" class="animated infinite pulse">Chargement...
+<p ng-show="!tracksLoaded" ng-cloak class="animated infinite pulse">Chargement...
   ({{tracks.length}}/{{info.tracks.length}})</p>
 
 <div ng-show="aMixIsLoaded" class="panel panel-default">
@@ -132,7 +132,7 @@
   </div>
   <div class="panel-body">
     <ul class="commentList" ng-repeat="comment in loadedMix.comments">
-      <li><div>{{comment.authorName}}</div> <div class="commentText">{{comment.text}}</div></li>
+      <li><div ng-cloak>{{comment.authorName}}</div> <div class="commentText" ng-cloak>{{comment.text}}</div></li>
     <!--  <li>
         <div class="commenterImage">
           <img src="http://lorempixel.com/50/50/people/7" />

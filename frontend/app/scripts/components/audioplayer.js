@@ -17,7 +17,7 @@ angular.module('audioPlayer-directive', [])
             volume: track.volume,
             name: track.name});
           });
-          Music.createMix($scope.info._id, $scope.mixName, newMix, function(successAnswer) {
+          Music.createMix($scope.info._id, $scope.mixName, newMix, function() {
             console.log('managed to create the mix !');
             $scope.saveDrawerOpened = false;
             Music.get($scope.info._id, function(musicReloaded) {
@@ -38,7 +38,7 @@ angular.module('audioPlayer-directive', [])
             $scope.commentToAdd='';
           }, function(error) {
             console.log(error);
-          })
+          });
         };
 
         //Function to load an existing mix instead of the current settings
@@ -94,7 +94,7 @@ angular.module('audioPlayer-directive', [])
                 $scope.tracks.push(track);
                 $scope.start();
               });
-            }
+            };
           })(i));
         }
 
@@ -102,7 +102,7 @@ angular.module('audioPlayer-directive', [])
          * checks if all the tracks are loaded : start the tracks if so
          */
         $scope.start = function () {
-          if ($scope.tracks.length == $scope.info.tracks.length) {
+          if ($scope.tracks.length === $scope.info.tracks.length) {
             $scope.tracksLoaded = true;
 
             for (var i = 0; i < $scope.tracks.length; i++) {
@@ -115,7 +115,7 @@ angular.module('audioPlayer-directive', [])
          * checks if all the tracks are loaded : start the tracks if so
          */
         $scope.start = function () {
-          if ($scope.tracks.length == $scope.info.tracks.length) {
+          if ($scope.tracks.length === $scope.info.tracks.length) {
             $scope.tracksLoaded = true;
 
             for (var i = 0; i < $scope.tracks.length; i++) {

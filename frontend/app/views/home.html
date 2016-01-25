@@ -4,8 +4,8 @@
     <div ng-repeat-start="song in songs" class="col-xs-3">
       <div class="well">
         <a href="" ng-click="getSpecificSong(song._id, '/musicPlayer')">
-          <img ng-src="{{song.image}}" class="img-responsive">
-        <h4 id="songTitle">{{song.title}}</h4>
+          <img ng-src="{{song.image}}" class="img-responsive"  ng-cloak>
+        <h4 id="songTitle"  ng-cloak>{{song.title}}</h4>
         </a>
       </div>
     </div>
