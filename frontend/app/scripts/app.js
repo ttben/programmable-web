@@ -49,15 +49,21 @@ angular
         redirectTo: '/disconnected'
       });
   })
-  .run(['$rootScope', '$location', '$cookies', function($rootScope, $location, $cookies) {
-   // console.log('the token : ' + $cookies.get('token'));
-    if (typeof($cookies.get('token')) !== 'undefined') {
-      console.log('thecookie is ********* ', $cookies.get('token'));
+  .run(['$rootScope', '$location', '$cookies', '$http', function($rootScope, $location, $cookies, $http) {
+    $http({
+      method: 'GET',
+      url: 'http://localhost:3001/songs?token='+$cookies.get('token'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'}
+    }).then(function (data) {
       console.log('connected');
       $rootScope.header = "default";
-    }
-    else {
-      console.log('not connected');
+      $location.path('/home');
+
+    }, function(error) {
+      console.log(error.data);
       $rootScope.header = "home";
-    }
+      $location.path('/disconnected');
+
+    });
+
   }]);
