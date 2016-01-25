@@ -41,7 +41,7 @@ suite('Song tests', function () {
             });
         });
 
-        test('Should returns list of song if user is admin', function (done) {
+        test('Should throw unauthorize exception', function (done) {
             role = "public";
 
             user.signUp(email, pwd, role, function (res) {
