@@ -32,10 +32,12 @@ var getListOfSongsForUserByToken = function(token, successFunction, failFunction
 
 var getListOfSongsForUser = function(user, successFunction, failFunction, unauthorizedUserFunction) {
 
+    /*
     if (user.role == "public") {
         unauthorizedUserFunction(user,"sorry, public can not get the songs bitch");
         return;
     }
+    */
 
     //  Find all songs, delete '__v' attribute,
     //  make the result a plain JS object and exec given function
@@ -66,11 +68,13 @@ var getSongByIdForUserByToken = function(token, songId, successFunction, failFun
 };
 
 var getSongForUserById = function(user, songId, successFunction, failFunction, unauthorizedUserFunction) {
-    console.log("THE USER HAS ROLE", user.role);
+
+    /*
     if (user.role == "public") {
         unauthorizedUserFunction(user,"sorry, public can not get the songs");
         return;
     }
+    */
 
     //	Find all songs, delete '__v' attribute,
     //	make the result a plain JS object and exec given function
