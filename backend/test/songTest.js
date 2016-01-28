@@ -44,18 +44,6 @@ suite('Song tests', function () {
                 });
             });
         });
-
-        test('Should throw unauthorize exception', function (done) {
-            role = "public";
-
-            user.signUp(email, pwd, role, function (res) {
-                song.getListOfSongsForUser(res, null, null, function (result, err) {
-                    assert.equal(res,result);
-                    done();
-                });
-            });
-        });
-
     });
 
 
