@@ -77,9 +77,11 @@ var getMixById = function(mixId, successFunction, failFunction, notFoundFunction
 
 };
 
-var getMixesByUserId = function(userId, successFunction, failFunction) {
-    
-    Mix.find({authorId: userId}, {'__v': 0}, function (err, mixes) {
+var getMixesByUserId = function(token, successFunction, failFunction) {
+
+
+
+    Mix.find({authorId: token}, {'__v': 0}, function (err, mixes) {
         if (err) {
             failFunction(err);
         } else {
@@ -88,6 +90,7 @@ var getMixesByUserId = function(userId, successFunction, failFunction) {
     });
 
 };
+
 
 
 
