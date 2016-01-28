@@ -79,7 +79,7 @@ angular.module('audioPlayer-directive', [])
               });
             });
           }, function(error) {
-            console.log(error);
+          $scope.inError = true;
           });
         };
 
@@ -90,6 +90,7 @@ angular.module('audioPlayer-directive', [])
         $scope.offset = 0; // = audioContext.currentTime - currentTime
 
         $scope.info = $cookies.music;
+
         $scope.tracks = [];
         for (var i = 0; i < $scope.info.tracks.length; i++) {
           $http({
@@ -120,21 +121,12 @@ angular.module('audioPlayer-directive', [])
                 $scope.start();
               });
             };
-          })(i));
+          })(i))
+            .error(function(error) {
+            $scope.inError = true;
+              console.log(error);
+          });
         }
-
-        /**
-         * checks if all the tracks are loaded : start the tracks if so
-         */
-        $scope.start = function () {
-          if ($scope.tracks.length === $scope.info.tracks.length) {
-            $scope.tracksLoaded = true;
-
-            for (var i = 0; i < $scope.tracks.length; i++) {
-              $scope.tracks[i].source.start();
-            }
-          }
-        };
 
         /**
          * checks if all the tracks are loaded : start the tracks if so

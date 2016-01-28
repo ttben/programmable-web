@@ -15,11 +15,17 @@ angular.module('programmableWebApp')
     $scope.currentTrack = 0;
     $scope.pageSize = 5;
     $scope.data = [];
+    $scope.inError = false;
 
     //For each track, we set the uri where we can retrieve it
-    $cookies.music.tracks.forEach(function (track) {
-      track.uri = CONSTANTS.backendUrl + $cookies.music.uri + '/' + track.uri;
-    });
+    if (typeof($cookies.music) !== 'undefined') {
+      $cookies.music.tracks.forEach(function (track) {
+        track.uri = CONSTANTS.backendUrl + $cookies.music.uri + '/' + track.uri;
+      });
+    }
+    else {
+      $scope.inError = true;
+    }
 
 
   }]);
