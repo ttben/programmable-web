@@ -5,7 +5,7 @@
  */
 angular.module('programmableWebApp')
   .factory('User', ['$http', 'CONSTANTS', '$cookies', function($http, CONSTANTS, $cookies) {
-    var obj = {
+    return {
       authenticate: function (userEmail, userPassword, successCB, failCB) {
         $cookies.remove('token');
         $cookies.remove('userName');
@@ -29,8 +29,8 @@ angular.module('programmableWebApp')
             failCB(data);
           });
       },
-      signUp: function (userEmail, userPassword, successCB, failCB) {
-        var newUser = {"email": userEmail, "password": userPassword, "role": "admin"};
+      signUp: function (userEmail, userPassword, userRole, successCB, failCB) {
+        var newUser = {"email": userEmail, "password": userPassword, "role": userRole};
         $cookies.remove('token');
         $cookies.remove('userName');
         $http({
@@ -53,6 +53,5 @@ angular.module('programmableWebApp')
           });
       }
   };
-    return obj;
 
   }]);

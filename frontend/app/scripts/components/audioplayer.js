@@ -37,32 +37,35 @@ angular.module('audioPlayer-directive', [])
             $scope.commentToAdd='';
             Music.loadMix($scope.loadedMix._id, function(mixReloaded) {
               $scope.loadedMix = mixReloaded.data;
-              console.log(mixReloaded);
             }, function(error) {
               console.log(error);
-            })
+            });
           }, function(error) {
             console.log(error);
           });
         };
 
         //Function to load an existing mix instead of the current settings
-        $scope.loadAMix = function(theMix) {
-          $scope.aMixIsLoaded = true;
-          $scope.loadedMix = theMix;
-          $scope.tracks.forEach(function(track) {
-            theMix.tracks.forEach(function(mixTrack) {
-              if (track.name === mixTrack.name) {
-                track.panNode.pan.value = mixTrack.panValue;
-                track.trebleFilter.gain.value = mixTrack.trebleValue;
-                track.bassFilter.gain.value = mixTrack.bassValue;
-                track.muted = mixTrack.muted;
-                track.volume = mixTrack.volume ;
-              }
+        $scope.loadAMix = function(theMixId) {
+          Music.loadMix(theMixId, function(mixLoaded) {
+            $scope.loadedMix = mixLoaded.data;
+            $scope.aMixIsLoaded = true;
+            $scope.tracks.forEach(function(track) {
+              $scope.loadedMix.tracks.forEach(function(mixTrack) {
+                if (track.name === mixTrack.name) {
+                  track.panNode.pan.value = mixTrack.panValue;
+                  track.trebleFilter.gain.value = mixTrack.trebleValue;
+                  track.bassFilter.gain.value = mixTrack.bassValue;
+                  track.muted = mixTrack.muted;
+                  track.volume = mixTrack.volume ;
+                }
+              });
             });
+          }, function(error) {
+            console.log(error);
           });
-
         };
+
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
         $scope.audioContext.suspend(); // immediately suspend the context (or the currentTime will start incrementing)

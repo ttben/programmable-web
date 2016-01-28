@@ -45,7 +45,7 @@
         <h2> Charger un mix existant : </h2>
 
         <div ng-repeat="mix in info.mixes" >
-       <a ng-click="loadAMix(mix)"  class="pointer-hover" ng-cloak> {{mix.mixName}}, par {{mix.author}} (créé le {{ mix.date | date:'dd/MM/yyyy'}} à {{ mix.date | date:'H:mm'}})</a>
+       <a ng-click="loadAMix(mix._id)"  class="pointer-hover" ng-cloak> {{mix.mixName}}, par {{mix.author}} (créé le {{ mix.date | date:'dd/MM/yyyy'}} à {{ mix.date | date:'H:mm'}})</a>
         </div>
       </div>
     </div>
@@ -132,14 +132,15 @@
   </div>
   <div class="panel-body">
     <ul class="commentList" ng-repeat="comment in loadedMix.comments">
+      <hr style="border-top: dotted 1px;" />
       <li>
         <h3 class="text-left" ng-cloak>Par {{comment.authorName}} le {{ comment.date | date:'dd/MM/yyyy'}} à {{ comment.date | date:'H:mm'}}</h3>
         <div class="commentText" ng-cloak>{{comment.text}}</div></li>
     </ul>
+    <hr style="border-top: dotted 1px;" />
     <form class="form-inline" role="form">
       <div class="form-group">
         <input class="form-control" type="text" ng-model="commentToAdd" placeholder="Votre commentaire" />
-        <!--TODO:ngmodel, puis appel vers un service qui ajoute & met à jour -->
       </div>
         <button class="btn btn-sm" ng-click="addComment()">Ajouter</button>
     </form>
