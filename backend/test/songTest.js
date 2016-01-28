@@ -4,10 +4,14 @@ var song = require('../models/Song');
 var user = require('../models/User');
 var mongoose = require("mongoose");
 
-var db_url = "mongodb://localhost/testSong";
-mongoose.connect(db_url);
+
 
 suite('Song tests', function () {
+    suiteSetup(function() {
+        var db_url = "mongodb://localhost/testSong";
+        mongoose.connect(db_url);
+    });
+
     setup(function (done) {
         var callsNeeded = 2;
 
