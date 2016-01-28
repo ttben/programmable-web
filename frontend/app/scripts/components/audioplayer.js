@@ -12,20 +12,22 @@ angular.module('audioPlayer-directive', [])
         $scope.inError = false;
 
         //Function to save a new mix in the database. Should add params as name
-        $scope.saveMyMix = function() {
+        $scope.saveMyMix = function () {
           var newMix = [];
-          $scope.tracks.forEach(function(track) {
-            newMix.push({panValue:track.panNode.pan.value,
+          $scope.tracks.forEach(function (track) {
+            newMix.push({
+              panValue: track.panNode.pan.value,
               trebleValue: track.trebleFilter.gain.value,
               bassValue: track.bassFilter.gain.value,
-            muted:track.muted,
-            volume: track.volume,
-            name: track.name});
+              muted: track.muted,
+              volume: track.volume,
+              name: track.name
+            });
           });
-          $scope.saveDrawerOpened = false;
+
           Music.createMix($scope.info._id, $scope.mixName, newMix, function() {
             $scope.saveDrawerOpened = false;
-            Music.get($scope.info._id, function(musicReloaded) {
+            Music.get($scope.info._id, function (musicReloaded) {
               $scope.info.mixes = musicReloaded.data.mixes;
             }, function() {
               $scope.inError = true;
@@ -112,11 +114,18 @@ angular.module('audioPlayer-directive', [])
                 track.bassFilter.type = "lowshelf";
                 track.bassFilter.frequency.value = 200;
                 track.panNode = $scope.audioContext.createStereoPanner();
+
                 track.source.connect(track.gainNode);
                 track.gainNode.connect(track.trebleFilter);
                 track.trebleFilter.connect(track.bassFilter);
                 track.bassFilter.connect(track.panNode);
                 track.panNode.connect($scope.audioContext.destination);
+
+                track.analyser = $scope.audioContext.createAnalyser();
+                track.analyser.smoothingTimeConstant = 0.3;
+                track.analyser.fftSize = 1024;
+                track.gainNode.connect(track.analyser);
+
                 $scope.tracks.push(track);
                 $scope.start();
               });
@@ -139,6 +148,9 @@ angular.module('audioPlayer-directive', [])
               $scope.tracks[i].source.start();
             }
           }
+        };
+
+        var addAnalyser = function (nodeSource) {
         };
 
         /**
@@ -185,6 +197,7 @@ angular.module('audioPlayer-directive', [])
             $scope.tracks[i].source.buffer = buffer;
             $scope.tracks[i].source.connect($scope.tracks[i].gainNode);
             $scope.tracks[i].source.start(0, timeSelected);
+            $scope.tracks[i].source.connect($scope.tracks[i].analyser);
             $scope.currentTime = timeSelected;
             $scope.offset = $scope.audioContext.currentTime - $scope.currentTime;
           }
@@ -215,12 +228,49 @@ angular.module('audioPlayer-directive', [])
         };
 
         /**
+         * Draws a spectrum
+         */
+        var drawSpectrum = function (ctx, array) {
+          for (var i = 0; i < (array.length); i++) {
+            var value = array[i];
+            ctx.fillRect(i * 4, 1080 - value * 3, 3, 1080);
+          }
+        };
+
+        /**
          * update our currentTime when the audioContext.currentTime is updated
          */
         $scope.$watch(function () {
           return $scope.audioContext.currentTime;
         }, function () {
           $scope.currentTime = $scope.audioContext.currentTime - $scope.offset;
+
+          if (!$scope.tracksLoaded)return;
+          var arrays = [];
+          for (var i = 0; i < $scope.tracks.length; i++) {
+            var array = new Uint8Array($scope.tracks[i].analyser.frequencyBinCount);
+            $scope.tracks[i].analyser.getByteFrequencyData(array);
+            arrays.push(array);
+          }
+          var finalArray = [];
+
+          for (var j = 0; j < arrays[0].length; j++) {
+            var average = 0;
+            for (var i = 0; i < arrays.length; i++) {
+              average += arrays[i][j];
+            }
+            finalArray.push(average/arrays.length);
+          }
+
+          var element = angular.element(document.querySelector('#canvas'));
+          var ctx = element[0].getContext('2d');
+          // clear the current state
+          ctx.clearRect(0, 0, element.width(), element.height());
+
+          // set the fill style
+          ctx.fillStyle = "white";
+
+          drawSpectrum(ctx, finalArray);
         });
 
         $scope.$on("$destroy", function () {
