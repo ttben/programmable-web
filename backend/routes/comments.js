@@ -4,7 +4,7 @@ var router = express.Router();
 
 var Comment = require('../models/Comment');
 var Mix = require('../models/Mix');
-
+var User = require('../models/User');
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
