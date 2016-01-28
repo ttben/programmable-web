@@ -34,8 +34,13 @@ angular.module('audioPlayer-directive', [])
           console.log('You want to add a comment to the mix ', $scope.loadedMix._id);
         //  commentToAdd
           Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function() {
-            console.log('managed to add the comment');
             $scope.commentToAdd='';
+            Music.loadMix($scope.loadedMix._id, function(mixReloaded) {
+              $scope.loadedMix = mixReloaded.data;
+              console.log(mixReloaded);
+            }, function(error) {
+              console.log(error);
+            })
           }, function(error) {
             console.log(error);
           });
