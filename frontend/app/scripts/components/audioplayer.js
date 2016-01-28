@@ -7,52 +7,54 @@ angular.module('audioPlayer-directive', [])
       controller: function ($scope) {
 
         //Function to save a new mix in the database. Should add params as name
-        $scope.saveMyMix = function() {
+        $scope.saveMyMix = function () {
           var newMix = [];
-          $scope.tracks.forEach(function(track) {
-            newMix.push({panValue:track.panNode.pan.value,
+          $scope.tracks.forEach(function (track) {
+            newMix.push({
+              panValue: track.panNode.pan.value,
               trebleValue: track.trebleFilter.gain.value,
               bassValue: track.bassFilter.gain.value,
-            muted:track.muted,
-            volume: track.volume,
-            name: track.name});
+              muted: track.muted,
+              volume: track.volume,
+              name: track.name
+            });
           });
-          Music.createMix($scope.info._id, $scope.mixName, newMix, function() {
+          Music.createMix($scope.info._id, $scope.mixName, newMix, function () {
             console.log('managed to create the mix !');
             $scope.saveDrawerOpened = false;
-            Music.get($scope.info._id, function(musicReloaded) {
+            Music.get($scope.info._id, function (musicReloaded) {
               $scope.info.mixes = musicReloaded.data.mixes;
-            }, function() {
+            }, function () {
               console.log('error :(');
             });
-          }, function(error) {
+          }, function (error) {
             console.log(error);
           });
         };
-        $scope.commentToAdd='';
-        $scope.addComment = function() {
+        $scope.commentToAdd = '';
+        $scope.addComment = function () {
           console.log('You want to add a comment to the mix ', $scope.loadedMix._id);
-        //  commentToAdd
-          Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function() {
+          //  commentToAdd
+          Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function () {
             console.log('managed to add the comment');
-            $scope.commentToAdd='';
-          }, function(error) {
+            $scope.commentToAdd = '';
+          }, function (error) {
             console.log(error);
           });
         };
 
         //Function to load an existing mix instead of the current settings
-        $scope.loadAMix = function(theMix) {
+        $scope.loadAMix = function (theMix) {
           $scope.aMixIsLoaded = true;
           $scope.loadedMix = theMix;
-          $scope.tracks.forEach(function(track) {
-            theMix.tracks.forEach(function(mixTrack) {
+          $scope.tracks.forEach(function (track) {
+            theMix.tracks.forEach(function (mixTrack) {
               if (track.name === mixTrack.name) {
                 track.panNode.pan.value = mixTrack.panValue;
                 track.trebleFilter.gain.value = mixTrack.trebleValue;
                 track.bassFilter.gain.value = mixTrack.bassValue;
                 track.muted = mixTrack.muted;
-                track.volume = mixTrack.volume ;
+                track.volume = mixTrack.volume;
               }
             });
           });
@@ -86,11 +88,18 @@ angular.module('audioPlayer-directive', [])
                 track.bassFilter.type = "lowshelf";
                 track.bassFilter.frequency.value = 200;
                 track.panNode = $scope.audioContext.createStereoPanner();
+
                 track.source.connect(track.gainNode);
                 track.gainNode.connect(track.trebleFilter);
                 track.trebleFilter.connect(track.bassFilter);
                 track.bassFilter.connect(track.panNode);
                 track.panNode.connect($scope.audioContext.destination);
+
+                track.analyser = $scope.audioContext.createAnalyser();
+                track.analyser.smoothingTimeConstant = 0.3;
+                track.analyser.fftSize = 1024;
+                track.gainNode.connect(track.analyser);
+
                 $scope.tracks.push(track);
                 $scope.start();
               });
@@ -109,6 +118,9 @@ angular.module('audioPlayer-directive', [])
               $scope.tracks[i].source.start();
             }
           }
+        };
+
+        var addAnalyser = function (nodeSource) {
         };
 
         /**
@@ -168,6 +180,7 @@ angular.module('audioPlayer-directive', [])
             $scope.tracks[i].source.buffer = buffer;
             $scope.tracks[i].source.connect($scope.tracks[i].gainNode);
             $scope.tracks[i].source.start(0, timeSelected);
+            $scope.tracks[i].source.connect($scope.tracks[i].analyser);
             $scope.currentTime = timeSelected;
             $scope.offset = $scope.audioContext.currentTime - $scope.currentTime;
           }
@@ -198,12 +211,49 @@ angular.module('audioPlayer-directive', [])
         };
 
         /**
+         * Draws a spectrum
+         */
+        var drawSpectrum = function (ctx, array) {
+          for (var i = 0; i < (array.length); i++) {
+            var value = array[i];
+            ctx.fillRect(i * 4, 1080 - value * 3, 3, 1080);
+          }
+        };
+
+        /**
          * update our currentTime when the audioContext.currentTime is updated
          */
         $scope.$watch(function () {
           return $scope.audioContext.currentTime;
         }, function () {
           $scope.currentTime = $scope.audioContext.currentTime - $scope.offset;
+
+          if (!$scope.tracksLoaded)return;
+          var arrays = [];
+          for (var i = 0; i < $scope.tracks.length; i++) {
+            var array = new Uint8Array($scope.tracks[i].analyser.frequencyBinCount);
+            $scope.tracks[i].analyser.getByteFrequencyData(array);
+            arrays.push(array);
+          }
+          var finalArray = [];
+
+          for (var j = 0; j < arrays[0].length; j++) {
+            var average = 0;
+            for (var i = 0; i < arrays.length; i++) {
+              average += arrays[i][j];
+            }
+            finalArray.push(average/arrays.length);
+          }
+
+          var element = angular.element(document.querySelector('#canvas'));
+          var ctx = element[0].getContext('2d');
+          // clear the current state
+          ctx.clearRect(0, 0, element.width(), element.height());
+
+          // set the fill style
+          ctx.fillStyle = "white";
+
+          drawSpectrum(ctx, finalArray);
         });
 
         $scope.$on("$destroy", function () {
