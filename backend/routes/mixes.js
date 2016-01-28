@@ -83,7 +83,7 @@ router.post('/', function (req, res) {
     User.checkUserExistsByToken(
         token,
         function (user) {
-            if (user.role == 'public') {
+            if (user.role == 'public' || user.role == 'user') {
                 res.status(403).send("User " + user + " is not allowed to add mixes");
                 return;
             }
