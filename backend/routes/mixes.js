@@ -74,6 +74,15 @@ router.post('/', function (req, res) {
 
 router.get('/:mixId', function (req, res) {
 
+    var token = req.query.token;
+
+    if (token == undefined || token == null) {
+        res.status(403).send("You must specify userId duuuude ! Please gimme dat");
+        return;
+    }
+
+    //  TODO check if user can access MIXES
+
     Mix.getMixById(
         req.params.mixId,
         function(mix) {

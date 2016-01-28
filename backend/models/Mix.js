@@ -20,7 +20,6 @@ var Mix = mongoose.model('Mix', MixSchema);
 
 var Song = require('./Song');
 
-
 var storeMix = function(mix, successFunction, failFunction, notFoundFunction) {
 
 

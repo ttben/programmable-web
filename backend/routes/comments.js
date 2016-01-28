@@ -43,16 +43,14 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     var mixId = req.body.mixId,
         authorName =  req.body.authorName,
-        text = req.body.text,
-        date =req.body.date;
+        text = req.body.text;
 
-    console.log("mixId", mixId, "authorName", authorName, "text", text, "date", date);
+    console.log("mixId", mixId, "authorName", authorName, "text", text);
 
     var comment = new Comment({
       mixId: mixId,
       authorName: authorName,
-      text: text,
-      date: date
+      text: text
     });
 
     Mix.getMixById(
@@ -61,27 +59,17 @@ router.post('/', function (req, res) {
 
             mix.addComment(comment);
 
-            Mix.storeMix(
-                mix,
-                function(mixResult) {
-                    comment.save(function (err, commentRes) {
-                        if (err) {
-                            res.status(500).send("Internal error buddy. Sorry." + err);
-                        }
-                        else {
-                            res.status(200).send(commentRes);
-                        }
-                    });
-                },
-                function(err) {
-                    res.status(500).send("Internal error buddy. Sorry. " + err);
-                },
-                function() {
-                    res.status(404).send("Can not find specified song with given Id : " + req.params.mixId);
-                }
-            );
-
-
+            comment.save(function(err, commentResult) {
+                mix.save(function (err, mixResult) {
+                    if (err) {
+                        res.status(500).send("Internal error buddy. Sorry. " + err);
+                        return;
+                    } else {
+                        res.status(200).send(commentResult);
+                        return;
+                    }
+                });
+            });
         },
         function(err) {
             res.status(500).send("Internal error buddy. Sorry. " + err);
