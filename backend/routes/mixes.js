@@ -110,18 +110,22 @@ router.get('/:mixId', function (req, res) {
         return;
     }
 
-    //  TODO check if user can access MIXES
+    var getMixById = function() {
+        Mix.getMixById(
+            req.params.mixId,
+            function (mix) {
+                res.status(200).send(mix);
+            },
+            function (err) {
+                res.status(500).send("Internal error buddy. Sorry. " + err);
+            },
+            function(mixID) {
+                res.status(404).send("Can not find mix with specified id : " + mixID);
+            }
+        );
+    };
 
-    Mix.getMixById(
-        req.params.mixId,
-        function (mix) {
-            res.status(200).send(mix);
-        },
-        function (err) {
-            res.status(500).send("Internal error buddy. Sorry. " + err);
-        }
-    );
-
+    getMixById();
 });
 
 router.get('/', function (req, res) {
