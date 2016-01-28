@@ -39,7 +39,7 @@ var storeMix = function(mix, successFunction, failFunction, notFoundFunction) {
                 notFoundFunction();
                 return;
             }
-            console.log(song);
+
             if (song == null) {
             	// failFunction(err);
                 notFoundFunction();
@@ -61,13 +61,18 @@ var storeMix = function(mix, successFunction, failFunction, notFoundFunction) {
 
 };
 
-var getMixById = function(mixId, successFunction, failFunction) {
+var getMixById = function(mixId, successFunction, failFunction, notFoundFunction) {
     
-    Mix.findOne({_id: mixId}, {'__v': 0}).lean().exec(function (err, mix) {
+    Mix.findOne({_id: mixId}, {'__v': 0}, function (err, mix) {
         if (err) {
             failFunction(err);
         } else {
-	        successFunction(mix || {});
+            if (mix == null || mix == undefined) {
+                notFoundFunction(mixId);
+            }
+            else {
+                successFunction(mix || {});
+            }
         }
     });
 
@@ -75,7 +80,7 @@ var getMixById = function(mixId, successFunction, failFunction) {
 
 var getMixesByUserId = function(userId, successFunction, failFunction) {
     
-    Mix.find({authorId: userId}, {'__v': 0}).lean().exec(function (err, mixes) {
+    Mix.find({authorId: userId}, {'__v': 0}, function (err, mixes) {
         if (err) {
             failFunction(err);
         } else {

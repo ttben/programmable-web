@@ -22,9 +22,6 @@ router.post('/', function (req, res) {
     var musicId = req.body.musicId;
     var mixName = req.body.mixName;
     var tracks = req.body.tracks;
-    // var comments = req.body.comments;
-    // var rating = req.body.rating;
-
 
     if (authorId == null || authorId == undefined) {
         res.status(400).send("Please check that you are sending authorId field. I didn't find it. Thanks!");
@@ -91,9 +88,12 @@ router.get('/:mixId', function (req, res) {
 
 router.get('/', function (req, res) {
 
-    if (req.query.userId != undefined && req.query.userId != null) {
-        userId = req.query.userId;
+    if (req.query.userId == undefined || req.query.userId == null) {
+        res.status(403).send("You must specify userId duuuude ! Please gimme dat");
+        return;
     }
+
+    var userId = req.query.userId;
 
     Mix.getMixesByUserId(
         userId,
