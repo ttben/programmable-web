@@ -18,4 +18,85 @@ MixSchema.methods.addComment = function(commentDocument) {
 
 var Mix = mongoose.model('Mix', MixSchema);
 
+var Song = require('./Song');
+
+var storeMix = function(mix, successFunction, failFunction, notFoundFunction) {
+
+
+    mix.save(function (err, mixResult) {
+        if (err) {
+            failFunction(err);
+            return;
+        }
+
+        //  Get the base song
+        Song.findOne({'_id': mix.musicId}, function (err, song) {
+
+            if (err) {
+            	// console.log(err);
+            	// failFunction(err);
+                notFoundFunction();
+                return;
+            }
+
+            if (song == null) {
+            	// failFunction(err);
+                notFoundFunction();
+                return;
+            }
+
+            song.addMix(mixResult);
+
+            song.save(function (err, songResult) {
+                if (err) {
+		            failFunction(err);
+                } else {
+	                successFunction(mixResult);
+                }
+            });
+
+        });
+    });
+
+};
+
+var getMixById = function(mixId, successFunction, failFunction, notFoundFunction) {
+    
+    Mix.findOne({_id: mixId}, {'__v': 0}, function (err, mix) {
+        if (err) {
+            failFunction(err);
+        } else {
+            if (mix == null || mix == undefined) {
+                notFoundFunction(mixId);
+            }
+            else {
+                successFunction(mix || {});
+            }
+        }
+    });
+
+};
+
+var getMixesByUserId = function(token, successFunction, failFunction) {
+
+
+
+    Mix.find({authorId: token}, {'__v': 0}, function (err, mixes) {
+        if (err) {
+            failFunction(err);
+        } else {
+	        successFunction(mixes || []);
+        }
+    });
+
+};
+
+
+
+
+Mix.storeMix = storeMix;
+Mix.getMixById = getMixById;
+Mix.getMixesByUserId = getMixesByUserId;
+
+
 module.exports =  Mix;

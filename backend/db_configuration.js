@@ -138,12 +138,12 @@ db.once('open', function () {
             mixes: []
         });
     song3.addMix({
-          "_id": 1,
+          "_id": 2,
           "author": "Jean-Hugo",
           "mixName": "Wesh je mix"
         });
     song3.addMix({
-          "_id": 3,
+          "_id": 4,
           "author": "Hugo-xavier",
           "mixName": "Mon autre mix"
         });

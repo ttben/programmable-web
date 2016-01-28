@@ -3,7 +3,8 @@ var express = require('express');
 var router = express.Router();
 
 var Comment = require('../models/Comment');
-
+var Mix = require('../models/Mix');
+var User = require('../models/User');
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -40,22 +41,69 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var mixId = req.query.mixId;
+    var token = req.query.token;
 
-    var comment = new Comment({
-      "mixId": req.body.mixId,
-      "authorName": req.body.authorName,
-      "text": req.body.text,
-      "date": req.body.date
-    });
-    comment.save(function (err, commentRes) {
-        if (err) {
-            res.status(500).send("Internal error buddy. Sorry." + err);
-        }
-        else {
-            res.status(200).send(commentRes);
-        }
-    });
+    if(token == null || token == undefined) {
+        res.status(401).send("Token not specified. Please gimme dat token");
+        return;
+    }
+
+    var postComment = function() {
+
+        var mixId = req.body.mixId,
+            authorName = req.body.authorName,
+            text = req.body.text;
+
+        console.log("mixId", mixId, "authorName", authorName, "text", text);
+
+        var comment = new Comment({
+            mixId: mixId,
+            authorName: authorName,
+            text: text
+        });
+
+        Mix.getMixById(
+            mixId,
+            function (mix) {
+
+                mix.addComment(comment);
+
+                comment.save(function (err, commentResult) {
+                    mix.save(function (err, mixResult) {
+                        if (err) {
+                            res.status(500).send("Internal error buddy. Sorry. " + err);
+                            return;
+                        } else {
+                            res.status(200).send(commentResult);
+                            return;
+                        }
+                    });
+                });
+            },
+            function (err) {
+                res.status(500).send("Internal error buddy. Sorry. " + err);
+            },
+            function (mixId) {
+                res.status(404).send("mixId can not be found buddy. Sorry ! " + mixId);
+            }
+        )
+    }
+
+    User.checkUserExistsByToken(
+        token,
+        function (user) {
+            if (user.role == 'public') {
+                res.status(403).send("User " + user + " is not allowed to add comment dude");
+                return;
+            }
+
+            postComment();
+        },
+        function (err) {
+            res.status(500).send(err);
+        }, function () {
+            res.status(404).send("Given token was not found");
+        });
 
 });
 

@@ -1,6 +1,6 @@
 <div style="min-height: 75px"></div>
 <div class="container" id="musicList">
-  <div class="row">
+  <div class="row" ng-show="!inError">
     <div ng-repeat-start="song in songs" class="col-xs-3">
       <div class="well">
         <a href="" ng-click="getSpecificSong(song._id, '/musicPlayer')">
@@ -12,5 +12,11 @@
     <div ng-repeat-end=""></div>
 
   </div><!--/row-->
+  <div ng-show="inError" class="row">
+    <div class="text-center">
+      <img src="../images/oops.jpg"/>
+      <h1>DAMN! Une erreur serveur est survenue. Vérifiez l'état du serveur avant de réessayer. </h1>
+    </div>
+  </div>
   <hr>
 </div><!--/container-->

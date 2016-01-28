@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var Mix = require('../models/Mix');
-var Song = require('../models/Song')
+var Song = require('../models/Song');
+var User = require('../models/User');
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -17,113 +18,135 @@ router.use(function (req, res, next) {
 });
 
 router.post('/', function (req, res) {
-    var authorId = req.body.authorId;
-    var author = req.body.author;
-    var musicId = req.body.musicId;
-    var mixName = req.body.mixName;
-    var tracks = req.body.tracks;
-    // var comments = req.body.comments;
-    // var rating = req.body.rating;
+    var token = req.query.token;
 
-
-    if (authorId == null || authorId == undefined) {
-        res.status(400).send("Please check that you are sending authorId field. I didn't find it. Thanks!");
+    if(token == null || token == undefined) {
+        res.status(401).send("Token required please. Gimme that parameter please");
         return;
     }
 
-    if (author == null || author == undefined) {
-        res.status(400).send("Please check that you are sending author field. I didn't find it. Thanks!");
-        return;
-    }
+    var postMix = function() {
 
-    if (musicId == null || musicId == undefined) {
-        res.status(400).send("Please check that you are sending musicId field. I didn't find it. Thanks!");
-        return;
-    }
+        var authorId = req.body.authorId;
+        var author = req.body.author;
+        var musicId = req.body.musicId;
+        var mixName = req.body.mixName;
+        var tracks = req.body.tracks;
 
-    if (mixName == null || mixName == undefined) {
-        res.status(400).send("Please check that you are sending mixName field. I didn't find it. Thanks!");
-        return;
-    }
-
-    if (tracks == null || tracks == undefined) {
-        res.status(400).send("Please check that you are sending tracks field. I didn't find it. Thanks!");
-        return;
-    }
-
-    var mix = new Mix({
-        authorId: authorId,
-        author: author,
-        musicId: musicId,
-        mixName: mixName,
-        tracks: tracks
-    });
-
-    mix.save(function (err, mixResult) {
-        if (err) {
-            res.status(500).send("Internal error buddy. Sorry. " + err);
+        if (authorId == null || authorId == undefined) {
+            res.status(400).send("Please check that you are sending authorId field. I didn't find it. Thanks!");
             return;
         }
 
-        //  Get the base song
-        Song.findOne({'_id': musicId}, function (err, song) {
+        if (author == null || author == undefined) {
+            res.status(400).send("Please check that you are sending author field. I didn't find it. Thanks!");
+            return;
+        }
 
-            if (err) {
-                console.error(err);
+        if (musicId == null || musicId == undefined) {
+            res.status(400).send("Please check that you are sending musicId field. I didn't find it. Thanks!");
+            return;
+        }
 
-                res.status(404).send("Can not find specified song with given Id : " + musicId);
-                return;
+        if (mixName == null || mixName == undefined) {
+            res.status(400).send("Please check that you are sending mixName field. I didn't find it. Thanks!");
+            return;
+        }
 
-            }
-            console.log(song.prototype);
+        if (tracks == null || tracks == undefined) {
+            res.status(400).send("Please check that you are sending tracks field. I didn't find it. Thanks!");
+            return;
+        }
 
-            song.addMix(mixResult);
-
-            song.save(function (err, songResult) {
-                console.log(songResult);
-                if (err) {
-                    res.status(500).send("Oups " + err);
-                } else {
-                    res.status(200).send(mixResult);
-                }
-            });
-
+        var mix = new Mix({
+            authorId: authorId,
+            author: author,
+            musicId: musicId,
+            mixName: mixName,
+            tracks: tracks
         });
-    });
+
+        Mix.storeMix(
+            mix,
+            function (mixResult) {
+                res.status(200).send(mixResult);
+            },
+            function (err) {
+                res.status(500).send("Internal error buddy. Sorry. " + err);
+            },
+            function () {
+                res.status(404).send("Can not find specified song with given Id : " + musicId);
+            }
+        );
+    };
+
+    User.checkUserExistsByToken(
+        token,
+        function (user) {
+            if (user.role == 'public' || user.role == 'user') {
+                res.status(403).send("User " + user + " is not allowed to add mixes");
+                return;
+            }
+
+            postMix();
+        },
+        function (err) {
+            res.status(500).send(err);
+        }, function () {
+            res.status(404).send("Given token was not found");
+        });
+
+
 
 
 });
 
 router.get('/:mixId', function (req, res) {
-    Mix.find({_id: req.params.mixId}, {'__v': 0}).lean().exec(function (err, mix) {
-        if (err) {
-            res.json({
-                type: false,
-                data: "Error occured: " + err
-            });
-        } else {
-            res.send(mix[0] || {});
-        }
-    });
+
+    var token = req.query.token;
+
+    if (token == undefined || token == null) {
+        res.status(403).send("You must specify userId duuuude ! Please gimme dat");
+        return;
+    }
+
+    var getMixById = function() {
+        Mix.getMixById(
+            req.params.mixId,
+            function (mix) {
+                res.status(200).send(mix);
+            },
+            function (err) {
+                res.status(500).send("Internal error buddy. Sorry. " + err);
+            },
+            function(mixID) {
+                res.status(404).send("Can not find mix with specified id : " + mixID);
+            }
+        );
+    };
+
+    getMixById();
 });
 
 router.get('/', function (req, res) {
 
-    var filter = {};
-    if (req.query.userId != undefined && req.query.userId != null) {
-        filter.authorId = req.query.userId;
+    if (req.query.userId == undefined || req.query.userId == null) {
+        res.status(403).send("You must specify userId duuuude ! Please gimme dat");
+        return;
     }
 
-    Mix.find(filter, {'__v': 0}).lean().exec(function (err, mixes) {
-        if (err) {
-            res.json({
-                type: false,
-                data: "Error occured: " + err
-            });
-        } else {
-            res.send(mixes || []);
+    var userId = req.query.userId;
+
+    Mix.getMixesByUserId(
+        userId,
+        function (mixes) {
+            res.status(200).send(mixes);
+        },
+        function (err) {
+            res.status(500).send("Internal error buddy. Sorry. " + err);
         }
-    });
+    );
+
 });
 
 module.exports = router;

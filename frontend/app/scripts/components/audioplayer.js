@@ -5,6 +5,11 @@ angular.module('audioPlayer-directive', [])
       restrict: 'E',
       scope: {},
       controller: function ($scope) {
+        //This is to remember if the user was authorized to save a mix after his first attempt
+        $scope.mixCreationAuthorized = true;
+        $scope.commentWritingAuthorized = true;
+        //This is to deal with error cases from the server, not related to user .
+        $scope.inError = false;
 
         //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function () {
@@ -19,47 +24,67 @@ angular.module('audioPlayer-directive', [])
               name: track.name
             });
           });
-          Music.createMix($scope.info._id, $scope.mixName, newMix, function () {
-            console.log('managed to create the mix !');
+
+          Music.createMix($scope.info._id, $scope.mixName, newMix, function() {
             $scope.saveDrawerOpened = false;
             Music.get($scope.info._id, function (musicReloaded) {
               $scope.info.mixes = musicReloaded.data.mixes;
-            }, function () {
-              console.log('error :(');
+            }, function() {
+              $scope.inError = true;
             });
-          }, function (error) {
+          }, function(error) {
+            if (error.status === 403) {
+              alert("Vous ne diposez pas de droits suffisants pour enregistrer un mix. Contactez un administrateur. ");
+              $scope.mixCreationAuthorized = false;
+            }
+            else {
+              $scope.inError = true;
+            }
             console.log(error);
           });
         };
-        $scope.commentToAdd = '';
-        $scope.addComment = function () {
-          console.log('You want to add a comment to the mix ', $scope.loadedMix._id);
-          //  commentToAdd
-          Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function () {
-            console.log('managed to add the comment');
-            $scope.commentToAdd = '';
-          }, function (error) {
+        $scope.commentToAdd='';
+        $scope.addComment = function() {
+          Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function() {
+            $scope.commentToAdd='';
+            Music.loadMix($scope.loadedMix._id, function(mixReloaded) {
+              $scope.loadedMix = mixReloaded.data;
+            }, function(error) {
+              $scope.inError = true;
+            });
+          }, function(error) {
+            if (error.status === 403) {
+              alert("Vous ne diposez pas de droits suffisants pour commenter un mix. Contactez un administrateur. ");
+              $scope.commentWritingAuthorized = false;
+            }
+            else {
+              $scope.inError = true;
+            }
             console.log(error);
           });
         };
 
         //Function to load an existing mix instead of the current settings
-        $scope.loadAMix = function (theMix) {
-          $scope.aMixIsLoaded = true;
-          $scope.loadedMix = theMix;
-          $scope.tracks.forEach(function (track) {
-            theMix.tracks.forEach(function (mixTrack) {
-              if (track.name === mixTrack.name) {
-                track.panNode.pan.value = mixTrack.panValue;
-                track.trebleFilter.gain.value = mixTrack.trebleValue;
-                track.bassFilter.gain.value = mixTrack.bassValue;
-                track.muted = mixTrack.muted;
-                track.volume = mixTrack.volume;
-              }
+        $scope.loadAMix = function(theMixId) {
+          Music.loadMix(theMixId, function(mixLoaded) {
+            $scope.loadedMix = mixLoaded.data;
+            $scope.aMixIsLoaded = true;
+            $scope.tracks.forEach(function(track) {
+              $scope.loadedMix.tracks.forEach(function(mixTrack) {
+                if (track.name === mixTrack.name) {
+                  track.panNode.pan.value = mixTrack.panValue;
+                  track.trebleFilter.gain.value = mixTrack.trebleValue;
+                  track.bassFilter.gain.value = mixTrack.bassValue;
+                  track.muted = mixTrack.muted;
+                  track.volume = mixTrack.volume ;
+                }
+              });
             });
+          }, function(error) {
+            console.log(error);
           });
-
         };
+
         $scope.globalVolume = 1; //the global gain
         $scope.audioContext = new (window.AudioContext || window.webkitAudioContext)(); // the audio context (with browser compatibility)
         $scope.audioContext.suspend(); // immediately suspend the context (or the currentTime will start incrementing)

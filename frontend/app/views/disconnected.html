@@ -1,6 +1,32 @@
 <div class="jumbotron">
-  <h1>Welcome on our music App !</h1>
-  <p>This was made for the programmable web - server and client side courses.</p>
-  <p>Feel free to create an account and try to listen to some mixes, rate, comment... :)</p>
-<p>This app was made with AngularJS for the front end part, and vanilla nodeJS for the back end. </p>
+  <h1>Bienvenue sur notre application de mix de musiques !</h1>
+  <p>Elle a été réalisée conjointemenet pour les cours de programmable Web - client side et server side. </p>
+  <p>N'hésitez pas à créer un compte, et essayez d'écouter des chansons, des mixes, d'écrire un commentaire... :)</p>
+<p> Cette appli a été réalisée avec AngularJS pour le front end, et nodeJS pour le back end. </p>
+
+
+  <form class="form-inline">
+    <span ng-show="connexionAsked || roleDrawerOpened">
+    <div class="form-group">
+      <input class="form-control" type="text" placeholder="Adresse email" ng-model="user.usernameOrEmail">
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="password" placeholder="Mot de passe" ng-model="user.password">
+    </div>
+      <span class="input-group-btn" ng-show="connexionAsked">
+            <button type="submit" class=" btn btn-success" ng-click="login(user)">Connexion !</button>
+          </span>
+    </span>
+    <span ng-show="roleDrawerOpened">
+      <select class="form-control" ng-model="user.role" ng-options="role for role in rolesList"></select>
+          <div class="input-group-btn">
+            <button type="submit" class="btn btn-success" ng-click="signUp(user)">Créer mon compte !</button>
+          </div>
+    </span>
+    <div  class="form-group" ng-show="!roleDrawerOpened && !connexionAsked">
+      <button type="submit" class=" btn btn-success" ng-click="connexionAsked=!connexionAsked">Connexion !</button>
+      <button type="submit" class="btn btn-success" ng-click="roleDrawerOpened=!roleDrawerOpened">Créer mon compte !</button>
+    </div>
+  </form>
 </div>
+

@@ -4,7 +4,7 @@
  */
 angular.module('programmableWebApp')
   .factory('Music', ['CONSTANTS', '$http', '$cookies', function(CONSTANTS, $http, $cookies) {
-    var obj = {
+    return {
       all: function(successCB, failCB) {
         var token = $cookies.get('token');
         $http({
@@ -32,7 +32,6 @@ angular.module('programmableWebApp')
         });
       },
       createMix: function(musicId, mixName, tracks, successCB, failCB) {
-
         $http({
           method: 'POST',
           url: CONSTANTS.backendUrl + CONSTANTS.mix+'/?token='+$cookies.get('token'),
@@ -54,7 +53,7 @@ angular.module('programmableWebApp')
       loadMix: function(mixId, successCB, failCB) {
         $http({
           method: 'GET',
-          url: CONSTANTS.backendUrl + CONSTANTS.mix+'/?token='+$cookies.get('token')+'&mixID='+mixId,
+          url: CONSTANTS.backendUrl + CONSTANTS.mix+'/'+mixId+'/?token='+$cookies.get('token'),
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }).then(function (data) {
           successCB(data);
@@ -64,5 +63,4 @@ angular.module('programmableWebApp')
         });
       }
     };
-    return obj;
   }]);
