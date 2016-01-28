@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var Comment = require('../models/Comment');
+var Mix = require('../models/Mix');
 
 
 router.use(function (req, res, next) {
@@ -40,22 +41,57 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var mixId = req.query.mixId;
+    var mixId = req.body.mixId,
+        authorName =  req.body.authorName,
+        text = req.body.text,
+        date =req.body.date;
+
+    console.log("mixId", mixId, "authorName", authorName, "text", text, "date", date);
 
     var comment = new Comment({
-      "mixId": req.body.mixId,
-      "authorName": req.body.authorName,
-      "text": req.body.text,
-      "date": req.body.date
+      mixId: mixId,
+      authorName: authorName,
+      text: text,
+      date: date
     });
-    comment.save(function (err, commentRes) {
-        if (err) {
-            res.status(500).send("Internal error buddy. Sorry." + err);
+
+    Mix.getMixById(
+        mixId,
+        function(mix) {
+
+            mix.addComment(comment);
+
+            Mix.storeMix(
+                mix,
+                function(mixResult) {
+                    comment.save(function (err, commentRes) {
+                        if (err) {
+                            res.status(500).send("Internal error buddy. Sorry." + err);
+                        }
+                        else {
+                            res.status(200).send(commentRes);
+                        }
+                    });
+                },
+                function(err) {
+                    res.status(500).send("Internal error buddy. Sorry. " + err);
+                },
+                function() {
+                    res.status(404).send("Can not find specified song with given Id : " + req.params.mixId);
+                }
+            );
+
+
+        },
+        function(err) {
+            res.status(500).send("Internal error buddy. Sorry. " + err);
+        },
+        function(mixId) {
+            res.status(404).send("mixId can not be found buddy. Sorry ! " + mixId);
         }
-        else {
-            res.status(200).send(commentRes);
-        }
-    });
+    )
+
+
 
 });
 
