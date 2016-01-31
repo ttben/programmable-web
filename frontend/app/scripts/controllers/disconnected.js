@@ -28,6 +28,7 @@ angular.module('programmableWebApp')
           $location.path('/home');
         },
         function () {
+          $scope.connexionAsked=!$scope.connexionAsked;
           $location.path('/disconnected');
           console.log('error... :(');
         });

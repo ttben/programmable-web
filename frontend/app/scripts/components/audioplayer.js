@@ -27,6 +27,7 @@ angular.module('audioPlayer-directive', [])
 
           Music.createMix($scope.info._id, $scope.mixName, newMix, function() {
             $scope.saveDrawerOpened = false;
+            $scope.mixName = '';
             Music.get($scope.info._id, function (musicReloaded) {
               $scope.info.mixes = musicReloaded.data.mixes;
             }, function() {

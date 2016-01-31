@@ -28,6 +28,10 @@
         </form>
       </div>
       <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
+        <div ng-show="aMixIsLoaded" class="text-left">
+      <h2>A l'écoute : </h2>
+        <h3>{{loadedMix.mixName}}, créé par {{loadedMix.author}}</h3>
+        </div>
         <h3 ng-show="mixCreationAuthorized"><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
           class="glyphicon glyphicon-floppy-disk"></span>
           Sauvegarder mon mix actuel</a></h3>
