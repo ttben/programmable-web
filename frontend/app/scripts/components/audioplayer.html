@@ -10,7 +10,6 @@
         <h1 ng-cloak>{{info.artist}}</h1>
 
         <h2 ng-cloak>{{info.title}}</h2>
-
         <div class="form-group">
           <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-xl"
                   ng-click="playpause()">
@@ -31,6 +30,11 @@
         <div ng-show="aMixIsLoaded" class="text-left">
       <h2>A l'écoute : </h2>
         <h3>{{loadedMix.mixName}}, créé par {{loadedMix.author}}</h3>
+          <div star-rating rating="starRating" read-only="false" max-rating="10" click="click(param)" mouse-hover="mouseHover(param)" mouse-leave="mouseLeave(param)"></div>
+          <!--<div>
+            <span class="label label-primary">Star Rating: {{starRating}}</span>
+            <span class="label label-primary">Hover Rating: {{hoverRating}}</span>
+          </div>-->
         </div>
         <h3 ng-show="mixCreationAuthorized"><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
           class="glyphicon glyphicon-floppy-disk"></span>

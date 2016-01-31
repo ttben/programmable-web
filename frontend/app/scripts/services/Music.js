@@ -61,6 +61,21 @@ angular.module('programmableWebApp')
           console.log(error.data);
           failCB(error);
         });
-      }
+      },
+      rate:function (mixId, myRating, successCB, failCB) {
+     /*   $http({
+          method: 'POST',
+          url: CONSTANTS.backendUrl + CONSTANTS.mix+'/'+mixId+'/?token='+$cookies.get('token'),
+          headers: {'Content-Type': 'application/json; charset=UTF-8'},
+          data: {myRating: myRating}
+        }).then(function (data) {
+          successCB(data);
+        }, function(error) {
+          console.log(error.data);
+          failCB(error);
+        });*/
+        successCB(myRating);
+    }
+
     };
   }]);

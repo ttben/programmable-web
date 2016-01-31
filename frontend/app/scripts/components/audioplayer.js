@@ -284,6 +284,34 @@ angular.module('audioPlayer-directive', [])
         setInterval(function () {
           $scope.$apply();
         }, 100); // If your computer is burning as hell, it may be because of this
+
+
+        //This is to deal with the star rating.
+        //There is a rating per mix
+        //Neutral rating is 5
+        $scope.starRating = 5;
+        $scope.hoverRating = 0;
+
+        $scope.click = function (param) {
+          console.log('Click(' + param + ')');
+          Music.rate($scope.loadedMix.mixId, param, function(resultRating) {
+            $scope.starRating = resultRating;
+
+          }, function(error) {
+            console.log(error);
+          });
+        };
+
+        $scope.mouseHover = function (param) {
+          $scope.hoverRating = param;
+        };
+
+        $scope.mouseLeave = function (param) {
+         // $scope.hoverRating = param + '*';
+        };
+
+
+
       },
 
       templateUrl: '/scripts/components/audioplayer.html'
