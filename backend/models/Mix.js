@@ -1,7 +1,7 @@
-var mongoose     = require('mongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MixSchema   = new Schema({
+var MixSchema = new Schema({
     authorId:String,
     author:String,
     musicId:String,
@@ -9,11 +9,49 @@ var MixSchema   = new Schema({
     date: { type: Date, default: Date.now },
     tracks:[],
     comments:[],
+    voters:[{
+        voterId: String,
+        rating: Number,
+        date: { type: Date, default: Date.now }
+    }],
+    nbRating:Number,
+    cumulRating:Number,
     rating:Number
 });
 
 MixSchema.methods.addComment = function(commentDocument) {
     this.comments.push(commentDocument);
+};
+
+MixSchema.methods.addRate = function(voterId, rating) {
+    var byId = function (element, index, array) {
+
+        if (element.voterId == voterId) {
+            return true;
+        }
+        return false;
+    }
+
+    // test if already in list
+    var index = this.voters.findIndex(byId);
+    if (index !== -1) {
+        // if already in list
+        this.cumulRating -= this.voters[index].rating;
+        this.voters[index].rating = rating;
+        this.cumulRating -= -rating;
+    } else {
+        // if not
+        this.voters.push({ voterId, rating });
+        this.nbRating += 1;
+        this.cumulRating -= -rating;
+    }
+    // calcul average rating
+    if (this.nbRating === 0) {
+        this.rating = 0;
+    }
+    else {
+        this.rating = this.cumulRating / this.nbRating;
+    }
 };
 
 var Mix = mongoose.model('Mix', MixSchema);
@@ -91,12 +129,39 @@ var getMixesByUserId = function(token, successFunction, failFunction) {
 
 };
 
+var rate = function(mixId, authorId, rating, successFunction, failFunction, notFoundFunction) {
+    
+    Mix.findOne({_id: mixId}, {'__v': 0}, function (err, mix) {
+        if (err) {
+            failFunction(err);
+        } else {
+            if (mix == null || mix == undefined) {
+                notFoundFunction(mixId);
+            }
+            else {
+                mix.addRate(authorId, rating);
+
+                mix.save(function (err, mixResult) {
+                    if (err) {
+                        failFunction(err);
+                        return;
+                    }
+    
+                    successFunction(mixResult);
+                });
+
+            }
+        }
+    });
+
+};
 
 
 
 Mix.storeMix = storeMix;
 Mix.getMixById = getMixById;
 Mix.getMixesByUserId = getMixesByUserId;
+Mix.rate = rate;
 
 
 module.exports =  Mix;

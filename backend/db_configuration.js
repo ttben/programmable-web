@@ -22,7 +22,6 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log("erogreugeuiguierugeryguieryguierygierguyeruigy");
     // we're connected!
     console.log("Connected to DB");
 
@@ -49,7 +48,7 @@ db.once('open', function () {
                   "uri": "guitare.mp3"
                 },
                 {
-                  "name": "guirate 2",
+                  "name": "guitare 2",
                   "uri": "guitare2.mp3"
                 },
                 {
@@ -63,16 +62,7 @@ db.once('open', function () {
             ],
             mixes: []
         });
-    song2.addMix({
-          "_id": 1,
-          "author": "Hugo",
-          "mixName": "Mon super mix"
-        });
-    song2.addMix({
-          "_id": 3,
-          "author": "Hugo",
-          "mixName": "Mon autre mix"
-        });
+
     song2.save(function (err, songRes) {
         if (err) {
             console.log("Impossible to store stub song");
@@ -137,16 +127,7 @@ db.once('open', function () {
             ],
             mixes: []
         });
-    song3.addMix({
-          "_id": 2,
-          "author": "Jean-Hugo",
-          "mixName": "Wesh je mix"
-        });
-    song3.addMix({
-          "_id": 4,
-          "author": "Hugo-xavier",
-          "mixName": "Mon autre mix"
-        });
+
     song3.save(function (err, songRes) {
         if (err) {
             console.log("Impossible to store stub song");
