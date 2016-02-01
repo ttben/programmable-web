@@ -5,3 +5,10 @@
 .panel{
   color:black
 }
+
+.img-holder {position: relative;}
+.img-holder .link {
+  position: absolute;
+  bottom: 10px; /*your button position*/
+  right: 10px; /*your button position*/
+}

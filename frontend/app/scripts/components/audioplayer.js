@@ -289,14 +289,12 @@ angular.module('audioPlayer-directive', [])
         //This is to deal with the star rating.
         //There is a rating per mix
         //Neutral rating is 5
-        $scope.starRating = 5;
+        $scope.starRating = 3;
         $scope.hoverRating = 0;
 
         $scope.click = function (param) {
-          console.log('Click(' + param + ')');
           Music.rate($scope.loadedMix.mixId, param, function(resultRating) {
             $scope.starRating = resultRating;
-
           }, function(error) {
             console.log(error);
           });
