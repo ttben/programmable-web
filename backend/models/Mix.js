@@ -1,7 +1,7 @@
-var mongoose     = require('mongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MixSchema   = new Schema({
+var MixSchema = new Schema({
     authorId:String,
     author:String,
     musicId:String,
