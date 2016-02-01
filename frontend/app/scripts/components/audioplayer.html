@@ -36,8 +36,8 @@
         </div>
       </div>
       <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
-
-        <h4 ng-show="mixCreationAuthorized"><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
+      <div ng-show="mixCreationAuthorized">
+        <h4><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
           class="glyphicon glyphicon-floppy-disk"></span>
           Sauvegarder mon mix actuel</a></h4>
 
@@ -51,7 +51,8 @@
           </span>
           </div>
         </form>
-        <h5> Charger un mix existant : </h5>
+      </div>
+        <h4> Charger un mix existant : </h4>
 
         <div ng-repeat="mix in info.mixes" >
        <a ng-click="loadAMix(mix._id)"  class="pointer-hover" ng-cloak> {{mix.mixName}}, par {{mix.author}} (créé le {{ mix.date | date:'dd/MM/yyyy'}} à {{ mix.date | date:'H:mm'}})</a>

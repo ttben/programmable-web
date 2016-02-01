@@ -288,7 +288,7 @@ angular.module('audioPlayer-directive', [])
 
         //This is to deal with the star rating.
         //There is a rating per mix
-        //Neutral rating is 5
+        //Neutral rating is 3
         $scope.starRating = 3;
         $scope.hoverRating = 0;
 
