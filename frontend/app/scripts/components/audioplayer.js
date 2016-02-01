@@ -1,6 +1,6 @@
 'use strict';
 angular.module('audioPlayer-directive', [])
-  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', 'Comment', function ($rootScope, $http, $cookies, Music, Comment) {
+  .directive('audioPlayer', ['$rootScope', '$http', '$cookies', 'Music', 'Comment', '$window', function ($rootScope, $http, $cookies, Music, Comment, $window) {
     return {
       restrict: 'E',
       scope: {},
@@ -10,6 +10,12 @@ angular.module('audioPlayer-directive', [])
         $scope.commentWritingAuthorized = true;
         //This is to deal with error cases from the server, not related to user .
         $scope.inError = false;
+
+        $scope.$watch(function(){return $window.innerHeight;},
+            function(){
+              angular.element(document.getElementById('canvas'))[0].width = $window.innerWidth;
+              angular.element(document.getElementById('canvas'))[0].height = $window.innerHeight;
+            });
 
         //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function () {
@@ -221,7 +227,7 @@ angular.module('audioPlayer-directive', [])
             silence = true;
           }
           track.muted = false;
-          for (var i = 0; i < $scope.tracks.length; i++) {
+          for (i = 0; i < $scope.tracks.length; i++) {
             if ($scope.tracks[i] === track)continue;
             $scope.tracks[i].muted = silence;
           }
@@ -234,7 +240,7 @@ angular.module('audioPlayer-directive', [])
         var drawSpectrum = function (ctx, array) {
           for (var i = 0; i < (array.length); i++) {
             var value = array[i];
-            ctx.fillRect(i * 4, 1080 - value * 3, 3, 1080);
+            ctx.fillRect(i * (Math.floor($window.innerWidth/512)+1), $window.innerHeight - value, Math.floor($window.innerWidth/512), $window.innerHeight);
           }
         };
 
@@ -257,7 +263,7 @@ angular.module('audioPlayer-directive', [])
 
           for (var j = 0; j < arrays[0].length; j++) {
             var average = 0;
-            for (var i = 0; i < arrays.length; i++) {
+            for (i = 0; i < arrays.length; i++) {
               average += arrays[i][j];
             }
             finalArray.push(average/arrays.length);
@@ -307,11 +313,8 @@ angular.module('audioPlayer-directive', [])
         };
 
         $scope.mouseLeave = function (param) {
-         // $scope.hoverRating = param + '*';
+          // $scope.hoverRating = param + '*';
         };
-
-
-
       },
 
       templateUrl: '/scripts/components/audioplayer.html'
