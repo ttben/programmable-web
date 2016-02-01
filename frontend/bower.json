@@ -10,7 +10,8 @@
     "angular-route": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
-    "angular-bootstrap": "~1.0.3"
+    "angular-bootstrap": "~1.0.3",
+    "simple-reverb": "web-audio-components/simple-reverb"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

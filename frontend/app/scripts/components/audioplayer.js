@@ -121,12 +121,18 @@ angular.module('audioPlayer-directive', [])
                 track.bassFilter.type = "lowshelf";
                 track.bassFilter.frequency.value = 200;
                 track.panNode = $scope.audioContext.createStereoPanner();
+                track.verb = new SimpleReverb($scope.audioContext, {
+                  seconds: 0,
+                  decay: 0,
+                  reverse: 0
+                });
 
                 track.source.connect(track.gainNode);
                 track.gainNode.connect(track.trebleFilter);
                 track.trebleFilter.connect(track.bassFilter);
                 track.bassFilter.connect(track.panNode);
-                track.panNode.connect($scope.audioContext.destination);
+                track.panNode.connect(track.verb.input);
+                track.verb.connect($scope.audioContext.destination);
 
                 track.analyser = $scope.audioContext.createAnalyser();
                 track.analyser.smoothingTimeConstant = 0.3;
