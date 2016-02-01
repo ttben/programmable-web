@@ -16,5 +16,6 @@ angular.module('programmableWebApp')
     music:'songs',
     auth:'authenticate',
     mix:'mixes',
-    com:'comments'
+    com:'comments',
+    rating: 'rating'
   });

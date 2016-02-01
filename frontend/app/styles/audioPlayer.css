@@ -9,6 +9,12 @@
 .img-holder {position: relative;}
 .img-holder .link {
   position: absolute;
-  bottom: 10px; /*your button position*/
-  right: 10px; /*your button position*/
+  bottom: 30%; /*your button position*/
+  right: 37%; /*your button position*/
+}
+
+.musicPresentation {
+/*  background-color: rgba(8, 2, 2, 0.11);
+  padding-left: 5em;*/
+  margin-left: 0.4em;
 }

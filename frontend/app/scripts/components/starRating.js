@@ -27,7 +27,7 @@ angular.module('star-directive', [])
         attrs.maxRating = '5';
       }
     },
-    controller: function ($scope, $element, $attrs, Music) {
+    controller: function ($scope, $element, $attrs) {
       $scope.maxRatings = [];
 
       for (var i = 1; i <= $scope.maxRating; i++) {
