@@ -48,7 +48,7 @@ db.once('open', function () {
                   "uri": "guitare.mp3"
                 },
                 {
-                  "name": "guirate 2",
+                  "name": "guitare 2",
                   "uri": "guitare2.mp3"
                 },
                 {

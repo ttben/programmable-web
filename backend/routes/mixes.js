@@ -63,7 +63,10 @@ router.post('/', function (req, res) {
             author: author,
             musicId: musicId,
             mixName: mixName,
-            tracks: tracks
+            tracks: tracks,
+            nbRating: 0,
+            cumulRating: 0,
+            rating: 0
         });
 
         Mix.storeMix(
@@ -95,9 +98,6 @@ router.post('/', function (req, res) {
         }, function () {
             res.status(404).send("Given token was not found");
         });
-
-
-
 
 });
 
@@ -148,5 +148,69 @@ router.get('/', function (req, res) {
     );
 
 });
+
+router.post('/rate', function (req, res) {
+
+    var token = req.query.token;
+
+    if(token == null || token == undefined) {
+        res.status(401).send("Token required please. Gimme that parameter please");
+        return;
+    }
+
+    User.checkUserExistsByToken(
+        token,
+        function (user) {
+            rateMix(user._id);
+        },
+        function (err) {
+            res.status(500).send(err);
+        }, function () {
+            res.status(404).send("Given token was not found");
+        }
+    );
+
+
+    var rateMix = function(authorId) {
+
+        // var authorId = req.body.authorId;
+        var rating = req.body.rating;
+        var mixId = req.body.mixId;
+
+        if (rating == null || rating == undefined) {
+            res.status(400).send("Please check that you are sending rating field. I didn't find it. Thanks!");
+            return;
+        }
+
+        if (mixId == null || mixId == undefined) {
+            res.status(400).send("Please check that you are sending mixId field. I didn't find it. Thanks!");
+            return;
+        }
+
+        Mix.rate(
+            mixId,
+            authorId,
+            rating,
+            function (mix) {
+                res.status(200).send(mix);
+            },
+            function (err) {
+                res.status(500).send("Internal error buddy. Sorry. " + err);
+            },
+            function(mixID) {
+                res.status(404).send("Can not find mix with specified id : " + mixID);
+            }
+
+        );
+
+    };
+
+
+});
+
+
+
+
+
 
 module.exports = router;
