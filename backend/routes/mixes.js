@@ -149,7 +149,7 @@ router.get('/', function (req, res) {
 
 });
 
-router.post('/rate', function (req, res) {
+router.post('/rating', function (req, res) {
 
     var token = req.query.token;
 
