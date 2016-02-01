@@ -2,11 +2,11 @@
 <div class="panel panel-default" style="margin-top: 20px; background-color:#f5f5f5;">
   <div class="panel-body">
     <div class="row">
-      <div class=" col-xs-12 col-md-2">
+      <div class="well col-xs-12 col-md-2 musicPresentation">
         <div class="img-holder">
 
         <img ng-src={{info.image}} ng-cloak height="100%" width="100%"
-             style="border-radius: 5px;margin:0 auto;">
+             style="border-radius: 5px;">
         <div class="link form-group">
           <button ng-disabled="!tracksLoaded" type="button" class="btn btn-default btn-circle btn-lg"
                   ng-click="playpause()">
@@ -26,16 +26,15 @@
         </form>
       </div>
       <div class="col-xs-12 col-md-5 text-left">
-        <h2 ng-cloak>{{info.artist}}</h2>
-        <h3 ng-cloak>{{info.title}}</h3>
+        <h2 ng-cloak>{{info.title}}</h2>
+        <h3 ng-cloak>Par {{info.artist}}</h3>
 
-        <div ng-show="aMixIsLoaded" class="text-left">
-          <h4>A l'écoute : </h4>
-          <h5>{{loadedMix.mixName}}, créé par {{loadedMix.author}}</h5>
-          <div star-rating rating="starRating" read-only="false" max-rating="5" click="click(param)" mouse-hover="mouseHover(param)" mouse-leave="mouseLeave(param)"></div>
+        <div ng-show="aMixIsLoaded">
+          <h4>A l'écoute : </h4><h5>{{loadedMix.mixName}}, créé par {{loadedMix.author}}</h5>
+          <div star-rating rating="starRating" read-only="false" click="click(param)" mouse-hover="mouseHover(param)" mouse-leave="mouseLeave(param)"></div>
         </div>
       </div>
-      <div ng-show="tracksLoaded" class="col-md-5 col-xs-12">
+      <div ng-show="tracksLoaded" class="col-md-4 col-xs-12">
       <div ng-show="mixCreationAuthorized">
         <h4><a ng-click="saveDrawerOpened=!saveDrawerOpened" class="pointer-hover"><span
           class="glyphicon glyphicon-floppy-disk"></span>
@@ -53,9 +52,11 @@
         </form>
       </div>
         <h4> Charger un mix existant : </h4>
-
-        <div ng-repeat="mix in info.mixes" >
-       <a ng-click="loadAMix(mix._id)"  class="pointer-hover" ng-cloak> {{mix.mixName}}, par {{mix.author}} (créé le {{ mix.date | date:'dd/MM/yyyy'}} à {{ mix.date | date:'H:mm'}})</a>
+        <div ng-repeat="mix in info.mixes" class="list-group">
+          <button type="button" class="list-group-item pointer-hover text-left"
+                  ng-click="loadAMix(mix._id)" ng-cloak style="margin: 0 0;">
+           {{mix.mixName}}, par {{mix.author}} (créé le {{ mix.date | date:'dd/MM/yyyy'}} à {{ mix.date | date:'H:mm'}})
+          </button>
         </div>
       </div>
     </div>

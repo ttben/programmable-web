@@ -63,18 +63,22 @@ angular.module('programmableWebApp')
         });
       },
       rate:function (mixId, myRating, successCB, failCB) {
-     /*   $http({
+        console.log(mixId);
+        $http({
           method: 'POST',
-          url: CONSTANTS.backendUrl + CONSTANTS.mix+'/'+mixId+'/?token='+$cookies.get('token'),
+          url: CONSTANTS.backendUrl + CONSTANTS.mix +'/'+ CONSTANTS.rating+'/?token='+$cookies.get('token'),
           headers: {'Content-Type': 'application/json; charset=UTF-8'},
-          data: {myRating: myRating}
+          data: {
+            "mixId": mixId,
+            "rating": myRating
+          }
         }).then(function (data) {
-          successCB(data);
+          console.log(data.data);
+          successCB(data.data.rating);
         }, function(error) {
           console.log(error.data);
           failCB(error);
-        });*/
-        successCB(myRating);
+        });
     }
 
     };

@@ -2,7 +2,7 @@
 /**
  * Created by Garance on 04/01/2016.
  */
-angular.module('programmableWebApp')
+angular.module('programmableWebApp') 
   .factory('Comment', ['CONSTANTS', '$http', '$cookies', function(CONSTANTS, $http, $cookies) {
     var obj = {
       newC: function(mixId, comment, successCB, failCB) {

@@ -10,7 +10,7 @@ angular.module('audioPlayer-directive', [])
         $scope.commentWritingAuthorized = true;
         //This is to deal with error cases from the server, not related to user .
         $scope.inError = false;
-
+        $scope.starRating = 3;
         $scope.$watch(function(){return $window.innerHeight;},
             function(){
               angular.element(document.getElementById('canvas'))[0].width = $window.innerWidth;
@@ -55,6 +55,7 @@ angular.module('audioPlayer-directive', [])
           Comment.newC($scope.loadedMix._id, $scope.commentToAdd, function() {
             $scope.commentToAdd='';
             Music.loadMix($scope.loadedMix._id, function(mixReloaded) {
+
               $scope.loadedMix = mixReloaded.data;
             }, function(error) {
               $scope.inError = true;
@@ -76,6 +77,7 @@ angular.module('audioPlayer-directive', [])
           Music.loadMix(theMixId, function(mixLoaded) {
             $scope.loadedMix = mixLoaded.data;
             $scope.aMixIsLoaded = true;
+            $scope.starRating = $scope.loadedMix.rating;
             $scope.tracks.forEach(function(track) {
               $scope.loadedMix.tracks.forEach(function(mixTrack) {
                 if (track.name === mixTrack.name) {
@@ -295,11 +297,11 @@ angular.module('audioPlayer-directive', [])
         //This is to deal with the star rating.
         //There is a rating per mix
         //Neutral rating is 3
-        $scope.starRating = 3;
         $scope.hoverRating = 0;
+        $scope.rating = 0;
 
         $scope.click = function (param) {
-          Music.rate($scope.loadedMix.mixId, param, function(resultRating) {
+          Music.rate($scope.loadedMix._id, param, function(resultRating) {
             $scope.starRating = resultRating;
           }, function(error) {
             console.log(error);
