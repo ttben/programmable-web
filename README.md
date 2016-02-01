@@ -1,4 +1,4 @@
-# Welcome on our Programmable web app
+# Welcome on our Programmable web Music mix app
 
 This app is developed for both frontend and backend sides.
 
