@@ -17,6 +17,74 @@ angular.module('audioPlayer-directive', [])
               angular.element(document.getElementById('canvas'))[0].height = $window.innerHeight;
             });
 
+        /*// Initialize recorder
+        var startUserMedia = function (stream) {
+          var input = $scope.audioContext.createMediaStreamSource(stream);
+          console.log('Media stream created.');
+
+          $scope.rec = new Recorder(input);
+          console.log('Recorder initialised.');
+        };
+
+        $scope.startRecording = function() {
+          if($scope.rec) {
+            $scope.rec.record();
+            $scope.recording = true;
+          }
+        };
+        $scope.stopRecording = function() {
+          $scope.rec.stop();
+          $scope.rec.getBuffer(function getBufferCallback( buffers ) {
+            var newBuffer = $scope.audioContext.createBuffer(2, buffers[0].length, $scope.audioContext.sampleRate);
+            newBuffer.getChannelData(0).set(buffers[0]);
+            newBuffer.getChannelData(1).set(buffers[1]);
+
+            var track = {"name":"Enregistrement", "volume": 1};
+            track.source = $scope.audioContext.createBufferSource();
+            track.source.buffer = newBuffer;
+            track.gainNode = $scope.audioContext.createGain();
+            track.trebleFilter = $scope.audioContext.createBiquadFilter();
+            track.trebleFilter.type = "highshelf";
+            track.trebleFilter.frequency.value = 2000;
+            track.bassFilter = $scope.audioContext.createBiquadFilter();
+            track.bassFilter.type = "lowshelf";
+            track.bassFilter.frequency.value = 200;
+            track.panNode = $scope.audioContext.createStereoPanner();
+            track.verb = new SimpleReverb($scope.audioContext, {
+              seconds: 0,
+              decay: 0,
+              reverse: 0
+            });
+            track.verbGainNode = $scope.audioContext.createGain();
+            track.verbGainNode.gain.value = 0;
+
+            track.source.connect(track.gainNode);
+            track.gainNode.connect(track.trebleFilter);
+            track.trebleFilter.connect(track.bassFilter);
+            track.bassFilter.connect(track.panNode);
+            track.panNode.connect($scope.audioContext.destination);
+            track.source.connect(track.verb.input);
+            track.verb.connect(track.verbGainNode);
+            track.verb.volume = 0;
+            track.verbGainNode.connect($scope.audioContext.destination);
+
+            track.analyser = $scope.audioContext.createAnalyser();
+            track.analyser.smoothingTimeConstant = 0.3;
+            track.analyser.fftSize = 1024;
+            track.gainNode.connect(track.analyser);
+
+            $scope.tracks.push(track);
+            $scope.track.source.start();
+          });
+          $scope.rec.clear();
+        };
+
+        // getUserMedia
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+        navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
+          console.log('No live audio input: ' + e);
+        });*/
+
         //Function to save a new mix in the database. Should add params as name
         $scope.saveMyMix = function () {
           var newMix = [];
@@ -133,6 +201,7 @@ angular.module('audioPlayer-directive', [])
                   reverse: 0
                 });
                 track.verbGainNode = $scope.audioContext.createGain();
+                track.verbGainNode.gain.value = 0;
 
                 track.source.connect(track.gainNode);
                 track.gainNode.connect(track.trebleFilter);
@@ -141,6 +210,7 @@ angular.module('audioPlayer-directive', [])
                 track.panNode.connect($scope.audioContext.destination);
                 track.source.connect(track.verb.input);
                 track.verb.connect(track.verbGainNode);
+                track.verb.volume = 0;
                 track.verbGainNode.connect($scope.audioContext.destination);
 
                 track.analyser = $scope.audioContext.createAnalyser();
@@ -172,9 +242,6 @@ angular.module('audioPlayer-directive', [])
           }
         };
 
-        var addAnalyser = function (nodeSource) {
-        };
-
         /**
          * tells audio elements to play/pause
          */
@@ -191,13 +258,16 @@ angular.module('audioPlayer-directive', [])
         $scope.volumeChanged = function (track) {
           if (track && !track.muted) {
             track.gainNode.gain.value = track.volume * $scope.globalVolume;
+            track.verbGainNode.gain.value = track.verb.volume * track.gainNode.gain.value;
             return;
           }
           for (var i = 0; i < $scope.tracks.length; i++) {
             if ($scope.tracks[i].muted) {
               $scope.tracks[i].gainNode.gain.value = 0;
+              $scope.tracks[i].verbGainNode.gain.value = 0;
             } else {
               $scope.tracks[i].gainNode.gain.value = $scope.tracks[i].volume * $scope.globalVolume;
+              $scope.tracks[i].verbGainNode.gain.value = $scope.tracks[i].verb.volume*$scope.tracks[i].gainNode.gain.value;
             }
           }
         };

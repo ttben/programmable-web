@@ -11,7 +11,8 @@
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
     "angular-bootstrap": "~1.0.3",
-    "simple-reverb": "web-audio-components/simple-reverb"
+    "simple-reverb": "web-audio-components/simple-reverb",
+    "recorder.js": "~1.2.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

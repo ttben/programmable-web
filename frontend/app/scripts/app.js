@@ -61,7 +61,7 @@ angular
       $rootScope.header = "default";
       $location.path('/home');
 
-    }, function(error) {
+    }, function (error) {
       $cookies.remove('token');
       console.log(error.data);
       $rootScope.header = "home";
