@@ -45,17 +45,17 @@ angular
         redirectTo: '/disconnected'
       });
   })
-  .run(['$rootScope', '$location', '$cookies', '$http', function($rootScope, $location, $cookies, $http) {
+  .run(['$rootScope', '$location', '$cookies', '$http', function ($rootScope, $location, $cookies, $http) {
     $http({
       method: 'GET',
-      url: 'http://localhost:3001/songs?token='+$cookies.get('token'),
+      url: 'http://localhost:3001/songs?token=' + $cookies.get('token'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'}
     }).then(function () {
       console.log('connected');
       $rootScope.header = "default";
       $location.path('/home');
 
-    }, function(error) {
+    }, function (error) {
       $cookies.remove('token');
       console.log(error.data);
       $rootScope.header = "home";
