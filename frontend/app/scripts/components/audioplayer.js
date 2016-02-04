@@ -123,12 +123,21 @@ angular.module('audioPlayer-directive', [])
                 track.bassFilter.type = "lowshelf";
                 track.bassFilter.frequency.value = 200;
                 track.panNode = $scope.audioContext.createStereoPanner();
+                track.verb = new SimpleReverb($scope.audioContext, {
+                  seconds: 0,
+                  decay: 0,
+                  reverse: 0
+                });
+                track.verbGainNode = $scope.audioContext.createGain();
 
                 track.source.connect(track.gainNode);
                 track.gainNode.connect(track.trebleFilter);
                 track.trebleFilter.connect(track.bassFilter);
                 track.bassFilter.connect(track.panNode);
                 track.panNode.connect($scope.audioContext.destination);
+                track.source.connect(track.verb.input);
+                track.verb.connect(track.verbGainNode);
+                track.verbGainNode.connect($scope.audioContext.destination);
 
                 track.analyser = $scope.audioContext.createAnalyser();
                 track.analyser.smoothingTimeConstant = 0.3;
@@ -207,6 +216,7 @@ angular.module('audioPlayer-directive', [])
             $scope.tracks[i].source.connect($scope.tracks[i].gainNode);
             $scope.tracks[i].source.start(0, timeSelected);
             $scope.tracks[i].source.connect($scope.tracks[i].analyser);
+            $scope.tracks[i].source.connect($scope.tracks[i].verb.input);
             $scope.currentTime = timeSelected;
             $scope.offset = $scope.audioContext.currentTime - $scope.currentTime;
           }
