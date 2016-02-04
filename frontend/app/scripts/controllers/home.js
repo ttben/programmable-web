@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name programmableWebApp.controller:MainCtrl
- * @description
- * # MainCtrl
+ * @name programmableWebApp.controller:HomeCtrl
+ * @description this controller deals with the music list
+ * # HomeCtrl
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
@@ -21,7 +21,6 @@ angular.module('programmableWebApp')
       $scope.songs=result;
         $scope.songs.forEach(function(song) {
           var imgURI = song.image;
-          //TODO: use CONSTANTS, BUT got undefined when I tried.. :(
           song.image = CONSTANTS.backendUrl + imgURI;
         });
     },
@@ -41,8 +40,4 @@ angular.module('programmableWebApp')
       console.log('in error :((');
     });
   };
-    // default view is cards
-    $scope.mode = 2;
-
-
   }]);

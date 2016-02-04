@@ -5,9 +5,9 @@
 
 /**
  * @ngdoc function
- * @name programmableWebApp.controller:MainCtrl
- * @description
- * # MainCtrl
+ * @name programmableWebApp.controller:DisconnectedCtrl
+ * @description this controller deals with the user's authentication
+ * # DisconnectedCtrl
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
@@ -21,6 +21,7 @@ angular.module('programmableWebApp')
 
     //This is the roles list, you can pick one at signup
     $scope.rolesList = ["public", "user", "admin"];
+
 
     $scope.login = function (user) {
       User.authenticate(user.usernameOrEmail, user.password, function () {

@@ -3,6 +3,7 @@
 /**
  * Created by Garance on 31/01/2016.
  */
+
 angular.module('star-directive', [])
 .directive('starRating', function () {
   return {
@@ -27,7 +28,7 @@ angular.module('star-directive', [])
         attrs.maxRating = '5';
       }
     },
-    controller: function ($scope, $element, $attrs) {
+    controller: function ($scope) {
       $scope.maxRatings = [];
 
       for (var i = 1; i <= $scope.maxRating; i++) {
@@ -37,7 +38,6 @@ angular.module('star-directive', [])
       $scope._rating = $scope.rating;
 
       $scope.isolatedClick = function (param) {
-        //$scope.rating = $scope._rating = param;
         $scope.hoverValue = 0;
         $scope.click({
           param: param
