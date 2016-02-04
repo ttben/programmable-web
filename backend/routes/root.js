@@ -19,7 +19,7 @@ router.use(function (req, res, next) {
 
 router.get('/', function (req, res) {
 
-    res.status(200).send("lol mabite");
+    res.status(200).send("test ok");
 });
 
 router.post('/authenticate', function (req, res) {
@@ -57,7 +57,7 @@ router.post('/signup', function (req, res) {
         function(user) {
             res.status(201).send({token: user._id});
         },
-        function(err) {
+        function(err) {
             res.status(500).send({
                 type: false,
                 data: "Error occured: " + err
