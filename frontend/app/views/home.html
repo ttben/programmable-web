@@ -1,13 +1,9 @@
 <div style="min-height: 75px"></div>
 <div class="container" id="musicList">
   <div class="row" ng-show="!inError">
-    <div ng-repeat-start="song in songs" class="col-xs-3">
-      <div class="well">
-        <a href="" ng-click="getSpecificSong(song._id, '/musicPlayer')">
+    <div ng-repeat-start="song in songs" class="col-xs-3 songsList" ng-click="getSpecificSong(song._id, '/musicPlayer')"  >
           <img ng-src="{{song.image}}" class="img-responsive"  ng-cloak>
-        <h4 id="songTitle"  ng-cloak>{{song.title}}</h4>
-        </a>
-      </div>
+        <h3 id="songTitle" ng-cloak>{{song.title}}</h3>
     </div>
     <div ng-repeat-end=""></div>
 

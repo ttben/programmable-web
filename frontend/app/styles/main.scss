@@ -129,7 +129,17 @@ body {
   cursor: pointer;
 }
 #songTitle {
-  color:#333333;
+  color:white;
+}
+
+.songsList {
+  height: 17em;
+  padding:2em;
+}
+
+.songsList:hover {
+  cursor: pointer;
+  background-color: #1b6d85;
 }
 
 input[type=range][orient=vertical]
