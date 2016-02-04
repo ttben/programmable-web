@@ -31,6 +31,9 @@ You can install it with:
     
 If you already have it, make sure your version is higher than *1.7.2*, which is the smallest the project has been tested with. 
 
+
+Finally, the project uses the **ECMA Script 6** specification. If some methods are not recognised by your javascript version, make sure you have the right one!
+
 ### WebAudio API reminder
 This app uses the WebAudio API.
 For better results, you should use Google Chrome.
@@ -38,7 +41,7 @@ For better results, you should use Google Chrome.
 Here are the browser compatibility specifications:
  
  | Feature       | Chrome      | Edge  | Firefox (Gecko) |  Internet Explorer  | Opera  | Safari  |
- | ------------- |-------------| -------------| -------------| -------------| -------------| -------------|
+ | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
  | Basic support | 14 | (yes) | 23 | Not supported | 15 | 6 |
  
  
@@ -63,6 +66,12 @@ Now place yourself back in the project folder, and for the frontend part you can
 
 The frontend is now running!
 This frontend is associated with a watcher and a livereload module. This means it opens itself in your default browser. 
+
+### Testing the project
+You can run tests on the backend of the project. They were written using **mocha** and **sinon**.
+To run them, place yourself in the *backend* folder :
+
+    $ mocha -u tdd
 
 # Role distribution
 
