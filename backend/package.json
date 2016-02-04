@@ -12,8 +12,6 @@
     "mongoose": "^4.3.4",
     "morgan": "latest",
     "sinon": "^1.17.2",
-    "winston": "^2.1.1",
-    "mockgoose": "^5.2.2"
-
+    "winston": "^2.1.1"
   }
 }
