@@ -39,5 +39,5 @@ angular.module('programmableWebApp')
       $scope.inError=true;
       console.log('in error :((');
     });
-  }
+  };
   }]);

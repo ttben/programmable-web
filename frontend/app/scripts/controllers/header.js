@@ -8,7 +8,7 @@
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
-  .controller('HeaderCtrl', ['$location', '$rootScope', '$cookies', function ($location, $rootScope, $cookies) {
+  .controller('HeaderCtrl', ['$scope', '$location', '$rootScope', '$cookies', function ($scope, $location, $rootScope, $cookies) {
 
       if (typeof($cookies.get('token')) !== 'undefined') {
         $location.path('/home');
