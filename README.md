@@ -40,10 +40,15 @@ For better results, you should use Google Chrome.
 
 Here are the browser compatibility specifications:
  
- | Feature       | Chrome      | Edge  | Firefox (Gecko) |  Internet Explorer  | Opera  | Safari  |
- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
- | Basic support | 14 | (yes) | 23 | Not supported | 15 | 6 |
- 
+ Feature       | Chrome      | Edge  | Firefox (Gecko) |  Internet Explorer  | Opera  | Safari
+ ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------
+ Basic support | 14 | (yes) | 23 | Not supported | 15 | 6 
+
+
+ First Header | Second Header
+ ------------ | -------------
+ Content from cell 1 | Content from cell 2
+ Content in the first column | Content in the second column
  
 For better results, you should use Google Chrome.
 
