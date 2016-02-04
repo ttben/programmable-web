@@ -5,9 +5,9 @@
 
 /**
  * @ngdoc function
- * @name programmableWebApp.controller:MainCtrl
- * @description
- * # MainCtrl
+ * @name programmableWebApp.controller:MusicPlayerCtrl
+ * @description this controller launches the audioplayer directive, which contains all the tracks and everything.
+ * # MusicPlayerCtrl
  * Controller of the programmableWebApp
  */
 angular.module('programmableWebApp')
@@ -26,6 +26,5 @@ angular.module('programmableWebApp')
     else {
       $scope.inError = true;
     }
-
 
   }]);
