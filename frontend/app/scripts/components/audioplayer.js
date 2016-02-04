@@ -91,7 +91,7 @@ angular.module('audioPlayer-directive', [])
           $scope.tracks.forEach(function (track) {
             newMix.push({
               panValue: track.panNode.pan.value,
-              verbGain: track.verbGainNode,
+              verbVolume: track.verb.volume,
               verb: track.verb,
               trebleValue: track.trebleFilter.gain.value,
               bassValue: track.bassFilter.gain.value,
@@ -156,7 +156,7 @@ angular.module('audioPlayer-directive', [])
                   track.bassFilter.gain.value = mixTrack.bassValue;
                   track.muted = mixTrack.muted;
                   track.volume = mixTrack.volume ;
-                  track.verbGainNode = mixTrack.verbGain;
+                  track.verb.volume = mixTrack.verbVolume;
                   track.verb = mixTrack.verb;
                 }
               });
